@@ -206,7 +206,7 @@
         }
         .arena-bucket .skin-preview-graphic {
             width: 140px;
-            height: 80px;
+            height: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -550,33 +550,42 @@
             let currentShopSkins = [];
             let shopTimeRemaining = 300;
 
-            // Highly reliable vector generator system replacing unstable external URL fetching layouts
+            // Hand-drawn premium SVG profiles calibrated on a 240x240 responsive canvas field
             function generateWeaponVectorIcon(skinName) {
+                if (!skinName) return `<svg class="vector-render-icon" viewBox="0 0 240 240"></svg>`;
                 const lower = skinName.toLowerCase();
-                let path = 'M3,12 H21 V14 H3 Z'; // generic baseline fallback line
-                let color = '#4a526d';           // custom default accent tint
+                let path = '';
+                let color = '#4a526d'; // Standard base utility steel gray tint
 
-                // Dynamic design profiles matching weapon groups natively
                 if (lower.includes('knife') || lower.includes('gem')) {
-                    path = 'M16,5 L19,2 L21,4 L18,7 L13,12 L10,9 Z M10,9 L4,15 L3,17 L5,19 L7,18 L13,12 Z';
-                    color = '#9b5de5';
+                    // Premium sleek tactical blade alignment
+                    path = `<path d="M170,30 C185,15 195,15 195,25 C195,40 160,85 110,125 L85,100 C125,50 155,45 170,30 Z M80,105 L25,160 C20,165 20,175 25,180 L40,195 C45,200 55,200 60,195 L115,140 Z" fill="currentColor"/>
+                            <rect x="70" y="110" width="12" height="30" transform="rotate(-45 70 110)" fill="#111317"/>`;
+                    color = '#ffb703'; // Meow gold tier item profile accent
                 } else if (lower.includes('awp')) {
-                    path = 'M2,13 L6,10 L14,10 L22,11 L22,12 L16,13 L12,14 L5,14 Z M7,10 L9,7 L12,7 L13,10 Z M4,14 L2,17 L5,17 Z';
-                    color = '#3a86ff';
-                } else if (lower.includes('ak-47') || lower.includes('m4a4') || lower.includes('m4a1-s') || lower.includes('sg 553') || lower.includes('galil')) {
-                    path = 'M3,13 L8,11 L18,11 L22,12 L20,14 L12,14 L6,15 Z M10,11 L11,8 L13,8 L13,11 Z M5,14 L3,18 L6,16 Z';
-                    color = '#ff006e';
+                    // Long-barrel sniper design system array
+                    path = `<path d="M10,105 L45,95 L90,95 L190,100 L230,102 L230,108 L170,112 L100,115 L45,115 L10,125 Z M55,95 L60,80 L105,80 L110,95 Z M85,80 L85,70 L135,70 L135,95 Z M30,115 L10,145 L40,145 Z M120,115 L110,135 L135,135 Z" fill="currentColor"/>`;
+                    color = '#2196f3'; // Clean structural blue layout
+                } else if (lower.includes('ak-47') || lower.includes('m4a4') || lower.includes('m4a1-s') || lower.includes('sg 553') || lower.includes('galil') || lower.includes('mac-10')) {
+                    // Full-scale tactical automatic rifle blueprint
+                    path = `<path d="M15,115 L55,100 L120,100 L210,102 L225,105 L215,115 L150,115 L120,118 L60,122 Z M80,100 L85,82 L120,82 L120,100 Z M40,118 L20,150 L50,145 Z M105,116 L95,140 L115,140 Z" fill="currentColor"/>`;
+                    color = '#e91e63'; // Hyper neon pink/red layout pop
                 } else if (lower.includes('glock') || lower.includes('p250') || lower.includes('usp-s') || lower.includes('eagle')) {
-                    path = 'M7,9 L15,9 L15,12 L12,13 L12,17 L9,17 L7,13 Z';
-                    color = '#00f5d4';
-                } else if (lower.includes('gloves')) {
-                    path = 'M6,9 Q9,6 12,9 T18,9 V16 Q15,19 12,16 T6,16 Z';
-                    color = '#fee440';
+                    // Balanced high-end structural sidearm pistol framework
+                    path = `<path d="M50,85 L165,85 L165,122 L135,125 L125,180 L85,180 L85,135 L50,135 Z M115,125 A 12 12 0 1 0 115,149 A 12 12 0 1 0 115,125 Z" fill="currentColor"/>`;
+                    color = '#00f5d4'; // Restricted cyber-tech green/teal
+                } else if (lower.includes('gloves') || lower.includes('vice')) {
+                    // Smooth curved defensive tactical armor line sets
+                    path = `<path d="M40,90 Q70,50 110,80 Q150,50 180,90 L170,170 Q110,200 50,170 Z M70,95 L70,140 M110,95 L110,145 M150,95 L150,140" fill="currentColor" stroke="rgba(0,0,0,0.2)" stroke-width="6"/>`;
+                    color = '#fee440'; // Specialized golden yellow trim
+                } else {
+                    // Default sleek equipment storage asset profile
+                    path = `<path d="M30,70 L170,70 L200,100 L170,130 L30,130 Z" fill="currentColor"/>`;
                 }
 
                 return `
-                    <svg class="vector-render-icon" viewBox="0 0 24 24" style="color: ${color}; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));">
-                        <path d="${path}" fill="currentColor" />
+                    <svg class="vector-render-icon" viewBox="0 0 240 240" style="color: ${color}; width: 100%; height: 100%; padding: 10px;">
+                        ${path}
                     </svg>
                 `;
             }
