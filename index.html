@@ -16,8 +16,7 @@
             --bg-main: #0a0b0d;
             --bg-panel: #111317;
             --bg-panel-inner: #16191f;
-            --accent-gold: #dfb300;
-            --accent-gold-hover: #f3c000;
+            --accent-gold: #ff4500; /* Primary brand orange-red fallback */
             --border-color: rgba(255, 255, 255, 0.04);
             --text-main: #e2e4e9;
             --text-muted: #626775;
@@ -33,7 +32,7 @@
         ::-webkit-scrollbar { width: 5px; height: 5px; }
         ::-webkit-scrollbar-track { background: var(--bg-main); }
         ::-webkit-scrollbar-thumb { background: #222631; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--accent-gold); }
+        ::-webkit-scrollbar-thumb:hover { background: #ffaa00; }
 
         /* ── Main App Shell Layout ── */
         .sidebar {
@@ -51,7 +50,7 @@
         .sidebar-logo {
             width: 44px;
             height: 44px;
-            background: linear-gradient(135deg, var(--accent-gold), #7d6105);
+            background: linear-gradient(135deg, #ff4500, #ffaa00);
             clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
             display: flex;
             align-items: center;
@@ -74,17 +73,16 @@
             align-items: center;
             justify-content: center;
             font-size: 20px;
-            position: relative;
         }
         .sidebar-item:hover {
             transform: translateY(-2px);
-            border-color: rgba(223, 179, 0, 0.3);
+            border-color: rgba(255, 69, 0, 0.3);
             color: #fff;
         }
         .sidebar-item.active {
-            background: rgba(223, 179, 0, 0.1);
-            border-color: var(--accent-gold);
-            color: var(--accent-gold);
+            background: rgba(255, 69, 0, 0.1);
+            border-color: #ff4500;
+            color: #ff4500;
         }
 
         .main-container {
@@ -117,7 +115,7 @@
             font-size: 24px;
             letter-spacing: 0.06em;
             color: #fff;
-            text-shadow: 0 0 20px rgba(223, 179, 0, 0.2);
+            text-shadow: 0 0 20px rgba(255, 69, 0, 0.2);
         }
         .ticker-stats {
             display: flex;
@@ -135,9 +133,9 @@
         }
         .wallet-display-wrapper { text-align: right; }
         .wallet-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
-        .wallet-value { font-size: 17px; font-weight: 800; color: var(--accent-gold); }
+        .wallet-value { font-size: 17px; font-weight: 800; color: #ffaa00; }
         .btn-deposit-action {
-            background: var(--accent-gold);
+            background: linear-gradient(135deg, #ff4500, #ffaa00);
             color: #000;
             border: none;
             padding: 9px 20px;
@@ -148,9 +146,8 @@
             transition: all 0.2s;
         }
         .btn-deposit-action:hover {
-            background: var(--accent-gold-hover);
             transform: translateY(-1px);
-            box-shadow: 0 4px 15px rgba(223, 179, 0, 0.2);
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
         }
 
         /* ── Content Viewport Window ── */
@@ -163,60 +160,60 @@
             gap: 20px;
         }
 
-        /* ── Arena Layout Panel ── */
+        /* ── MASSIVE Arena Layout Panel ── */
         .arena-grid {
             display: grid;
-            grid-template-columns: 1.2fr 1fr 1.2fr;
-            gap: 20px;
+            grid-template-columns: 1.4fr 1.2fr 1.4fr; /* Expanded side panels */
+            gap: 24px;
             background: var(--bg-panel);
-            border-radius: 20px;
-            padding: 24px;
+            border-radius: 24px;
+            padding: 32px;
             border: 1px solid var(--border-color);
             align-items: center;
         }
         .arena-bucket {
             background: var(--bg-panel-inner);
-            border-radius: 16px;
-            height: 240px;
+            border-radius: 20px;
+            height: 320px; /* Scaled Up heights */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 24px;
+            padding: 32px;
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.02);
             position: relative;
             transition: border-color 0.2s;
         }
         .bucket-descriptor-label {
-            font-size: 11px;
+            font-size: 12px;
             color: var(--text-muted);
             text-transform: uppercase;
             position: absolute;
-            top: 18px;
+            top: 22px;
             font-weight: 800;
             letter-spacing: 0.08em;
         }
         .arena-fallback-icon {
-            width: 48px;
-            height: 48px;
+            width: 56px;
+            height: 56px;
             opacity: 0.1;
-            color: var(--accent-gold);
+            color: #ffaa00;
             margin-bottom: 12px;
         }
         .arena-bucket .skin-preview-graphic {
-            width: 140px;
-            height: 100px;
+            width: 180px;
+            height: 120px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             z-index: 2;
         }
-        .arena-bucket .skin-title-node { font-weight: 700; font-size: 14px; color: #fff; margin-top: 10px; }
-        .arena-bucket .skin-price-node { color: var(--accent-gold); font-weight: 800; margin-top: 4px; font-size: 13px; }
+        .arena-bucket .skin-title-node { font-weight: 800; font-size: 16px; color: #fff; margin-top: 14px; }
+        .arena-bucket .skin-price-node { color: #ffaa00; font-weight: 900; margin-top: 6px; font-size: 15px; }
 
-        /* ── Wheel Dial Module ── */
+        /* ── ENHANCED THICK WHEEL Dial Module ── */
         .dial-module {
             display: flex;
             flex-direction: column;
@@ -225,8 +222,8 @@
         }
         .radial-wheel-pod {
             position: relative;
-            width: 180px;
-            height: 180px;
+            width: 260px; /* Significantly upscaled */
+            height: 260px;
         }
         .radial-wheel-pod svg { width: 100%; height: 100%; }
         .radial-percentage-text {
@@ -235,31 +232,31 @@
             left: 50%;
             transform: translate(-50%, -50%);
             font-family: 'Orbitron', sans-serif;
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 900;
             color: #fff;
-            text-shadow: 0 0 20px rgba(223, 179, 0, 0.3);
+            text-shadow: 0 0 20px rgba(255, 69, 0, 0.4);
         }
         .btn-roll-upgrade {
-            margin-top: 16px;
+            margin-top: 24px;
             width: 100%;
-            max-width: 200px;
-            background: var(--accent-gold);
+            max-width: 220px;
+            background: linear-gradient(135deg, #ff4500, #ffaa00);
             color: #000;
             border: none;
-            padding: 12px;
-            font-size: 14px;
-            font-weight: 800;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.2s;
         }
-        .btn-roll-upgrade:hover:not(:disabled) { background: var(--accent-gold-hover); transform: translateY(-1px); }
+        .btn-roll-upgrade:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255, 69, 0, 0.3); }
         .btn-roll-upgrade:disabled { opacity: 0.2; cursor: not-allowed; }
-        .arena-odds-caption { font-size: 12px; color: var(--text-muted); margin-top: 8px; }
-        .arena-odds-caption strong { color: var(--accent-gold); }
+        .arena-odds-caption { font-size: 13px; color: var(--text-muted); margin-top: 10px; }
+        .arena-odds-caption strong { color: #ffaa00; }
 
         /* ── Split Axis Workspace Board ── */
         .split-axis-board {
@@ -336,9 +333,9 @@
         }
         .node-matrix-item:hover { background: #1d212a; transform: translateY(-1px); }
         .node-matrix-item.selected-active {
-            border-color: var(--accent-gold);
+            border-color: #ff4500;
             background: #202530;
-            box-shadow: 0 0 20px rgba(223, 179, 0, 0.12);
+            box-shadow: 0 0 20px rgba(255, 69, 0, 0.15);
         }
         
         .node-image-container {
@@ -372,11 +369,11 @@
         .node-meta-price {
             font-size: 12px;
             font-weight: 700;
-            color: var(--accent-gold);
+            color: #ffaa00;
             margin-top: 2px;
         }
         .btn-node-shop-buy {
-            background: var(--accent-gold);
+            background: linear-gradient(135deg, #ff4500, #ffaa00);
             color: #000;
             border: none;
             border-radius: 6px;
@@ -387,13 +384,12 @@
             cursor: pointer;
             width: 100%;
         }
-        .btn-node-shop-buy:hover { background: var(--accent-gold-hover); }
 
         /* View Router Panes */
         .pane-view-context { display: none; height: 100%; flex-direction: column; }
         .pane-view-context.active { display: flex; }
 
-        /* ── Status Overlays & Overlay Modals ── */
+        /* ── Status Overlays ── */
         .modal-curtain-wrapper {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.8); backdrop-filter: blur(6px); z-index: 999;
@@ -403,27 +399,26 @@
         .dialog-alert-box {
             background: var(--bg-panel); border: 1px solid var(--border-color);
             padding: 36px; border-radius: 24px; text-align: center; max-width: 420px; width: 90%;
-            box-shadow: 0 24px 50px rgba(0,0,0,0.7);
         }
         .dialog-alert-box .status-icon-node { font-size: 52px; margin-bottom: 12px; }
         .dialog-alert-box h2 { font-size: 24px; margin-bottom: 6px; font-weight: 900; }
         .dialog-alert-box p { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
-        .dialog-alert-box .win-heading-text { color: var(--accent-gold); }
+        .dialog-alert-box .win-heading-text { color: #ffaa00; }
         .dialog-alert-box .loss-heading-text { color: #ff4466; }
         .dialog-alert-box button {
-            background: var(--accent-gold); color: #000; border: none; padding: 10px 36px;
-            border-radius: 30px; font-weight: 800; cursor: pointer; margin-top: 24px; transition: all 0.2s;
+            background: linear-gradient(135deg, #ff4500, #ffaa00); color: #000; border: none; padding: 10px 36px;
+            border-radius: 30px; font-weight: 800; cursor: pointer; margin-top: 24px;
         }
 
         #tickerGroup { transform-origin: 100px 100px; transition: transform 2.5s cubic-bezier(0.1, 0.8, 0.1, 1); }
-        .panel-flash-win { border-color: var(--accent-gold) !important; box-shadow: 0 0 30px rgba(223, 179, 0, 0.2); }
+        .panel-flash-win { border-color: #ffaa00 !important; box-shadow: 0 0 30px rgba(255, 170, 0, 0.2); }
         .panel-flash-loss { border-color: #ff4466 !important; box-shadow: 0 0 30px rgba(255, 68, 102, 0.2); }
         .shop-timer-badge { font-size: 11px; font-weight: 700; color: var(--text-muted); font-family: 'Orbitron', monospace; }
-        .shop-timer-badge span { color: var(--accent-gold); margin-left: 3px; }
+        .shop-timer-badge span { color: #ffaa00; margin-left: 3px; }
 
-        @media (max-width: 1120px) {
-            .split-axis-board { grid-template-columns: 1fr; }
-            .arena-grid { grid-template-columns: 1fr; }
+        @media (max-width: 1280px) {
+            .arena-grid { grid-template-columns: 1fr; gap: 20px; }
+            .arena-bucket { height: 260px; }
         }
     </style>
 </head>
@@ -464,19 +459,20 @@
                 <div class="dial-module">
                     <div class="radial-wheel-pod">
                         <svg viewBox="0 0 200 200">
-                            <circle cx="100" cy="100" r="82" fill="none" stroke="#171a22" stroke-width="14" />
-                            <circle cx="100" cy="100" r="82" fill="none" stroke="#22252e" stroke-width="10" />
-                            <circle cx="100" cy="100" r="82" fill="none" stroke="url(#goldGradient)" stroke-width="10"
-                                    stroke-linecap="round" stroke-dasharray="515.22" stroke-dashoffset="515.22"
+                            <circle cx="100" cy="100" r="80" fill="none" stroke="#16191f" stroke-width="22" />
+                            <circle cx="100" cy="100" r="80" fill="none" stroke="#222631" stroke-width="18" />
+                            <circle cx="100" cy="100" r="80" fill="none" stroke="url(#fireGradient)" stroke-width="18"
+                                    stroke-linecap="round" stroke-dasharray="502.65" stroke-dashoffset="502.65"
                                     id="wheelArc" transform="rotate(-90 100 100)" />
                             <g id="tickerGroup">
-                                <polygon points="100,184 94,196 106,196" fill="#dfb300" />
-                                <line x1="100" y1="184" x2="100" y2="170" stroke="#dfb300" stroke-width="3" stroke-linecap="round" />
+                                <polygon points="100,180 93,194 107,194" fill="#ff4500" />
+                                <line x1="100" y1="180" x2="100" y2="164" stroke="#ff4500" stroke-width="4" stroke-linecap="round" />
                             </g>
                             <defs>
-                                <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#dfb300" />
-                                    <stop offset="100%" stop-color="#f3c000" />
+                                <linearGradient id="fireGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#tt4500" stop-color="#ff2a00" />
+                                    <stop offset="50%" stop-color="#ff7700" />
+                                    <stop offset="100%" stop-color="#ffdd00" />
                                 </linearGradient>
                             </defs>
                         </svg>
@@ -502,7 +498,6 @@
                         </div>
                         <div class="skins-matrix-grid" id="inventoryGrid"></div>
                     </div>
-
                     <div class="pane-view-context" id="pane-shop">
                         <div class="axis-panel-header">
                             <h3>Weapon Shop</h3>
@@ -550,44 +545,33 @@
             let currentShopSkins = [];
             let shopTimeRemaining = 300;
 
-            // Hand-drawn premium SVG profiles calibrated on a 240x240 responsive canvas field
             function generateWeaponVectorIcon(skinName) {
                 if (!skinName) return `<svg class="vector-render-icon" viewBox="0 0 240 240"></svg>`;
                 const lower = skinName.toLowerCase();
                 let path = '';
-                let color = '#4a526d'; // Standard base utility steel gray tint
+                let color = '#4a526d';
 
                 if (lower.includes('knife') || lower.includes('gem')) {
-                    // Premium sleek tactical blade alignment
                     path = `<path d="M170,30 C185,15 195,15 195,25 C195,40 160,85 110,125 L85,100 C125,50 155,45 170,30 Z M80,105 L25,160 C20,165 20,175 25,180 L40,195 C45,200 55,200 60,195 L115,140 Z" fill="currentColor"/>
                             <rect x="70" y="110" width="12" height="30" transform="rotate(-45 70 110)" fill="#111317"/>`;
-                    color = '#ffb703'; // Meow gold tier item profile accent
+                    color = '#ffaa00';
                 } else if (lower.includes('awp')) {
-                    // Long-barrel sniper design system array
                     path = `<path d="M10,105 L45,95 L90,95 L190,100 L230,102 L230,108 L170,112 L100,115 L45,115 L10,125 Z M55,95 L60,80 L105,80 L110,95 Z M85,80 L85,70 L135,70 L135,95 Z M30,115 L10,145 L40,145 Z M120,115 L110,135 L135,135 Z" fill="currentColor"/>`;
-                    color = '#2196f3'; // Clean structural blue layout
+                    color = '#2196f3';
                 } else if (lower.includes('ak-47') || lower.includes('m4a4') || lower.includes('m4a1-s') || lower.includes('sg 553') || lower.includes('galil') || lower.includes('mac-10')) {
-                    // Full-scale tactical automatic rifle blueprint
                     path = `<path d="M15,115 L55,100 L120,100 L210,102 L225,105 L215,115 L150,115 L120,118 L60,122 Z M80,100 L85,82 L120,82 L120,100 Z M40,118 L20,150 L50,145 Z M105,116 L95,140 L115,140 Z" fill="currentColor"/>`;
-                    color = '#e91e63'; // Hyper neon pink/red layout pop
+                    color = '#e91e63';
                 } else if (lower.includes('glock') || lower.includes('p250') || lower.includes('usp-s') || lower.includes('eagle')) {
-                    // Balanced high-end structural sidearm pistol framework
                     path = `<path d="M50,85 L165,85 L165,122 L135,125 L125,180 L85,180 L85,135 L50,135 Z M115,125 A 12 12 0 1 0 115,149 A 12 12 0 1 0 115,125 Z" fill="currentColor"/>`;
-                    color = '#00f5d4'; // Restricted cyber-tech green/teal
+                    color = '#00f5d4';
                 } else if (lower.includes('gloves') || lower.includes('vice')) {
-                    // Smooth curved defensive tactical armor line sets
                     path = `<path d="M40,90 Q70,50 110,80 Q150,50 180,90 L170,170 Q110,200 50,170 Z M70,95 L70,140 M110,95 L110,145 M150,95 L150,140" fill="currentColor" stroke="rgba(0,0,0,0.2)" stroke-width="6"/>`;
-                    color = '#fee440'; // Specialized golden yellow trim
+                    color = '#ffdd00';
                 } else {
-                    // Default sleek equipment storage asset profile
                     path = `<path d="M30,70 L170,70 L200,100 L170,130 L30,130 Z" fill="currentColor"/>`;
                 }
 
-                return `
-                    <svg class="vector-render-icon" viewBox="0 0 240 240" style="color: ${color}; width: 100%; height: 100%; padding: 10px;">
-                        ${path}
-                    </svg>
-                `;
+                return `<svg class="vector-render-icon" viewBox="0 0 240 240" style="color: ${color}; width: 100%; height: 100%; padding: 10px;">${path}</svg>`;
             }
 
             function generateWeaponCardHtml(skin, showBuyBtn = false) {
@@ -640,33 +624,16 @@
                 { id: 'mid16', tier: 'mid', name: 'Butterfly Knife | Doppler', value: 2100.00 },
                 { id: 'mid17', tier: 'mid', name: 'Karambit | Fade', value: 2200.00 },
                 { id: 'mid18', tier: 'mid', name: 'M9 Bayonet | Marble Fade', value: 2250.00 },
-                { id: 'mid19', tier: 'mid', name: 'Sport Gloves | Vice', value: 2350.00 },
-                { id: 'mid20', tier: 'mid', name: 'Stained Knife | Superconductor', value: 2400.00 },
                 { id: 'high1', tier: 'high', name: 'M4A1-S | Knight', value: 2600.00 },
                 { id: 'high2', tier: 'high', name: 'AK-47 | Gold Arabesque', value: 2800.00 },
                 { id: 'high3', tier: 'high', name: 'M4A4 | Howl', value: 3200.00 },
-                { id: 'high4', tier: 'high', name: 'M4A1-S | Welcome to Jungle', value: 3500.00 },
-                { id: 'high5', tier: 'high', name: 'Karambit | Lore', value: 3800.00 },
-                { id: 'high6', tier: 'high', name: 'Butterfly Knife | Gamma Doppler', value: 4100.00 },
-                { id: 'high7', tier: 'high', name: 'AWP | Medusa', value: 4600.00 },
-                { id: 'high8', tier: 'high', name: 'AWP | Desert Hydra', value: 5200.00 },
-                { id: 'high9', tier: 'high', name: 'Butterfly Knife | Lore', value: 5800.00 },
-                { id: 'high10', tier: 'high', name: 'M9 Bayonet | Lore', value: 6200.00 },
-                { id: 'high11', tier: 'high', name: 'Karambit | Gamma Doppler Phase 4', value: 6800.00 },
-                { id: 'high12', tier: 'high', name: 'AK-47 | Wild Lotus', value: 7400.00 },
-                { id: 'high13', tier: 'high', name: 'AWP | Gungnir', value: 8200.00 },
                 { id: 'high14', tier: 'high', name: 'AWP | Dragon Lore', value: 9500.00 },
-                { id: 'high15', tier: 'high', name: 'Butterfly Knife | Doppler Ruby', value: 10200.00 },
-                { id: 'high16', tier: 'high', name: 'M9 Bayonet | Doppler Sapphire', value: 11000.00 },
-                { id: 'high17', tier: 'high', name: 'Karambit | Case Hardened Blue Gem', value: 11500.00 },
-                { id: 'high18', tier: 'high', name: 'Butterfly Knife | Sapphire', value: 12000.00 },
-                { id: 'high19', tier: 'high', name: 'Souvenir AWP | Dragon Lore', value: 12200.00 },
-                { id: 'high20', tier: 'high', name: 'StatTrak AWP | Dragon Lore', value: 12500.00 }
+                { id: 'high18', tier: 'high', name: 'Butterfly Knife | Sapphire', value: 12000.00 }
             ];
 
             const userInventory = [
                 { ...masterSkinsDatabase[0], id: 'init1' }, 
-                { ...masterSkinsDatabase[5], id: 'init2' },
+                { ...masterSkinsDatabase[4], id: 'init2' },
                 { ...masterSkinsDatabase[9], id: 'init3' }
             ];
 
@@ -794,13 +761,12 @@
                     card.querySelector('.btn-node-shop-buy').addEventListener('click', (e) => {
                         e.stopPropagation();
                         if (balance < skin.value) {
-                            showResult(false, '❌', 'Insufficient Funds', 'You need more balance to buy this item.');
+                            showResult(false, '❌', 'Insufficient Funds', 'Check balance.');
                             return;
                         }
                         balance -= skin.value;
                         userInventory.push({ ...skin, id: 'bought_' + Date.now() });
                         updateBalanceUI(); renderInventory();
-                        showResult(true, '🛒', 'Purchased!', `${skin.name} added to inventory.`);
                     });
                     shopGrid.appendChild(card);
                 });
@@ -843,7 +809,7 @@
             }
 
             function setWheelArcPercentage(percent) {
-                const totalLength = 2 * Math.PI * 82;
+                const totalLength = 2 * Math.PI * 80;
                 wheelArc.style.strokeDashoffset = totalLength - (totalLength * (percent / 100));
             }
 
@@ -867,7 +833,7 @@
                 updateBalanceUI();
 
                 const isWin = (Math.random() * 100) <= chance;
-                const rotations = 4 + Math.floor(Math.random() * 3);
+                const rotations = 5;
                 let targetDegrees = isWin ? (Math.random() * (chance / 100) * 360) : (((chance / 100) * 360) + (Math.random() * (360 - ((chance / 100) * 360))));
                 
                 tickerGroup.style.transform = `rotate(${(rotations * 360) + ((targetDegrees + 180) % 360)}deg)`;
