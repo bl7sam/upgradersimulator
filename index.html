@@ -110,7 +110,7 @@
             display: flex;
             align-items: center;
             gap: 24px;
-            }
+        }
         .brand-logo-text {
             font-family: 'Orbitron', sans-serif;
             font-weight: 900;
@@ -556,17 +556,18 @@
             let currentShopSkins = [];
             let shopTimeRemaining = 300;
 
-            // Updated image path configurations to line up perfectly with modern API paths
+            // Alternative asset lookup format matching the updated production API routing
             function getSkinCdnUrl(skinName) {
-                // Formats name to match the official panorama image storage layout
+                // Completely cleanses the string to match standard web asset endpoints
                 const cleaned = skinName
                     .toLowerCase()
-                    .replace(/[^a-z0-9\s-]/g, '') // strip special characters like |
+                    .replace(' | ', '_')          // replace the separator cleanly
+                    .replace(/[^a-z0-9\s_]/g, '') // strip remaining odd symbols
                     .trim()
-                    .replace(/\s+/g, '_');        // swap spaces for underscores
+                    .replace(/\s+/g, '_');        // enforce strict underscores
                 
-                // This is the correct live asset repository layout for his image CDN
-                return `https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/default_generated/${cleaned}_light.png`;
+                // Let's route directly via his static production mirror path
+                return `https://bymykel.github.io/CS2-API/api/images/skins/${cleaned}.png`;
             }
 
             function generateWeaponCardHtml(skin, showBuyBtn = false) {
