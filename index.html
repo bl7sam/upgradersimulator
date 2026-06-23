@@ -6,39 +6,6 @@
     <title>Blusams Upgrader</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;600;700;800;900&family=Orbitron:wght=700;800;900&display=swap" rel="stylesheet" />
     <style>
-                /* ── Float Slider Component ── */
-        .float-control-group {
-            margin-top: 20px;
-            padding: 16px;
-            background: #16191f;
-            border-radius: 12px;
-        }
-        .float-slider {
-            width: 100%;
-            height: 8px;
-            background: linear-gradient(90deg, #ff4466 0%, #ffaa00 50%, #2196f3 100%);
-            border-radius: 4px;
-            appearance: none;
-            outline: none;
-            margin-top: 10px;
-        }
-        .float-slider::-webkit-slider-thumb {
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            background: #fff;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
-        .float-label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            font-weight: 700;
-        }
         /* ── Core Theme & Variables ── */
         *, *::before, *::after {
             box-sizing: border-box;
@@ -278,16 +245,11 @@
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.2s;
-
-        <div class="float-control-group">
-    <div class="float-label">
-        <span>FN (0.00)</span>
-        <span>Float</span>
-        <span>BS (1.00)</span>
-    </div>
-    <input type="range" class="float-slider" min="0" max="1" step="0.01" value="0.05" id="floatSlider">
-    <div id="floatValueDisplay" style="text-align: center; font-size: 12px; margin-top: 5px; color: #fff;">0.05</div>
-</div>
+        }
+        .btn-roll-upgrade:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255, 69, 0, 0.3); }
+        .btn-roll-upgrade:disabled { opacity: 0.2; cursor: not-allowed; }
+        .arena-odds-caption { font-size: 13px; color: var(--text-muted); margin-top: 10px; }
+        .arena-odds-caption strong { color: #ffaa00; }
 
         /* ── Win Detonation Banner ── */
         .win-detonation-banner {
@@ -1120,56 +1082,6 @@
             }
 
             document.addEventListener('DOMContentLoaded', init);
-        })();
-    </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Blusams Upgrader</title>
-    <style>
-        /* ... existing styles ... */
-        /* ADD THIS FOR THE FLOAT BARS */
-        .float-bar-wrapper { width: 100%; height: 6px; background: #0b0c0f; border-radius: 3px; margin-top: 8px; overflow: hidden; }
-        .float-bar-fill { height: 100%; width: 0%; transition: width 0.5s ease; }
-    </style>
-</head>
-<body>
-    <script>
-        (function() {
-            // INTEGRATED MASTER DATABASE
-            const masterSkinsDatabase = [
-                { id: 'low1', tier: 'low', name: 'P250 | Sand Dune', value: 5.00 },
-                { id: 'low2', tier: 'low', name: 'Glock-18 | Bunsen Burner', value: 8.50 },
-                { id: 'high20', tier: 'high', name: 'M9 Bayonet | Ruby', value: 18000.00 }
-            ];
-
-            // RENDER LOGIC WITH FLOAT BAR
-            function renderInventory() {
-                const grid = document.getElementById('inventoryGrid');
-                grid.innerHTML = '';
-                masterSkinsDatabase.forEach(skin => {
-                    const floatValue = Math.random(); // 0.0 to 1.0
-                    const barColor = floatValue < 0.1 ? '#00f5d4' : '#ff4500';
-                    
-                    const card = document.createElement('div');
-                    card.className = 'node-matrix-item';
-                    card.innerHTML = `
-                        <div class="node-meta-title">${skin.name}</div>
-                        <div class="node-meta-price">$${skin.value.toFixed(2)}</div>
-                        <div class="float-bar-wrapper">
-                            <div class="float-bar-fill" style="width: ${floatValue * 100}%; background: ${barColor};"></div>
-                        </div>
-                    `;
-                    grid.appendChild(card);
-                });
-            }
-
-            // INIT
-            renderInventory();
         })();
     </script>
 </body>
