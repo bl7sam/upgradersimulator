@@ -4,10 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Blusams Upgrader</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;600;700;800;900&family=Orbitron:wght=700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet" />
     <style>
         /* ── Core Theme & Variables ── */
-        *, *::before, *::after {
+        *,
+        *::before,
+        *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
@@ -28,10 +30,20 @@
             color: var(--text-main);
             overflow: hidden;
         }
-        ::-webkit-scrollbar { width: 5px; height: 5px; }
-        ::-webkit-scrollbar-track { background: var(--bg-main); }
-        ::-webkit-scrollbar-thumb { background: #222631; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #ffaa00; }
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-main);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #222631;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ffaa00;
+        }
 
         /* ── Main App Shell Layout ── */
         .sidebar {
@@ -111,17 +123,33 @@
             color: var(--text-muted);
             font-weight: 500;
         }
-        .ticker-stats span { color: #e2e4e9; font-weight: 700; margin-left: 4px; }
+        .ticker-stats span {
+            color: #e2e4e9;
+            font-weight: 700;
+            margin-left: 4px;
+        }
 
         .nav-actions-section {
             display: flex;
             align-items: center;
             gap: 24px;
         }
-        .wallet-display-wrapper { text-align: right; }
-        .wallet-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
-        .wallet-value { font-size: 17px; font-weight: 800; color: #ffaa00; }
-        
+        .wallet-display-wrapper {
+            text-align: right;
+        }
+        .wallet-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+        }
+        .wallet-value {
+            font-size: 17px;
+            font-weight: 800;
+            color: #ffaa00;
+        }
+
         .btn-admin-panel-trigger {
             background: #ff4500;
             color: #fff;
@@ -151,7 +179,7 @@
             gap: 16px;
         }
 
-        /* ── Stretched Arena Panel ── */
+        /* ── Arena Panel ── */
         .arena-grid {
             display: grid;
             grid-template-columns: 1.5fr 1.1fr 1.5fr;
@@ -159,21 +187,22 @@
             background: var(--bg-panel);
             border-radius: 16px;
             padding: 24px;
-            align-items: center;
+            align-items: stretch;
             width: 100%;
+            position: relative;
         }
         .arena-bucket {
             background: var(--bg-panel-inner);
             border-radius: 12px;
-            height: 340px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 32px;
+            padding: 32px 20px;
             text-align: center;
             position: relative;
             transition: border-color 0.2s;
+            min-height: 300px;
         }
         .bucket-descriptor-label {
             font-size: 12px;
@@ -192,16 +221,146 @@
             margin-bottom: 12px;
         }
         .arena-bucket .skin-preview-graphic {
-            width: 220px;
-            height: 140px;
+            width: 100%;
+            max-width: 200px;
+            height: 120px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             z-index: 2;
         }
-        .arena-bucket .skin-title-node { font-weight: 800; font-size: 17px; color: #fff; margin-top: 14px; }
-        .arena-bucket .skin-price-node { color: #ffaa00; font-weight: 900; margin-top: 6px; font-size: 16px; }
+        .arena-bucket .skin-title-node {
+            font-weight: 800;
+            font-size: 17px;
+            color: #fff;
+            margin-top: 14px;
+        }
+        .arena-bucket .skin-price-node {
+            color: #ffaa00;
+            font-weight: 900;
+            margin-top: 6px;
+            font-size: 16px;
+        }
+
+        /* ── TARGET BUCKET WITH WEAR SLIDER ── */
+        .target-bucket-wrap {
+            position: relative;
+            background: var(--bg-panel-inner);
+            border-radius: 12px;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 20px 24px;
+            text-align: center;
+        }
+        .target-bucket-wrap .bucket-descriptor-label {
+            position: absolute;
+            top: 22px;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+        }
+
+        /* ── WEAR SLIDER ── */
+        .wear-slider-container {
+            position: absolute;
+            top: 52px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 32px);
+            max-width: 280px;
+            background: rgba(10, 11, 13, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 12px;
+            padding: 8px 16px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            z-index: 10;
+        }
+        .wear-slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 2px;
+        }
+        .wear-slider-header .wear-value {
+            color: #ffaa00;
+            font-family: 'Orbitron', monospace;
+            font-size: 12px;
+        }
+        .wear-slider-track {
+            position: relative;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, #00c853, #ffeb3b, #ff9800, #f44336);
+            border-radius: 6px;
+            margin: 4px 0 2px;
+            cursor: pointer;
+        }
+        .wear-slider-track input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            background: transparent;
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin: 0;
+            cursor: pointer;
+            z-index: 2;
+            outline: none;
+        }
+        .wear-slider-track input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border-radius: 50%;
+            border: 2px solid #ff4500;
+            box-shadow: 0 0 12px rgba(255, 69, 0, 0.4);
+            transition: all 0.15s;
+            cursor: grab;
+        }
+        .wear-slider-track input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 20px rgba(255, 69, 0, 0.6);
+        }
+        .wear-slider-track input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border-radius: 50%;
+            border: 2px solid #ff4500;
+            box-shadow: 0 0 12px rgba(255, 69, 0, 0.4);
+            cursor: grab;
+        }
+        .wear-slider-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 8px;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 0 2px;
+            margin-top: 1px;
+        }
+        .wear-slider-labels span.active-label {
+            color: #fff;
+        }
 
         /* ── Wheel Dial Module ── */
         .dial-module {
@@ -217,7 +376,10 @@
             height: 280px;
             transition: transform 0.4s ease, opacity 0.4s ease, filter 0.4s ease;
         }
-        .radial-wheel-pod svg { width: 100%; height: 100%; }
+        .radial-wheel-pod svg {
+            width: 100%;
+            height: 100%;
+        }
         .radial-percentage-text {
             position: absolute;
             top: 50%;
@@ -246,10 +408,22 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        .btn-roll-upgrade:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255, 69, 0, 0.3); }
-        .btn-roll-upgrade:disabled { opacity: 0.2; cursor: not-allowed; }
-        .arena-odds-caption { font-size: 13px; color: var(--text-muted); margin-top: 10px; }
-        .arena-odds-caption strong { color: #ffaa00; }
+        .btn-roll-upgrade:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.3);
+        }
+        .btn-roll-upgrade:disabled {
+            opacity: 0.2;
+            cursor: not-allowed;
+        }
+        .arena-odds-caption {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 10px;
+        }
+        .arena-odds-caption strong {
+            color: #ffaa00;
+        }
 
         /* ── Win Detonation Banner ── */
         .win-detonation-banner {
@@ -275,12 +449,22 @@
         }
 
         /* Kinetic Animation Keyframes */
-        .wheel-shaking-frenzy { animation: violentShake 0.4s infinite alternate; }
-        .wheel-exploded-out { transform: scale(2.2) !important; filter: brightness(5) blur(10px) !important; opacity: 0 !important; }
+        .wheel-shaking-frenzy {
+            animation: violentShake 0.4s infinite alternate;
+        }
+        .wheel-exploded-out {
+            transform: scale(2.2) !important;
+            filter: brightness(5) blur(10px) !important;
+            opacity: 0 !important;
+        }
 
         @keyframes violentShake {
-            0% { transform: translate(4px, 2px) rotate(2deg); }
-            100% { transform: translate(-4px, -2px) rotate(-2deg); }
+            0% {
+                transform: translate(4px, 2px) rotate(2deg);
+            }
+            100% {
+                transform: translate(-4px, -2px) rotate(-2deg);
+            }
         }
 
         /* ── Split Axis Board ── */
@@ -305,9 +489,19 @@
             margin-bottom: 20px;
             padding-bottom: 12px;
         }
-        .axis-panel-header h3 { font-size: 15px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; }
-        
-        .tab-embedded-row { display: flex; gap: 8px; align-items: center; }
+        .axis-panel-header h3 {
+            font-size: 15px;
+            font-weight: 800;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .tab-embedded-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
         .btn-embedded-utility {
             background: var(--bg-panel-inner);
             border: none;
@@ -319,7 +513,9 @@
             cursor: pointer;
             transition: color 0.2s;
         }
-        .btn-embedded-utility:hover { color: #fff; }
+        .btn-embedded-utility:hover {
+            color: #fff;
+        }
 
         .select-filter-menu {
             background: var(--bg-panel-inner);
@@ -355,12 +551,15 @@
             min-height: 160px;
             text-align: center;
         }
-        .node-matrix-item:hover { background: #1d212a; transform: translateY(-1px); }
+        .node-matrix-item:hover {
+            background: #1d212a;
+            transform: translateY(-1px);
+        }
         .node-matrix-item.selected-active {
             background: #202530;
             box-shadow: inset 0 0 0 2px #ff4500, 0 0 25px rgba(255, 69, 0, 0.15);
         }
-        
+
         .node-image-container {
             width: 100%;
             height: 75px;
@@ -373,75 +572,217 @@
             overflow: hidden;
             position: relative;
         }
-        .vector-render-icon { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+        .vector-render-icon {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-        .node-meta-title { font-size: 12px; color: #cdd0d8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
-        .node-meta-price { font-size: 13px; font-weight: 700; color: #ffaa00; margin-top: 2px; }
+        .node-meta-title {
+            font-size: 12px;
+            color: #cdd0d8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 600;
+        }
+        .node-meta-price {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffaa00;
+            margin-top: 2px;
+        }
         .btn-node-shop-buy {
             background: linear-gradient(135deg, #ff4500, #ffaa00);
-            color: #000; border: none; border-radius: 6px; padding: 6px;
-            font-size: 11px; font-weight: 800; margin-top: 6px; cursor: pointer; width: 100%;
+            color: #000;
+            border: none;
+            border-radius: 6px;
+            padding: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            margin-top: 6px;
+            cursor: pointer;
+            width: 100%;
         }
 
         /* View Router Panes */
-        .pane-view-context { display: none; height: 100%; flex-direction: column; }
-        .pane-view-context.active { display: flex; }
+        .pane-view-context {
+            display: none;
+            height: 100%;
+            flex-direction: column;
+        }
+        .pane-view-context.active {
+            display: flex;
+        }
 
         /* ── Status Overlays ── */
         .modal-curtain-wrapper {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(6px); z-index: 999;
-            align-items: center; justify-content: center;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(6px);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
         }
-        .modal-curtain-wrapper.active { display: flex; }
-        
+        .modal-curtain-wrapper.active {
+            display: flex;
+        }
+
         .dialog-alert-box {
-            background: var(--bg-panel); padding: 36px; border-radius: 24px; text-align: center; max-width: 420px; width: 90%;
+            background: var(--bg-panel);
+            padding: 36px;
+            border-radius: 24px;
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
         }
-        .dialog-alert-box .status-icon-node { font-size: 52px; margin-bottom: 12px; }
-        .dialog-alert-box h2 { font-size: 24px; margin-bottom: 6px; font-weight: 900; }
-        .dialog-alert-box p { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
-        .dialog-alert-box .win-heading-text { color: #ffaa00; }
-        .dialog-alert-box .loss-heading-text { color: #ff4466; }
+        .dialog-alert-box .status-icon-node {
+            font-size: 52px;
+            margin-bottom: 12px;
+        }
+        .dialog-alert-box h2 {
+            font-size: 24px;
+            margin-bottom: 6px;
+            font-weight: 900;
+        }
+        .dialog-alert-box p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+        .dialog-alert-box .win-heading-text {
+            color: #ffaa00;
+        }
+        .dialog-alert-box .loss-heading-text {
+            color: #ff4466;
+        }
         .dialog-alert-box button {
-            background: linear-gradient(135deg, #ff4500, #ffaa00); color: #000; border: none; padding: 10px 36px;
-            border-radius: 30px; font-weight: 800; cursor: pointer; margin-top: 24px;
+            background: linear-gradient(135deg, #ff4500, #ffaa00);
+            color: #000;
+            border: none;
+            padding: 10px 36px;
+            border-radius: 30px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 24px;
         }
 
         /* ── Developer Admin Overlay UI ── */
         .admin-modal-box {
-            background: #0d0f13; border: 2px solid #ff4500; width: 500px; max-width: 95%;
-            border-radius: 16px; padding: 24px; box-shadow: 0 0 40px rgba(255, 69, 0, 0.4);
+            background: #0d0f13;
+            border: 2px solid #ff4500;
+            width: 500px;
+            max-width: 95%;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 0 40px rgba(255, 69, 0, 0.4);
         }
         .admin-modal-box h2 {
-            font-family: 'Orbitron', sans-serif; font-size: 20px; color: #ff4500; margin-bottom: 20px;
-            text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #222631; padding-bottom: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            color: #ff4500;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid #222631;
+            padding-bottom: 10px;
         }
-        .admin-row-group { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; }
-        .admin-row-group label { font-size: 12px; text-transform: uppercase; font-weight: 700; color: var(--text-muted); }
-        .admin-flex-row { display: flex; gap: 10px; }
+        .admin-row-group {
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .admin-row-group label {
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+        .admin-flex-row {
+            display: flex;
+            gap: 10px;
+        }
         .admin-input-field {
-            flex-grow: 1; background: #16191f; border: 1px solid #222631; padding: 10px;
-            color: #fff; border-radius: 6px; outline: none; font-size: 14px;
+            flex-grow: 1;
+            background: #16191f;
+            border: 1px solid #222631;
+            padding: 10px;
+            color: #fff;
+            border-radius: 6px;
+            outline: none;
+            font-size: 14px;
         }
-        .admin-input-field:focus { border-color: #ff4500; }
+        .admin-input-field:focus {
+            border-color: #ff4500;
+        }
         .admin-btn {
-            background: #222631; color: #fff; border: none; padding: 10px 16px;
-            border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 13px; transition: all 0.2s;
+            background: #222631;
+            color: #fff;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
         }
-        .admin-btn:hover { background: #ff4500; }
-        .admin-select { background: #16191f; color: #fff; border: 1px solid #222631; padding: 10px; border-radius: 6px; flex-grow: 1; outline: none; }
+        .admin-btn:hover {
+            background: #ff4500;
+        }
+        .admin-select {
+            background: #16191f;
+            color: #fff;
+            border: 1px solid #222631;
+            padding: 10px;
+            border-radius: 6px;
+            flex-grow: 1;
+            outline: none;
+        }
         .admin-close-btn {
-            width: 100%; background: transparent; border: 1px solid #222631; color: var(--text-muted);
-            padding: 12px; border-radius: 6px; margin-top: 10px; font-weight: 700; cursor: pointer; transition: color 0.2s;
+            width: 100%;
+            background: transparent;
+            border: 1px solid #222631;
+            color: var(--text-muted);
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: color 0.2s;
         }
-        .admin-close-btn:hover { color: #fff; border-color: #ff4500; }
+        .admin-close-btn:hover {
+            color: #fff;
+            border-color: #ff4500;
+        }
 
-        #tickerGroup { transform-origin: 100px 100px; transition: transform 2.5s cubic-bezier(0.1, 0.8, 0.1, 1); }
-        .panel-flash-win { box-shadow: inset 0 0 40px rgba(255, 170, 0, 0.15); }
-        .panel-flash-loss { box-shadow: inset 0 0 40px rgba(255, 68, 102, 0.15); }
-        .shop-timer-badge { font-size: 11px; font-weight: 700; color: var(--text-muted); font-family: 'Orbitron', monospace; }
-        .shop-timer-badge span { color: #ffaa00; margin-left: 3px; }
+        #tickerGroup {
+            transform-origin: 100px 100px;
+            transition: transform 2.5s cubic-bezier(0.1, 0.8, 0.1, 1);
+        }
+        .panel-flash-win {
+            box-shadow: inset 0 0 40px rgba(255, 170, 0, 0.15);
+        }
+        .panel-flash-loss {
+            box-shadow: inset 0 0 40px rgba(255, 68, 102, 0.15);
+        }
+        .shop-timer-badge {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            font-family: 'Orbitron', monospace;
+        }
+        .shop-timer-badge span {
+            color: #ffaa00;
+            margin-left: 3px;
+        }
 
         /* ── Footnote Branding Strip ── */
         .footer-credits-banner {
@@ -458,9 +799,138 @@
             flex-shrink: 0;
         }
 
+        /* ── Responsive ── */
         @media (max-width: 1280px) {
-            .arena-grid { grid-template-columns: 1fr; gap: 16px; }
-            .arena-bucket { height: 280px; }
+            .arena-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .arena-bucket {
+                min-height: 220px;
+                padding: 24px 16px;
+            }
+            .target-bucket-wrap {
+                min-height: 220px;
+                padding: 24px 16px;
+            }
+            .wear-slider-container {
+                position: absolute;
+                top: 48px;
+                width: calc(100% - 24px);
+                max-width: 260px;
+                padding: 6px 12px 8px;
+            }
+            .radial-wheel-pod {
+                width: 220px;
+                height: 220px;
+            }
+            .radial-percentage-text {
+                font-size: 26px;
+            }
+            .btn-roll-upgrade {
+                max-width: 200px;
+                padding: 14px;
+                font-size: 14px;
+                margin-top: 18px;
+            }
+            .split-axis-board {
+                grid-template-columns: 1fr;
+            }
+            .axis-card-panel {
+                height: 360px;
+            }
+            .win-detonation-banner {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .top-navbar {
+                padding: 0 12px;
+                flex-wrap: wrap;
+                height: auto;
+                min-height: 56px;
+                gap: 4px;
+            }
+            .nav-brand-section .brand-logo-text {
+                font-size: 16px;
+            }
+            .ticker-stats {
+                display: none;
+            }
+            .arena-bucket {
+                min-height: 170px;
+                padding: 18px 10px;
+            }
+            .target-bucket-wrap {
+                min-height: 170px;
+                padding: 18px 10px;
+            }
+            .arena-bucket .skin-preview-graphic {
+                max-width: 120px;
+                height: 80px;
+            }
+            .wear-slider-container {
+                position: absolute;
+                top: 40px;
+                width: calc(100% - 16px);
+                max-width: 200px;
+                padding: 4px 8px 6px;
+                border-radius: 8px;
+            }
+            .wear-slider-header {
+                font-size: 8px;
+            }
+            .wear-slider-header .wear-value {
+                font-size: 10px;
+            }
+            .wear-slider-track {
+                height: 4px;
+            }
+            .wear-slider-track input[type="range"]::-webkit-slider-thumb {
+                width: 12px;
+                height: 12px;
+            }
+            .wear-slider-track input[type="range"]::-moz-range-thumb {
+                width: 12px;
+                height: 12px;
+            }
+            .wear-slider-labels {
+                font-size: 7px;
+            }
+            .radial-wheel-pod {
+                width: 170px;
+                height: 170px;
+            }
+            .radial-percentage-text {
+                font-size: 20px;
+            }
+            .btn-roll-upgrade {
+                max-width: 160px;
+                padding: 10px;
+                font-size: 12px;
+                margin-top: 14px;
+            }
+            .win-detonation-banner {
+                font-size: 20px;
+            }
+            .split-axis-board {
+                grid-template-columns: 1fr;
+            }
+            .axis-card-panel {
+                height: 300px;
+                padding: 16px;
+            }
+            .skins-matrix-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+            .node-matrix-item {
+                min-height: 130px;
+                padding: 10px;
+            }
+            .node-image-container {
+                height: 55px;
+            }
         }
     </style>
 </head>
@@ -492,14 +962,14 @@
 
         <main class="workspace-viewport">
             <section class="arena-grid" id="arenaPanel">
-                <!-- Stretched Input Display -->
+                <!-- Input Bucket -->
                 <div class="arena-bucket" id="inputDisplay">
                     <div class="bucket-descriptor-label">Sacrifice Skin</div>
                     <svg class="arena-fallback-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
                     <div style="color: var(--text-muted); font-size: 13px;">Select a skin from inventory to upgrade</div>
                 </div>
 
-                <!-- Aggressive Oversized Dial Wheel -->
+                <!-- Dial Module -->
                 <div class="dial-module">
                     <div class="win-detonation-banner" id="winBanner">YOU WIN</div>
                     <div class="radial-wheel-pod" id="wheelPod">
@@ -507,8 +977,8 @@
                             <circle cx="100" cy="100" r="80" fill="none" stroke="#16191f" stroke-width="22" />
                             <circle cx="100" cy="100" r="80" fill="none" stroke="#222631" stroke-width="18" />
                             <circle cx="100" cy="100" r="80" fill="none" stroke="url(#fireGradient)" stroke-width="18"
-                                    stroke-linecap="round" stroke-dasharray="502.65" stroke-dashoffset="502.65"
-                                    id="wheelArc" transform="rotate(-90 100 100)" />
+                            stroke-linecap="round" stroke-dasharray="502.65" stroke-dashoffset="502.65"
+                            id="wheelArc" transform="rotate(-90 100 100)" />
                             <g id="tickerGroup">
                                 <polygon points="100,180 93,194 107,194" fill="#ff4500" />
                                 <line x1="100" y1="180" x2="100" y2="164" stroke="#ff4500" stroke-width="4" stroke-linecap="round" />
@@ -527,11 +997,33 @@
                     <div class="arena-odds-caption" id="oddsDisplay">Win chance: <strong>0.00%</strong></div>
                 </div>
 
-                <!-- Stretched Target Display -->
-                <div class="arena-bucket" id="targetDisplay">
+                <!-- Target Bucket with WEAR SLIDER on top of skin image -->
+                <div class="target-bucket-wrap" id="targetWrap">
                     <div class="bucket-descriptor-label">Target Upgrade</div>
-                    <svg class="arena-fallback-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-                    <div style="color: var(--text-muted); font-size: 13px;">Choose a target outcome weapon card</div>
+
+                    <!-- ─── WEAR SLIDER (FN → BS) ─── -->
+                    <div class="wear-slider-container" id="wearSliderContainer">
+                        <div class="wear-slider-header">
+                            <span>Wear</span>
+                            <span class="wear-value" id="wearValueDisplay">FN</span>
+                        </div>
+                        <div class="wear-slider-track">
+                            <input type="range" min="0" max="100" value="0" id="wearSlider" />
+                        </div>
+                        <div class="wear-slider-labels">
+                            <span id="labelFn" class="active-label">FN</span>
+                            <span id="labelMw">MW</span>
+                            <span id="labelFt">FT</span>
+                            <span id="labelWw">WW</span>
+                            <span id="labelBs">BS</span>
+                        </div>
+                    </div>
+
+                    <!-- Target content (dynamic) -->
+                    <div id="targetContent" style="margin-top: 30px;">
+                        <svg class="arena-fallback-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                        <div style="color: var(--text-muted); font-size: 13px;">Choose a target outcome weapon card</div>
+                    </div>
                 </div>
             </section>
 
@@ -569,7 +1061,7 @@
                 </div>
             </section>
         </main>
-        
+
         <footer class="footer-credits-banner">
             CREDITS TO UPGRADER.VIP
         </footer>
@@ -589,7 +1081,7 @@
     <div class="modal-curtain-wrapper" id="adminOverlay">
         <div class="admin-modal-box">
             <h2>System Admin Terminal</h2>
-            
+
             <div class="admin-row-group">
                 <label>Set Wallet Fake Balance ($)</label>
                 <div class="admin-flex-row">
@@ -636,109 +1128,23 @@
             let isSpinning = false;
             let currentShopSkins = [];
             let shopTimeRemaining = 300;
-            
+
             let forcedNextSpinChance = null;
 
-            const trollLossImageUrl = "https://media.istockphoto.com/id/639765496/vector/laughing-with-tears-and-pointing-emoticon.jpg?s=612x612&w=0&k=20&c=FVVZllgAwRnQkKmgyDLw4zepwzYc0WBCxOB9N4yFdL0=";
+            // Wear state
+            let currentWearValue = 0; // 0 = FN, 100 = BS
 
-            function generateWeaponVectorIcon(skinName) {
-                if (!skinName) return `<svg class="vector-render-icon" viewBox="0 0 240 240"></svg>`;
-                const lower = skinName.toLowerCase();
-                let path = '';
-                let color = '#4a526d';
+            const trollLossImageUrl =
+                "https://media.istockphoto.com/id/639765496/vector/laughing-with-tears-and-pointing-emoticon.jpg?s=612x612&w=0&k=20&c=FVVZllgAwRnQkKmgyDLw4zepwzYc0WBCxOB9N4yFdL0=";
 
-                if (lower.includes('knife') || lower.includes('gem')) {
-                    path = `<path d="M170,30 C185,15 195,15 195,25 C195,40 160,85 110,125 L85,100 C125,50 155,45 170,30 Z M80,105 L25,160 C20,165 20,175 25,180 L40,195 C45,200 55,200 60,195 L115,140 Z" fill="currentColor"/>
-                            <rect x="70" y="110" width="12" height="30" transform="rotate(-45 70 110)" fill="#111317"/>`;
-                    color = '#ffaa00';
-                } else if (lower.includes('awp')) {
-                    path = `<path d="M10,105 L45,95 L90,95 L190,100 L230,102 L230,108 L170,112 L100,115 L45,115 L10,125 Z M55,95 L60,80 L105,80 L110,95 Z M85,80 L85,70 L135,70 L135,95 Z M30,115 L10,145 L40,145 Z M120,115 L110,135 L135,135 Z" fill="currentColor"/>`;
-                    color = '#2196f3';
-                } else if (lower.includes('ak-47') || lower.includes('m4a4') || lower.includes('m4a1-s') || lower.includes('sg 553') || lower.includes('galil') || lower.includes('mac-10')) {
-                    path = `<path d="M15,115 L55,100 L120,100 L210,102 L225,105 L215,115 L150,115 L120,118 L60,122 Z M80,100 L85,82 L120,82 L120,100 Z M40,118 L20,150 L50,145 Z M105,116 L95,140 L115,140 Z" fill="currentColor"/>`;
-                    color = '#e91e63';
-                } else if (lower.includes('glock') || lower.includes('p250') || lower.includes('usp-s') || lower.includes('eagle')) {
-                    path = `<path d="M50,85 L165,85 L165,122 L135,125 L125,180 L85,180 L85,135 L50,135 Z M115,125 A 12 12 0 1 0 115,149 A 12 12 0 1 0 115,125 Z" fill="currentColor"/>`;
-                    color = '#00f5d4';
-                } else if (lower.includes('gloves') || lower.includes('vice')) {
-                    path = `<path d="M40,90 Q70,50 110,80 Q150,50 180,90 L170,170 Q110,200 50,170 Z M70,95 L70,140 M110,95 L110,145 M150,95 L150,140" fill="currentColor" stroke="rgba(0,0,0,0.2)" stroke-width="6"/>`;
-                    color = '#ffdd00';
-                } else {
-                    path = `<path d="M30,70 L170,70 L200,100 L170,130 L30,130 Z" fill="currentColor"/>`;
-                }
-
-                return `<svg class="vector-render-icon" viewBox="0 0 240 240" style="color: ${color}; width: 100%; height: 100%; padding: 10px;">${path}</svg>`;
-            }
-
-            function generateWeaponCardHtml(skin, showBuyBtn = false) {
-                return `
-                    <div class="node-meta-title">${skin.name}</div>
-                    <div class="node-image-container">
-                        ${generateWeaponVectorIcon(skin.name)}
-                    </div>
-                    <div class="node-meta-price">$${skin.value.toFixed(2)}</div>
-                    ${showBuyBtn ? '<button class="btn-node-shop-buy">Buy</button>' : ''}
-                `;
-            }
-
-            const masterSkinsDatabase = [
-                { id: 'low1', tier: 'low', name: 'P250 | Sand Dune', value: 5.00 },
-                { id: 'low2', tier: 'low', name: 'Glock-18 | Bunsen Burner', value: 8.50 },
-                { id: 'low3', tier: 'low', name: 'SG 553 | Aloha', value: 12.00 },
-                { id: 'low4', tier: 'low', name: 'Mac-10 | Disco Tech', value: 18.00 },
-                { id: 'low5', tier: 'low', name: 'AK-47 | Safari Mesh', value: 22.00 },
-                { id: 'low6', tier: 'low', name: 'AK-47 | Ice Cooled', value: 24.00 },
-                { id: 'low7', tier: 'low', name: 'M4A4 | Dragon King', value: 28.00 },
-                { id: 'low8', tier: 'low', name: 'M4A1-S | Night Terror', value: 32.00 },
-                { id: 'low9', tier: 'low', name: 'Galil AR | Eco', value: 38.00 },
-                { id: 'low10', tier: 'low', name: 'AK-47 | Redline', value: 45.00 },
-                { id: 'low11', tier: 'low', name: 'USP-S | Orion', value: 55.00 },
-                { id: 'low12', tier: 'low', name: 'AWP | Atheris', value: 62.00 },
-                { id: 'low13', tier: 'low', name: 'AWP | Hyper Beast', value: 75.00 },
-                { id: 'low14', tier: 'low', name: 'Desert Eagle | Printstream', value: 85.00 },
-                { id: 'low15', tier: 'low', name: 'M4A4 | Neo-Noir', value: 110.00 },
-                { id: 'low16', tier: 'low', name: 'AWP | Asiimov', value: 115.00 },
-                { id: 'low17', tier: 'low', name: 'AK-47 | Neon Rider', value: 140.00 },
-                { id: 'low18', tier: 'low', name: 'M4A1-S | Printstream', value: 320.00 },
-                { id: 'low19', tier: 'low', name: 'AK-47 | Vulcan', value: 380.00 },
-                { id: 'low20', tier: 'low', name: 'Glock-18 | Fade', value: 450.00 },
-                { id: 'mid1', tier: 'mid', name: 'AK-47 | Case Hardened', value: 650.00 },
-                { id: 'mid2', tier: 'mid', name: 'M4A1-S | Hot Rod', value: 720.00 },
-                { id: 'mid3', tier: 'mid', name: 'Desert Eagle | Blaze', value: 850.00 },
-                { id: 'mid4', tier: 'mid', name: 'AK-47 | Fire Serpent', value: 980.00 },
-                { id: 'mid5', tier: 'mid', name: 'M4A4 | Poseidon', value: 1100.00 },
-                { id: 'mid6', tier: 'mid', name: 'Huntsman Knife | Doppler', value: 1150.00 },
-                { id: 'mid7', tier: 'mid', name: 'Ursus Knife | Fade', value: 1250.00 },
-                { id: 'mid8', tier: 'mid', name: 'Talon Knife | Tiger Tooth', value: 1350.00 },
-                { id: 'mid9', tier: 'mid', name: 'Karambit | Case Hardened', value: 1400.00 },
-                { id: 'mid10', tier: 'mid', name: 'Skeleton Knife | Crimson Web', value: 1550.00 },
-                { id: 'mid11', tier: 'mid', name: 'M9 Bayonet | Slaughter', value: 1650.00 },
-                { id: 'mid12', tier: 'mid', name: 'Bayonet | Gamma Doppler', value: 1720.00 },
-                { id: 'mid13', tier: 'mid', name: 'AK-47 | Hydroponic', value: 1800.00 },
-                { id: 'mid14', tier: 'mid', name: 'AWP | Fade', value: 1950.00 },
-                { id: 'mid15', tier: 'mid', name: 'Butterfly Knife | Vanilla', value: 2050.00 },
-                { id: 'mid16', tier: 'mid', name: 'Butterfly Knife | Doppler', value: 2100.00 },
-                { id: 'mid17', tier: 'mid', name: 'Karambit | Fade', value: 2200.00 },
-                { id: 'mid18', tier: 'mid', name: 'M9 Bayonet | Marble Fade', value: 2250.00 },
-                { id: 'high1', tier: 'high', name: 'M4A1-S | Knight', value: 2600.00 },
-                { id: 'high2', tier: 'high', name: 'AK-47 | Gold Arabesque', value: 2800.00 },
-                { id: 'high3', tier: 'high', name: 'M4A4 | Howl', value: 3200.00 },
-                { id: 'high14', tier: 'high', name: 'AWP | Dragon Lore', value: 9500.00 },
-                { id: 'high18', tier: 'high', name: 'Butterfly Knife | Sapphire', value: 12000.00 }
-            ];
-
-            const userInventory = [
-                { ...masterSkinsDatabase[0], id: 'init1' }, 
-                { ...masterSkinsDatabase[4], id: 'init2' },
-                { ...masterSkinsDatabase[9], id: 'init3' }
-            ];
-
+            // ── DOM refs ──
             const balanceDisplay = document.getElementById('balanceDisplay');
             const inventoryGrid = document.getElementById('inventoryGrid');
             const targetGrid = document.getElementById('targetGrid');
             const shopGrid = document.getElementById('shopGrid');
             const inputDisplay = document.getElementById('inputDisplay');
-            const targetDisplay = document.getElementById('targetDisplay');
+            const targetContent = document.getElementById('targetContent');
+            const targetWrap = document.getElementById('targetWrap');
             const wheelArc = document.getElementById('wheelArc');
             const wheelPercentDisplay = document.getElementById('wheelPercentDisplay');
             const tickerGroup = document.getElementById('tickerGroup');
@@ -756,6 +1162,15 @@
             const wheelPod = document.getElementById('wheelPod');
             const winBanner = document.getElementById('winBanner');
 
+            // ── Wear slider refs ──
+            const wearSlider = document.getElementById('wearSlider');
+            const wearValueDisplay = document.getElementById('wearValueDisplay');
+            const labelFn = document.getElementById('labelFn');
+            const labelMw = document.getElementById('labelMw');
+            const labelFt = document.getElementById('labelFt');
+            const labelWw = document.getElementById('labelWw');
+            const labelBs = document.getElementById('labelBs');
+
             const adminPanelBtn = document.getElementById('adminPanelBtn');
             const adminOverlay = document.getElementById('adminOverlay');
             const adminCloseBtn = document.getElementById('adminCloseBtn');
@@ -768,6 +1183,187 @@
             const adminRigInput = document.getElementById('adminRigInput');
             const adminRigBtn = document.getElementById('adminRigBtn');
 
+            // ── Price adjustment based on wear ──
+            function getWearMultiplier(wear) {
+                if (wear < 15) return 1.0; // FN
+                if (wear < 35) return 0.85; // MW
+                if (wear < 60) return 0.70; // FT
+                if (wear < 80) return 0.55; // WW
+                return 0.40; // BS
+            }
+
+            function getAdjustedPrice(skin, wear) {
+                if (!skin) return 0;
+                const base = skin.baseValue || skin.value;
+                return parseFloat((base * getWearMultiplier(wear)).toFixed(2));
+            }
+
+            // ── Helpers ──
+            function generateWeaponVectorIcon(skinName, wear = 0) {
+                if (!skinName) return `<svg class="vector-render-icon" viewBox="0 0 240 240"></svg>`;
+                const lower = skinName.toLowerCase();
+                let path = '';
+                let color = '#4a526d';
+
+                // Wear affects color brightness slightly (just for fun)
+                const wearFactor = 1 - (wear / 100) * 0.4;
+
+                if (lower.includes('knife') || lower.includes('gem')) {
+                    path =
+                        `<path d="M170,30 C185,15 195,15 195,25 C195,40 160,85 110,125 L85,100 C125,50 155,45 170,30 Z M80,105 L25,160 C20,165 20,175 25,180 L40,195 C45,200 55,200 60,195 L115,140 Z" fill="currentColor"/><rect x="70" y="110" width="12" height="30" transform="rotate(-45 70 110)" fill="#111317"/>`;
+                    color = '#ffaa00';
+                } else if (lower.includes('awp')) {
+                    path =
+                        `<path d="M10,105 L45,95 L90,95 L190,100 L230,102 L230,108 L170,112 L100,115 L45,115 L10,125 Z M55,95 L60,80 L105,80 L110,95 Z M85,80 L85,70 L135,70 L135,95 Z M30,115 L10,145 L40,145 Z M120,115 L110,135 L135,135 Z" fill="currentColor"/>`;
+                    color = '#2196f3';
+                } else if (lower.includes('ak-47') || lower.includes('m4a4') || lower.includes('m4a1-s') || lower.includes(
+                    'sg 553') || lower.includes('galil') || lower.includes('mac-10')) {
+                    path =
+                        `<path d="M15,115 L55,100 L120,100 L210,102 L225,105 L215,115 L150,115 L120,118 L60,122 Z M80,100 L85,82 L120,82 L120,100 Z M40,118 L20,150 L50,145 Z M105,116 L95,140 L115,140 Z" fill="currentColor"/>`;
+                    color = '#e91e63';
+                } else if (lower.includes('glock') || lower.includes('p250') || lower.includes('usp-s') || lower.includes(
+                    'eagle')) {
+                    path =
+                        `<path d="M50,85 L165,85 L165,122 L135,125 L125,180 L85,180 L85,135 L50,135 Z M115,125 A 12 12 0 1 0 115,149 A 12 12 0 1 0 115,125 Z" fill="currentColor"/>`;
+                    color = '#00f5d4';
+                } else if (lower.includes('gloves') || lower.includes('vice')) {
+                    path =
+                        `<path d="M40,90 Q70,50 110,80 Q150,50 180,90 L170,170 Q110,200 50,170 Z M70,95 L70,140 M110,95 L110,145 M150,95 L150,140" fill="currentColor" stroke="rgba(0,0,0,0.2)" stroke-width="6"/>`;
+                    color = '#ffdd00';
+                } else {
+                    path = `<path d="M30,70 L170,70 L200,100 L170,130 L30,130 Z" fill="currentColor"/>`;
+                }
+
+                // Apply wear to color
+                const rgb = hexToRgb(color);
+                if (rgb) {
+                    const r = Math.round(rgb.r * wearFactor);
+                    const g = Math.round(rgb.g * wearFactor);
+                    const b = Math.round(rgb.b * wearFactor);
+                    color = `rgb(${r},${g},${b})`;
+                }
+
+                return `<svg class="vector-render-icon" viewBox="0 0 240 240" style="color: ${color}; width: 100%; height: 100%; padding: 10px;">${path}</svg>`;
+            }
+
+            function hexToRgb(hex) {
+                const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                return result ? {
+                    r: parseInt(result[1], 16),
+                    g: parseInt(result[2], 16),
+                    b: parseInt(result[3], 16)
+                } : null;
+            }
+
+            function generateWeaponCardHtml(skin, showBuyBtn = false, wear = 0) {
+                const price = getAdjustedPrice(skin, wear);
+                return `
+                        <div class="node-meta-title">${skin.name}</div>
+                        <div class="node-image-container">
+                            ${generateWeaponVectorIcon(skin.name, wear)}
+                        </div>
+                        <div class="node-meta-price">$${price.toFixed(2)}</div>
+                        ${showBuyBtn ? '<button class="btn-node-shop-buy">Buy</button>' : ''}
+                    `;
+            }
+
+            // ── Wear slider logic ──
+            function updateWearDisplay() {
+                const val = parseInt(wearSlider.value, 10);
+                currentWearValue = val;
+                let label = 'FN';
+                if (val >= 80) label = 'BS';
+                else if (val >= 60) label = 'WW';
+                else if (val >= 35) label = 'FT';
+                else if (val >= 15) label = 'MW';
+                wearValueDisplay.textContent = label;
+
+                // Highlight active label
+                [labelFn, labelMw, labelFt, labelWw, labelBs].forEach(el => el.classList.remove('active-label'));
+                if (val < 15) labelFn.classList.add('active-label');
+                else if (val < 35) labelMw.classList.add('active-label');
+                else if (val < 60) labelFt.classList.add('active-label');
+                else if (val < 80) labelWw.classList.add('active-label');
+                else labelBs.classList.add('active-label');
+
+                // Update target preview and upgrade logic
+                updateTargetPreview();
+                updateUpgradeLogic();
+            }
+
+            function updateTargetPreview() {
+                if (selectedTargetSkin) {
+                    const adjustedPrice = getAdjustedPrice(selectedTargetSkin, currentWearValue);
+                    targetContent.innerHTML = `
+                            <div class="skin-preview-graphic">${generateWeaponVectorIcon(selectedTargetSkin.name, currentWearValue)}</div>
+                            <div class="skin-title-node">${selectedTargetSkin.name}</div>
+                            <div class="skin-price-node">$${adjustedPrice.toFixed(2)}</div>
+                            <div style="font-size:11px; color: var(--text-muted); margin-top:4px;">Wear: ${wearValueDisplay.textContent}</div>
+                        `;
+                } else {
+                    targetContent.innerHTML = `
+                            <svg class="arena-fallback-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                            <div style="color: var(--text-muted); font-size: 13px;">Choose a target outcome weapon card</div>
+                        `;
+                }
+            }
+
+            const masterSkinsDatabase = [
+                { id: 'low1', tier: 'low', name: 'P250 | Sand Dune', baseValue: 5.00 },
+                { id: 'low2', tier: 'low', name: 'Glock-18 | Bunsen Burner', baseValue: 8.50 },
+                { id: 'low3', tier: 'low', name: 'SG 553 | Aloha', baseValue: 12.00 },
+                { id: 'low4', tier: 'low', name: 'Mac-10 | Disco Tech', baseValue: 18.00 },
+                { id: 'low5', tier: 'low', name: 'AK-47 | Safari Mesh', baseValue: 22.00 },
+                { id: 'low6', tier: 'low', name: 'AK-47 | Ice Cooled', baseValue: 24.00 },
+                { id: 'low7', tier: 'low', name: 'M4A4 | Dragon King', baseValue: 28.00 },
+                { id: 'low8', tier: 'low', name: 'M4A1-S | Night Terror', baseValue: 32.00 },
+                { id: 'low9', tier: 'low', name: 'Galil AR | Eco', baseValue: 38.00 },
+                { id: 'low10', tier: 'low', name: 'AK-47 | Redline', baseValue: 45.00 },
+                { id: 'low11', tier: 'low', name: 'USP-S | Orion', baseValue: 55.00 },
+                { id: 'low12', tier: 'low', name: 'AWP | Atheris', baseValue: 62.00 },
+                { id: 'low13', tier: 'low', name: 'AWP | Hyper Beast', baseValue: 75.00 },
+                { id: 'low14', tier: 'low', name: 'Desert Eagle | Printstream', baseValue: 85.00 },
+                { id: 'low15', tier: 'low', name: 'M4A4 | Neo-Noir', baseValue: 110.00 },
+                { id: 'low16', tier: 'low', name: 'AWP | Asiimov', baseValue: 115.00 },
+                { id: 'low17', tier: 'low', name: 'AK-47 | Neon Rider', baseValue: 140.00 },
+                { id: 'low18', tier: 'low', name: 'M4A1-S | Printstream', baseValue: 320.00 },
+                { id: 'low19', tier: 'low', name: 'AK-47 | Vulcan', baseValue: 380.00 },
+                { id: 'low20', tier: 'low', name: 'Glock-18 | Fade', baseValue: 450.00 },
+                { id: 'mid1', tier: 'mid', name: 'AK-47 | Case Hardened', baseValue: 650.00 },
+                { id: 'mid2', tier: 'mid', name: 'M4A1-S | Hot Rod', baseValue: 720.00 },
+                { id: 'mid3', tier: 'mid', name: 'Desert Eagle | Blaze', baseValue: 850.00 },
+                { id: 'mid4', tier: 'mid', name: 'AK-47 | Fire Serpent', baseValue: 980.00 },
+                { id: 'mid5', tier: 'mid', name: 'M4A4 | Poseidon', baseValue: 1100.00 },
+                { id: 'mid6', tier: 'mid', name: 'Huntsman Knife | Doppler', baseValue: 1150.00 },
+                { id: 'mid7', tier: 'mid', name: 'Ursus Knife | Fade', baseValue: 1250.00 },
+                { id: 'mid8', tier: 'mid', name: 'Talon Knife | Tiger Tooth', baseValue: 1350.00 },
+                { id: 'mid9', tier: 'mid', name: 'Karambit | Case Hardened', baseValue: 1400.00 },
+                { id: 'mid10', tier: 'mid', name: 'Skeleton Knife | Crimson Web', baseValue: 1550.00 },
+                { id: 'mid11', tier: 'mid', name: 'M9 Bayonet | Slaughter', baseValue: 1650.00 },
+                { id: 'mid12', tier: 'mid', name: 'Bayonet | Gamma Doppler', baseValue: 1720.00 },
+                { id: 'mid13', tier: 'mid', name: 'AK-47 | Hydroponic', baseValue: 1800.00 },
+                { id: 'mid14', tier: 'mid', name: 'AWP | Fade', baseValue: 1950.00 },
+                { id: 'mid15', tier: 'mid', name: 'Butterfly Knife | Vanilla', baseValue: 2050.00 },
+                { id: 'mid16', tier: 'mid', name: 'Butterfly Knife | Doppler', baseValue: 2100.00 },
+                { id: 'mid17', tier: 'mid', name: 'Karambit | Fade', baseValue: 2200.00 },
+                { id: 'mid18', tier: 'mid', name: 'M9 Bayonet | Marble Fade', baseValue: 2250.00 },
+                { id: 'high1', tier: 'high', name: 'M4A1-S | Knight', baseValue: 2600.00 },
+                { id: 'high2', tier: 'high', name: 'AK-47 | Gold Arabesque', baseValue: 2800.00 },
+                { id: 'high3', tier: 'high', name: 'M4A4 | Howl', baseValue: 3200.00 },
+                { id: 'high14', tier: 'high', name: 'AWP | Dragon Lore', baseValue: 9500.00 },
+                { id: 'high18', tier: 'high', name: 'Butterfly Knife | Sapphire', baseValue: 12000.00 }
+            ];
+
+            // Convert to have a 'value' property that is the base value for compatibility
+            masterSkinsDatabase.forEach(s => { s.value = s.baseValue; });
+
+            const userInventory = [
+                { ...masterSkinsDatabase[0], id: 'init1' },
+                { ...masterSkinsDatabase[4], id: 'init2' },
+                { ...masterSkinsDatabase[9], id: 'init3' }
+            ];
+
+            // ── Init ──
             function init() {
                 generateShopOffers();
                 renderInventory();
@@ -778,19 +1374,28 @@
                 startShopCountdown();
                 buildAdminSelectMenus();
 
+                // Wear slider event
+                wearSlider.addEventListener('input', () => {
+                    updateWearDisplay();
+                });
+
                 adminPanelBtn.addEventListener('click', handleAdminVerification);
                 adminCloseBtn.addEventListener('click', () => adminOverlay.classList.remove('active'));
-                
+
                 adminSetMoneyBtn.addEventListener('click', () => {
                     const val = parseFloat(adminMoneyInput.value);
-                    if(!isNaN(val)) { balance = val; updateBalanceUI(); updateUpgradeLogic(); }
+                    if (!isNaN(val)) { balance = val;
+                        updateBalanceUI();
+                        updateUpgradeLogic(); }
                 });
 
                 adminAddSkinBtn.addEventListener('click', () => {
                     const idx = adminAddSkinSelect.value;
-                    if(masterSkinsDatabase[idx]) {
+                    if (masterSkinsDatabase[idx]) {
                         userInventory.push({ ...masterSkinsDatabase[idx], id: 'admin_' + Date.now() });
-                        renderInventory(); syncAdminRemoveMenu(); updateUpgradeLogic();
+                        renderInventory();
+                        syncAdminRemoveMenu();
+                        updateUpgradeLogic();
                     }
                 });
 
@@ -800,13 +1405,15 @@
                     if (index > -1) {
                         if (selectedInputSkin && selectedInputSkin.id === activeId) selectedInputSkin = null;
                         userInventory.splice(index, 1);
-                        renderInventory(); syncAdminRemoveMenu(); updateUpgradeLogic();
+                        renderInventory();
+                        syncAdminRemoveMenu();
+                        updateUpgradeLogic();
                     }
                 });
 
                 adminRigBtn.addEventListener('click', () => {
                     const val = parseFloat(adminRigInput.value);
-                    if(!isNaN(val) && val >= 0 && val <= 100) {
+                    if (!isNaN(val) && val >= 0 && val <= 100) {
                         forcedNextSpinChance = val;
                         alert(`Next roll fixed strictly to ${val}% chance!`);
                     } else {
@@ -818,8 +1425,10 @@
 
                 useBalanceBtn.addEventListener('click', () => {
                     if (isSpinning) return;
-                    selectedInputSkin = { id: 'balance_use', name: 'Raw Balance Injection', value: Math.min(balance, 100.00), isRawBalance: true };
-                    renderInventory(); updateUpgradeLogic();
+                    selectedInputSkin = { id: 'balance_use', name: 'Raw Balance Injection', value: Math.min(balance,
+                            100.00), isRawBalance: true };
+                    renderInventory();
+                    updateUpgradeLogic();
                 });
 
                 priceFilter.addEventListener('change', () => {
@@ -833,12 +1442,15 @@
 
                 upgradeBtn.addEventListener('click', startUpgradeRoll);
                 resultCloseBtn.addEventListener('click', () => resultOverlay.classList.remove('active'));
+
+                // Init wear display
+                updateWearDisplay();
             }
 
             function handleAdminVerification() {
-                if(isSpinning) return;
+                if (isSpinning) return;
                 const code = prompt("Enter Master Admin Passcode:");
-                if(code === "blusam") {
+                if (code === "blusam") {
                     syncAdminRemoveMenu();
                     adminOverlay.classList.add('active');
                 } else {
@@ -851,7 +1463,7 @@
                 masterSkinsDatabase.forEach((skin, idx) => {
                     const opt = document.createElement('option');
                     opt.value = idx;
-                    opt.textContent = `${skin.name} ($${skin.value})`;
+                    opt.textContent = `${skin.name} ($${skin.baseValue})`;
                     adminAddSkinSelect.appendChild(opt);
                 });
             }
@@ -873,12 +1485,16 @@
                 const paneShop = document.getElementById('pane-shop');
 
                 sMain.addEventListener('click', () => {
-                    sShop.classList.remove('active'); sMain.classList.add('active');
-                    paneShop.classList.remove('active'); paneInv.classList.add('active');
+                    sShop.classList.remove('active');
+                    sMain.classList.add('active');
+                    paneShop.classList.remove('active');
+                    paneInv.classList.add('active');
                 });
                 sShop.addEventListener('click', () => {
-                    sMain.classList.remove('active'); sShop.classList.add('active');
-                    paneInv.classList.remove('active'); paneShop.classList.add('active');
+                    sMain.classList.remove('active');
+                    sShop.classList.add('active');
+                    paneInv.classList.remove('active');
+                    paneShop.classList.add('active');
                 });
             }
 
@@ -891,7 +1507,8 @@
             function startShopCountdown() {
                 setInterval(() => {
                     shopTimeRemaining--;
-                    if (shopTimeRemaining <= 0) { shopTimeRemaining = 300; generateShopOffers(); }
+                    if (shopTimeRemaining <= 0) { shopTimeRemaining = 300;
+                        generateShopOffers(); }
                     const mins = Math.floor(shopTimeRemaining / 60).toString().padStart(2, '0');
                     const secs = (shopTimeRemaining % 60).toString().padStart(2, '0');
                     timerText.textContent = `${mins}:${secs}`;
@@ -908,8 +1525,10 @@
                     card.innerHTML = generateWeaponCardHtml(skin, false);
                     card.addEventListener('click', () => {
                         if (isSpinning) return;
-                        selectedInputSkin = (selectedInputSkin && selectedInputSkin.id === skin.id) ? null : skin;
-                        renderInventory(); updateUpgradeLogic();
+                        selectedInputSkin = (selectedInputSkin && selectedInputSkin.id === skin.id) ? null :
+                        skin;
+                        renderInventory();
+                        updateUpgradeLogic();
                     });
                     inventoryGrid.appendChild(card);
                 });
@@ -923,8 +1542,11 @@
                     card.innerHTML = generateWeaponCardHtml(skin, false);
                     card.addEventListener('click', () => {
                         if (isSpinning) return;
-                        selectedTargetSkin = (selectedTargetSkin && selectedTargetSkin.id === skin.id) ? null : skin;
-                        renderTargets(skins); updateUpgradeLogic();
+                        selectedTargetSkin = (selectedTargetSkin && selectedTargetSkin.id === skin.id) ? null :
+                            skin;
+                        renderTargets(skins);
+                        updateTargetPreview();
+                        updateUpgradeLogic();
                     });
                     targetGrid.appendChild(card);
                 });
@@ -938,52 +1560,58 @@
                     card.innerHTML = generateWeaponCardHtml(skin, true);
                     card.querySelector('.btn-node-shop-buy').addEventListener('click', (e) => {
                         e.stopPropagation();
-                        if (balance < skin.value) {
+                        if (balance < skin.baseValue) {
                             showResult(false, '❌', 'Insufficient Funds', 'Check balance.');
                             return;
                         }
-                        balance -= skin.value;
+                        balance -= skin.baseValue;
                         userInventory.push({ ...skin, id: 'bought_' + Date.now() });
-                        updateBalanceUI(); renderInventory();
+                        updateBalanceUI();
+                        renderInventory();
                     });
                     shopGrid.appendChild(card);
                 });
             }
 
+            // ── Core upgrade logic ──
             function updateUpgradeLogic() {
+                // Update input bucket
                 if (selectedInputSkin) {
+                    const inputPrice = selectedInputSkin.isRawBalance ? selectedInputSkin.value : selectedInputSkin.value;
                     inputDisplay.innerHTML = `
-                        <div class="bucket-descriptor-label">Sacrifice Skin</div>
-                        <div class="skin-preview-graphic">${generateWeaponVectorIcon(selectedInputSkin.name || '')}</div>
-                        <div class="skin-title-node">${selectedInputSkin.name || 'Raw Balance'}</div>
-                        <div class="skin-price-node">$${selectedInputSkin.value.toFixed(2)}</div>`;
+                            <div class="bucket-descriptor-label">Sacrifice Skin</div>
+                            <div class="skin-preview-graphic">${generateWeaponVectorIcon(selectedInputSkin.name || '')}</div>
+                            <div class="skin-title-node">${selectedInputSkin.name || 'Raw Balance'}</div>
+                            <div class="skin-price-node">$${inputPrice.toFixed(2)}</div>`;
                 } else {
-                    inputDisplay.innerHTML = `<div class="bucket-descriptor-label">Sacrifice Skin</div><svg class="arena-fallback-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg><div style="color: var(--text-muted); font-size: 13px;">Select a skin from inventory to upgrade</div>`;
+                    inputDisplay.innerHTML =
+                        `<div class="bucket-descriptor-label">Sacrifice Skin</div><svg class="arena-fallback-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg><div style="color: var(--text-muted); font-size: 13px;">Select a skin from inventory to upgrade</div>`;
                 }
 
-                if (selectedTargetSkin) {
-                    targetDisplay.innerHTML = `
-                        <div class="bucket-descriptor-label">Target Upgrade</div>
-                        <div class="skin-preview-graphic">${generateWeaponVectorIcon(selectedTargetSkin.name)}</div>
-                        <div class="skin-title-node">${selectedTargetSkin.name}</div>
-                        <div class="skin-price-node">$${selectedTargetSkin.value.toFixed(2)}</div>`;
-                } else {
-                    targetDisplay.innerHTML = `<div class="bucket-descriptor-label">Target Upgrade</div><svg class="arena-fallback-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg><div style="color: var(--text-muted); font-size: 13px;">Choose a target outcome weapon card</div>`;
-                }
+                // Update target content with wear-adjusted price (already done via updateTargetPreview, but we call again)
+                updateTargetPreview();
 
+                // Chance & wheel - use adjusted target price
                 if (!selectedInputSkin || !selectedTargetSkin) {
                     oddsDisplay.innerHTML = `Win chance: <strong>0.00%</strong>`;
                     wheelPercentDisplay.textContent = `0.00%`;
-                    setWheelArcPercentage(0); upgradeBtn.disabled = true; return;
+                    setWheelArcPercentage(0);
+                    upgradeBtn.disabled = true;
+                    return;
                 }
 
-                let chance = forcedNextSpinChance !== null ? forcedNextSpinChance : (selectedInputSkin.value / selectedTargetSkin.value) * 100;
+                const inputValue = selectedInputSkin.isRawBalance ? selectedInputSkin.value : selectedInputSkin.value;
+                const targetAdjusted = getAdjustedPrice(selectedTargetSkin, currentWearValue);
+                let chance = forcedNextSpinChance !== null ? forcedNextSpinChance : (inputValue / targetAdjusted) * 100;
                 if (chance > 100) chance = 100;
 
-                oddsDisplay.innerHTML = `Win chance: <strong>${chance.toFixed(2)}%${forcedNextSpinChance !== null ? ' [RIGGED]' : ''}</strong>`;
+                const rigText = forcedNextSpinChance !== null ? ' [RIGGED]' : '';
+                oddsDisplay.innerHTML = `Win chance: <strong>${chance.toFixed(2)}%${rigText}</strong>`;
                 wheelPercentDisplay.textContent = `${chance.toFixed(2)}%`;
                 setWheelArcPercentage(chance);
-                upgradeBtn.disabled = selectedInputSkin.isRawBalance && balance < selectedInputSkin.value;
+
+                const canAfford = !(selectedInputSkin.isRawBalance && balance < selectedInputSkin.value);
+                upgradeBtn.disabled = !canAfford;
             }
 
             function setWheelArcPercentage(percent) {
@@ -991,16 +1619,18 @@
                 wheelArc.style.strokeDashoffset = totalLength - (totalLength * (percent / 100));
             }
 
+            // ── Roll ──
             function startUpgradeRoll() {
                 if (isSpinning || !selectedInputSkin || !selectedTargetSkin) return;
+                if (selectedInputSkin.isRawBalance && balance < selectedInputSkin.value) return;
 
-                let betValue = selectedInputSkin.value;
-                let chance = forcedNextSpinChance !== null ? forcedNextSpinChance : (betValue / selectedTargetSkin.value) * 100;
+                const inputValue = selectedInputSkin.isRawBalance ? selectedInputSkin.value : selectedInputSkin.value;
+                const targetAdjusted = getAdjustedPrice(selectedTargetSkin, currentWearValue);
+                let chance = forcedNextSpinChance !== null ? forcedNextSpinChance : (inputValue / targetAdjusted) * 100;
                 if (chance > 100) chance = 100;
 
                 if (selectedInputSkin.isRawBalance) {
-                    if (balance < betValue) return;
-                    balance -= betValue;
+                    balance -= inputValue;
                 } else {
                     const index = userInventory.findIndex(s => s.id === selectedInputSkin.id);
                     if (index > -1) userInventory.splice(index, 1);
@@ -1012,8 +1642,9 @@
 
                 const isWin = (Math.random() * 100) <= chance;
                 const rotations = 5;
-                let targetDegrees = isWin ? (Math.random() * (chance / 100) * 360) : (((chance / 100) * 360) + (Math.random() * (360 - ((chance / 100) * 360))));
-                
+                let targetDegrees = isWin ? (Math.random() * (chance / 100) * 360) : (((chance / 100) * 360) + (Math
+                .random() * (360 - ((chance / 100) * 360))));
+
                 tickerGroup.style.transform = `rotate(${(rotations * 360) + ((targetDegrees + 180) % 360)}deg)`;
 
                 setTimeout(() => {
@@ -1022,18 +1653,20 @@
 
                     if (isWin) {
                         arenaPanel.classList.add('panel-flash-win');
-                        userInventory.push({ id: 'win_' + Date.now(), name: selectedTargetSkin.name, value: selectedTargetSkin.value });
-                        
+                        // Store the base skin (without wear) into inventory
+                        userInventory.push({ ...selectedTargetSkin, id: 'win_' + Date.now() });
+
                         wheelPod.classList.add('wheel-shaking-frenzy');
-                        
+
                         setTimeout(() => {
                             wheelPod.classList.remove('wheel-shaking-frenzy');
                             wheelPod.classList.add('wheel-exploded-out');
                             winBanner.classList.add('detonated');
-                            
+
                             setTimeout(() => {
                                 isSpinning = false;
-                                showResult(true, `🎉`, `Upgrade Success!`, `Acquired: ${selectedTargetSkin.name}`);
+                                showResult(true, `🎉`, `Upgrade Success!`,
+                                    `Acquired: ${selectedTargetSkin.name} (${wearValueDisplay.textContent})`);
                                 cleanUpRollState();
                             }, 3000);
                         }, 400);
@@ -1042,7 +1675,11 @@
                         isSpinning = false;
                         arenaPanel.classList.add('panel-flash-loss');
                         triggerTrollWindow();
-                        setTimeout(() => { showResult(false, `💔`, `Upgrade Failed`, `Destroyed trying to hit: ${selectedTargetSkin.name}`); cleanUpRollState(); }, 300);
+                        setTimeout(() => {
+                            showResult(false, `💔`, `Upgrade Failed`,
+                                `Destroyed trying to hit: ${selectedTargetSkin.name}`);
+                            cleanUpRollState();
+                        }, 300);
                     }
                 }, 2600);
             }
@@ -1053,13 +1690,14 @@
                     const height = 500;
                     const left = (window.screen.width / 2) - (width / 2);
                     const top = (window.screen.height / 2) - (height / 2);
-                    
-                    const trollWin = window.open("", "_blank", `width=${width},height=${height},left=${left},top=${top}`);
+
+                    const trollWin = window.open("", "_blank",
+                        `width=${width},height=${height},left=${left},top=${top}`);
                     if (trollWin) {
                         trollWin.document.write(`
-                            <html><head><title>LMAOOO YOU LOST</title><style>body{background:#0a0b0d;margin:0;display:flex;align-items:center;justify-content:center;height:100vh;}img{max-width:90%;max-height:90%;border-radius:20px;box-shadow:0 0 30px rgba(255,68,102,0.4);}</style></head>
-                            <body><img src="${trollLossImageUrl}"></body></html>
-                        `);
+                                <html><head><title>LMAOOO YOU LOST</title><style>body{background:#0a0b0d;margin:0;display:flex;align-items:center;justify-content:center;height:100vh;}img{max-width:90%;max-height:90%;border-radius:20px;box-shadow:0 0 30px rgba(255,68,102,0.4);}</style></head>
+                                <body><img src="${trollLossImageUrl}"></body></html>
+                            `);
                         trollWin.document.close();
                     }
                 } catch (err) { console.error(err); }
@@ -1069,16 +1707,22 @@
                 wheelPod.classList.remove('wheel-exploded-out', 'wheel-shaking-frenzy');
                 winBanner.classList.remove('detonated');
                 arenaPanel.classList.remove('panel-flash-win', 'panel-flash-loss');
-                tickerGroup.style.transition = 'none'; tickerGroup.style.transform = 'rotate(0deg)';
+                tickerGroup.style.transition = 'none';
+                tickerGroup.style.transform = 'rotate(0deg)';
                 void tickerGroup.offsetHeight;
                 tickerGroup.style.transition = 'transform 2.5s cubic-bezier(0.1, 0.8, 0.1, 1)';
-                selectedInputSkin = null; renderInventory(); updateBalanceUI(); updateUpgradeLogic();
+                selectedInputSkin = null;
+                renderInventory();
+                updateBalanceUI();
+                updateUpgradeLogic();
             }
 
             function showResult(win, icon, title, subtitle) {
-                resultIcon.textContent = icon; resultTitle.textContent = title;
+                resultIcon.textContent = icon;
+                resultTitle.textContent = title;
                 resultTitle.className = win ? 'win-heading-text' : 'loss-heading-text';
-                resultSub.textContent = subtitle; resultOverlay.classList.add('active');
+                resultSub.textContent = subtitle;
+                resultOverlay.classList.add('active');
             }
 
             document.addEventListener('DOMContentLoaded', init);
