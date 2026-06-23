@@ -1,4 +1,4 @@
-=<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -556,14 +556,14 @@
             let currentShopSkins = [];
             let shopTimeRemaining = 300;
 
-            // Verified ByMykel CDN configuration generator loop logic
+            // Updated image path configurations to line up perfectly with modern API paths
             function getSkinCdnUrl(skinName) {
-                const formattedName = skinName
+                const cleaned = skinName
                     .toLowerCase()
                     .replace(/[^a-z0-9\s-]/g, '')
-                    .replace(/\s+/g, '_')
-                    .trim();
-                return `https://raw.githubusercontent.com/ByMykel/CS2-API/main/public/images/econ/default_generated/${formattedName}_light.png`;
+                    .trim()
+                    .replace(/\s+/g, '_');
+                return `https://raw.githubusercontent.com/ByMykel/CS2-API/main/public/images/skins/${cleaned}.png`;
             }
 
             function generateWeaponCardHtml(skin, showBuyBtn = false) {
