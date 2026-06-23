@@ -128,20 +128,24 @@
         .wallet-display-wrapper { text-align: right; }
         .wallet-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
         .wallet-value { font-size: 17px; font-weight: 800; color: #ffaa00; }
-        .btn-deposit-action {
-            background: linear-gradient(135deg, #ff4500, #ffaa00);
-            color: #000;
+        
+        .btn-admin-panel-trigger {
+            background: #ff4500;
+            color: #fff;
             border: none;
             padding: 9px 20px;
             font-weight: 800;
-            border-radius: 30px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 0.05em;
             transition: all 0.2s;
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.3);
         }
-        .btn-deposit-action:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
+        .btn-admin-panel-trigger:hover {
+            background: #ff5511;
+            box-shadow: 0 0 25px rgba(255, 69, 0, 0.6);
         }
 
         /* ── Stretched Content Viewport Window ── */
@@ -429,6 +433,7 @@
             align-items: center; justify-content: center;
         }
         .modal-curtain-wrapper.active { display: flex; }
+        
         .dialog-alert-box {
             background: var(--bg-panel);
             padding: 36px; border-radius: 24px; text-align: center; max-width: 420px; width: 90%;
@@ -442,6 +447,89 @@
             background: linear-gradient(135deg, #ff4500, #ffaa00); color: #000; border: none; padding: 10px 36px;
             border-radius: 30px; font-weight: 800; cursor: pointer; margin-top: 24px;
         }
+
+        /* ── Developer Admin Control Panel Overlay UI ── */
+        .admin-modal-box {
+            background: #0d0f13;
+            border: 2px solid #ff4500;
+            width: 500px;
+            max-width: 95%;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 0 40px rgba(255, 69, 0, 0.4);
+            font-family: 'Inter', sans-serif;
+        }
+        .admin-modal-box h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            color: #ff4500;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid #222631;
+            padding-bottom: 10px;
+        }
+        .admin-row-group {
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .admin-row-group label {
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+        .admin-flex-row {
+            display: flex;
+            gap: 10px;
+        }
+        .admin-input-field {
+            flex-grow: 1;
+            background: #16191f;
+            border: 1px solid #222631;
+            padding: 10px;
+            color: #fff;
+            border-radius: 6px;
+            outline: none;
+            font-size: 14px;
+        }
+        .admin-input-field:focus { border-color: #ff4500; }
+        .admin-btn {
+            background: #222631;
+            color: #fff;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .admin-btn:hover { background: #ff4500; }
+        .admin-select {
+            background: #16191f;
+            color: #fff;
+            border: 1px solid #222631;
+            padding: 10px;
+            border-radius: 6px;
+            flex-grow: 1;
+            outline: none;
+        }
+        .admin-close-btn {
+            width: 100%;
+            background: transparent;
+            border: 1px solid #222631;
+            color: var(--text-muted);
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .admin-close-btn:hover { color: #fff; border-color: #ff4500; }
 
         #tickerGroup { transform-origin: 100px 100px; transition: transform 2.5s cubic-bezier(0.1, 0.8, 0.1, 1); }
         .panel-flash-win { box-shadow: inset 0 0 40px rgba(255, 170, 0, 0.15); }
@@ -477,18 +565,20 @@
                     <div class="wallet-label">Fake Balance</div>
                     <div class="wallet-value" id="balanceDisplay">$5,000.00</div>
                 </div>
-                <button class="btn-deposit-action" id="depositBtn">Deposit $100</button>
+                <button class="btn-admin-panel-trigger" id="adminPanelBtn">ADMIN PANEL</button>
             </div>
         </nav>
 
         <main class="workspace-viewport">
             <section class="arena-grid" id="arenaPanel">
+                <!-- Stretched Input Display -->
                 <div class="arena-bucket" id="inputDisplay">
                     <div class="bucket-descriptor-label">Sacrifice Skin</div>
                     <svg class="arena-fallback-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
                     <div style="color: var(--text-muted); font-size: 13px;">Select a skin from inventory to upgrade</div>
                 </div>
 
+                <!-- Aggressive Oversized Dial Wheel -->
                 <div class="dial-module">
                     <div class="win-detonation-banner" id="winBanner">YOU WIN</div>
                     <div class="radial-wheel-pod" id="wheelPod">
@@ -516,6 +606,7 @@
                     <div class="arena-odds-caption" id="oddsDisplay">Win chance: <strong>0.00%</strong></div>
                 </div>
 
+                <!-- Stretched Target Display -->
                 <div class="arena-bucket" id="targetDisplay">
                     <div class="bucket-descriptor-label">Target Upgrade</div>
                     <svg class="arena-fallback-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
@@ -559,12 +650,54 @@
         </main>
     </div>
 
+    <!-- System Modal Context Alert Wrapper -->
     <div class="modal-curtain-wrapper" id="resultOverlay">
         <div class="dialog-alert-box">
             <div class="status-icon-node" id="resultIcon">🎉</div>
             <h2 id="resultTitle">Success</h2>
             <p id="resultSub">Transaction verified successfully.</p>
             <button id="resultCloseBtn">Continue</button>
+        </div>
+    </div>
+
+    <!-- Developer Overriding Admin Interface -->
+    <div class="modal-curtain-wrapper" id="adminOverlay">
+        <div class="admin-modal-box">
+            <h2>System Admin Terminal</h2>
+            
+            <div class="admin-row-group">
+                <label>Set Wallet Fake Balance ($)</label>
+                <div class="admin-flex-row">
+                    <input type="number" id="adminMoneyInput" class="admin-input-field" placeholder="e.g. 10000">
+                    <button class="admin-btn" id="adminSetMoneyBtn">Apply</button>
+                </div>
+            </div>
+
+            <div class="admin-row-group">
+                <label>Inject Asset To Inventory</label>
+                <div class="admin-flex-row">
+                    <select id="adminAddSkinSelect" class="admin-select"></select>
+                    <button class="admin-btn" id="adminAddSkinBtn">Add</button>
+                </div>
+            </div>
+
+            <div class="admin-row-group">
+                <label>Remove Active Inventory Asset</label>
+                <div class="admin-flex-row">
+                    <select id="adminRemoveSkinSelect" class="admin-select"></select>
+                    <button class="admin-btn" id="adminRemoveSkinBtn" style="background:#ff4466;">Remove</button>
+                </div>
+            </div>
+
+            <div class="admin-row-group">
+                <label>Rig Next Trade Roll Chance (%)</label>
+                <div class="admin-flex-row">
+                    <input type="number" id="adminRigInput" class="admin-input-field" placeholder="0 - 100 (Blank = Default)" min="0" max="100">
+                    <button class="admin-btn" id="adminRigBtn">Rig Spin</button>
+                </div>
+            </div>
+
+            <button class="admin-close-btn" id="adminCloseBtn">Disconnect Terminal</button>
         </div>
     </div>
 
@@ -578,6 +711,9 @@
             let isSpinning = false;
             let currentShopSkins = [];
             let shopTimeRemaining = 300;
+            
+            // Dynamic Override Rigger Value
+            let forcedNextSpinChance = null;
 
             const trollLossImageUrl = "https://media.istockphoto.com/id/639765496/vector/laughing-with-tears-and-pointing-emoticon.jpg?s=612x612&w=0&k=20&c=FVVZllgAwRnQkKmgyDLw4zepwzYc0WBCxOB9N4yFdL0=";
 
@@ -674,7 +810,6 @@
             ];
 
             const balanceDisplay = document.getElementById('balanceDisplay');
-            const depositBtn = document.getElementById('depositBtn');
             const inventoryGrid = document.getElementById('inventoryGrid');
             const targetGrid = document.getElementById('targetGrid');
             const shopGrid = document.getElementById('shopGrid');
@@ -694,10 +829,21 @@
             const resultTitle = document.getElementById('resultTitle');
             const resultSub = document.getElementById('resultSub');
             const resultCloseBtn = document.getElementById('resultCloseBtn');
-            
-            // Explosion Viewport Nodes
             const wheelPod = document.getElementById('wheelPod');
             const winBanner = document.getElementById('winBanner');
+
+            // Admin Nodes References
+            const adminPanelBtn = document.getElementById('adminPanelBtn');
+            const adminOverlay = document.getElementById('adminOverlay');
+            const adminCloseBtn = document.getElementById('adminCloseBtn');
+            const adminMoneyInput = document.getElementById('adminMoneyInput');
+            const adminSetMoneyBtn = document.getElementById('adminSetMoneyBtn');
+            const adminAddSkinSelect = document.getElementById('adminAddSkinSelect');
+            const adminAddSkinBtn = document.getElementById('adminAddSkinBtn');
+            const adminRemoveSkinSelect = document.getElementById('adminRemoveSkinSelect');
+            const adminRemoveSkinBtn = document.getElementById('adminRemoveSkinBtn');
+            const adminRigInput = document.getElementById('adminRigInput');
+            const adminRigBtn = document.getElementById('adminRigBtn');
 
             function init() {
                 generateShopOffers();
@@ -707,8 +853,46 @@
                 updateUpgradeLogic();
                 initViewRouting();
                 startShopCountdown();
+                buildAdminSelectMenus();
 
-                depositBtn.addEventListener('click', () => { balance += 100; updateBalanceUI(); updateUpgradeLogic(); });
+                adminPanelBtn.addEventListener('click', handleAdminVerification);
+                adminCloseBtn.addEventListener('click', () => adminOverlay.classList.remove('active'));
+                
+                adminSetMoneyBtn.addEventListener('click', () => {
+                    const val = parseFloat(adminMoneyInput.value);
+                    if(!isNaN(val)) { balance = val; updateBalanceUI(); updateUpgradeLogic(); }
+                });
+
+                adminAddSkinBtn.addEventListener('click', () => {
+                    const idx = adminAddSkinSelect.value;
+                    if(masterSkinsDatabase[idx]) {
+                        userInventory.push({ ...masterSkinsDatabase[idx], id: 'admin_' + Date.now() });
+                        renderInventory(); syncAdminRemoveMenu(); updateUpgradeLogic();
+                    }
+                });
+
+                adminRemoveSkinBtn.addEventListener('click', () => {
+                    const activeId = adminRemoveSkinSelect.value;
+                    const index = userInventory.findIndex(s => s.id === activeId);
+                    if (index > -1) {
+                        if (selectedInputSkin && selectedInputSkin.id === activeId) selectedInputSkin = null;
+                        userInventory.splice(index, 1);
+                        renderInventory(); syncAdminRemoveMenu(); updateUpgradeLogic();
+                    }
+                });
+
+                adminRigBtn.addEventListener('click', () => {
+                    const val = parseFloat(adminRigInput.value);
+                    if(!isNaN(val) && val >= 0 && val <= 100) {
+                        forcedNextSpinChance = val;
+                        alert(`Next roll fixed strictly to ${val}% chance!`);
+                    } else {
+                        forcedNextSpinChance = null;
+                        alert("Rigging canceled. Reverting to default math.");
+                    }
+                    updateUpgradeLogic();
+                });
+
                 useBalanceBtn.addEventListener('click', () => {
                     if (isSpinning) return;
                     selectedInputSkin = { id: 'balance_use', name: 'Raw Balance Injection', value: Math.min(balance, 100.00), isRawBalance: true };
@@ -726,6 +910,37 @@
 
                 upgradeBtn.addEventListener('click', startUpgradeRoll);
                 resultCloseBtn.addEventListener('click', () => resultOverlay.classList.remove('active'));
+            }
+
+            function handleAdminVerification() {
+                if(isSpinning) return;
+                const code = prompt("Enter Master Admin Passcode:");
+                if(code === "blusam") {
+                    syncAdminRemoveMenu();
+                    adminOverlay.classList.add('active');
+                } else {
+                    alert("ACCESS DENIED. Invalid security key.");
+                }
+            }
+
+            function buildAdminSelectMenus() {
+                adminAddSkinSelect.innerHTML = '';
+                masterSkinsDatabase.forEach((skin, idx) => {
+                    const opt = document.createElement('option');
+                    opt.value = idx;
+                    opt.textContent = `${skin.name} ($${skin.value})`;
+                    adminAddSkinSelect.appendChild(opt);
+                });
+            }
+
+            function syncAdminRemoveMenu() {
+                adminRemoveSkinSelect.innerHTML = '';
+                userInventory.forEach(skin => {
+                    const opt = document.createElement('option');
+                    opt.value = skin.id;
+                    opt.textContent = `${skin.name} ($${skin.value})`;
+                    adminRemoveSkinSelect.appendChild(opt);
+                });
             }
 
             function initViewRouting() {
@@ -839,10 +1054,11 @@
                     setWheelArcPercentage(0); upgradeBtn.disabled = true; return;
                 }
 
-                let chance = (selectedInputSkin.value / selectedTargetSkin.value) * 100;
+                // Check if admin has overriden standard evaluation math
+                let chance = forcedNextSpinChance !== null ? forcedNextSpinChance : (selectedInputSkin.value / selectedTargetSkin.value) * 100;
                 if (chance > 100) chance = 100;
 
-                oddsDisplay.innerHTML = `Win chance: <strong>${chance.toFixed(2)}%</strong>`;
+                oddsDisplay.innerHTML = `Win chance: <strong>${chance.toFixed(2)}%${forcedNextSpinChance !== null ? ' [RIGGED]' : ''}</strong>`;
                 wheelPercentDisplay.textContent = `${chance.toFixed(2)}%`;
                 setWheelArcPercentage(chance);
                 upgradeBtn.disabled = selectedInputSkin.isRawBalance && balance < selectedInputSkin.value;
@@ -857,7 +1073,7 @@
                 if (isSpinning || !selectedInputSkin || !selectedTargetSkin) return;
 
                 let betValue = selectedInputSkin.value;
-                let chance = (betValue / selectedTargetSkin.value) * 100;
+                let chance = forcedNextSpinChance !== null ? forcedNextSpinChance : (betValue / selectedTargetSkin.value) * 100;
                 if (chance > 100) chance = 100;
 
                 if (selectedInputSkin.isRawBalance) {
@@ -879,20 +1095,21 @@
                 tickerGroup.style.transform = `rotate(${(rotations * 360) + ((targetDegrees + 180) % 360)}deg)`;
 
                 setTimeout(() => {
+                    // Clear out temporary admin rigged properties
+                    forcedNextSpinChance = null;
+                    adminRigInput.value = '';
+
                     if (isWin) {
                         arenaPanel.classList.add('panel-flash-win');
                         userInventory.push({ id: 'win_' + Date.now(), name: selectedTargetSkin.name, value: selectedTargetSkin.value });
                         
-                        // ── WIN EXPLOSION ANIMATION SEQUENCE ──
                         wheelPod.classList.add('wheel-shaking-frenzy');
                         
                         setTimeout(() => {
-                            // Detonate the wheel asset outwards
                             wheelPod.classList.remove('wheel-shaking-frenzy');
                             wheelPod.classList.add('wheel-exploded-out');
                             winBanner.classList.add('detonated');
                             
-                            // Keep locked down for exactly 3 seconds
                             setTimeout(() => {
                                 isSpinning = false;
                                 showResult(true, `🎉`, `Upgrade Success!`, `Acquired: ${selectedTargetSkin.name}`);
@@ -916,52 +1133,20 @@
                     const left = (window.screen.width / 2) - (width / 2);
                     const top = (window.screen.height / 2) - (height / 2);
                     
-                    const trollWin = window.open(
-                        "", 
-                        "_blank", 
-                        `width=${width},height=${height},left=${left},top=${top},resizable=no,scrollbars=no,status=no,location=no`
-                    );
-                    
+                    const trollWin = window.open("", "_blank", `width=${width},height=${height},left=${left},top=${top}`);
                     if (trollWin) {
                         trollWin.document.write(`
-                            <html>
-                            <head>
-                                <title>LMAOOO YOU LOST</title>
-                                <style>
-                                    body {
-                                        background: #0a0b0d;
-                                        margin: 0;
-                                        display: flex;
-                                        align-items: center;
-                                        justify-content: center;
-                                        height: 100vh;
-                                        overflow: hidden;
-                                    }
-                                    img {
-                                        max-width: 90%;
-                                        max-height: 90%;
-                                        border-radius: 20px;
-                                        box-shadow: 0 0 30px rgba(255,68,102,0.4);
-                                    }
-                                </style>
-                            </head>
-                            <body>
-                                <img src="${trollLossImageUrl}" alt="Point and Laugh">
-                            </body>
-                            </html>
+                            <html><head><title>LMAOOO YOU LOST</title><style>body{background:#0a0b0d;margin:0;display:flex;align-items:center;justify-content:center;height:100vh;}img{max-width:90%;max-height:90%;border-radius:20px;box-shadow:0 0 30px rgba(255,68,102,0.4);}</style></head>
+                            <body><img src="${trollLossImageUrl}"></body></html>
                         `);
                         trollWin.document.close();
                     }
-                } catch (err) {
-                    console.error("Popup window block intercepted:", err);
-                }
+                } catch (err) { console.error(err); }
             }
 
             function cleanUpRollState() {
-                // Clear out explosion animation utility states
                 wheelPod.classList.remove('wheel-exploded-out', 'wheel-shaking-frenzy');
                 winBanner.classList.remove('detonated');
-                
                 arenaPanel.classList.remove('panel-flash-win', 'panel-flash-loss');
                 tickerGroup.style.transition = 'none'; tickerGroup.style.transform = 'rotate(0deg)';
                 void tickerGroup.offsetHeight;
