@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UPGRADER · Workspace Edition</title>
+    <title>Blusams Upgrader</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;600;700;800;900&family=Orbitron:wght=700;800;900&display=swap" rel="stylesheet" />
     <style>
         /* ── Core Theme & Variables ── */
@@ -46,18 +46,11 @@
             z-index: 10;
         }
         .sidebar-logo {
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(135deg, #ff4500, #ffaa00);
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            color: #000;
-            font-size: 16px;
+            width: 46px;
+            height: 46px;
+            object-fit: contain;
             margin-bottom: 20px;
-            font-family: 'Orbitron', sans-serif;
+            border-radius: 8px;
         }
         .sidebar-item {
             width: 50px;
@@ -148,7 +141,7 @@
             box-shadow: 0 0 25px rgba(255, 69, 0, 0.6);
         }
 
-        /* ── Stretched Content Viewport Window ── */
+        /* ── Workspace Viewport Window ── */
         .workspace-viewport {
             flex-grow: 1;
             padding: 16px;
@@ -158,7 +151,7 @@
             gap: 16px;
         }
 
-        /* ── Stretched Arena Panel Without Borders ── */
+        /* ── Stretched Arena Panel ── */
         .arena-grid {
             display: grid;
             grid-template-columns: 1.5fr 1.1fr 1.5fr;
@@ -210,7 +203,7 @@
         .arena-bucket .skin-title-node { font-weight: 800; font-size: 17px; color: #fff; margin-top: 14px; }
         .arena-bucket .skin-price-node { color: #ffaa00; font-weight: 900; margin-top: 6px; font-size: 16px; }
 
-        /* ── Dynamic Thick Wheel Dial Module ── */
+        /* ── Wheel Dial Module ── */
         .dial-module {
             display: flex;
             flex-direction: column;
@@ -258,7 +251,7 @@
         .arena-odds-caption { font-size: 13px; color: var(--text-muted); margin-top: 10px; }
         .arena-odds-caption strong { color: #ffaa00; }
 
-        /* ── Explosive Tactical Blow-Up Styling ── */
+        /* ── Win Detonation Banner ── */
         .win-detonation-banner {
             position: absolute;
             top: 40%;
@@ -282,26 +275,19 @@
         }
 
         /* Kinetic Animation Keyframes */
-        .wheel-shaking-frenzy {
-            animation: violentShake 0.4s infinite alternate;
-        }
-        .wheel-exploded-out {
-            transform: scale(2.2) !important;
-            filter: brightness(5) blur(10px) !important;
-            opacity: 0 !important;
-        }
+        .wheel-shaking-frenzy { animation: violentShake 0.4s infinite alternate; }
+        .wheel-exploded-out { transform: scale(2.2) !important; filter: brightness(5) blur(10px) !important; opacity: 0 !important; }
 
         @keyframes violentShake {
             0% { transform: translate(4px, 2px) rotate(2deg); }
             100% { transform: translate(-4px, -2px) rotate(-2deg); }
         }
 
-        /* ── Wide Extended Horizon Board ── */
+        /* ── Split Axis Board ── */
         .split-axis-board {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 16px;
-            flex-grow: 1;
             width: 100%;
         }
         .axis-card-panel {
@@ -347,7 +333,7 @@
             cursor: pointer;
         }
 
-        /* ── Stretched Matrix Elements ── */
+        /* ── Matrix Elements ── */
         .skins-matrix-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
@@ -387,39 +373,14 @@
             overflow: hidden;
             position: relative;
         }
-        .vector-render-icon {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        .vector-render-icon { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
 
-        .node-meta-title {
-            font-size: 12px;
-            color: #cdd0d8;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            font-weight: 600;
-        }
-        .node-meta-price {
-            font-size: 13px;
-            font-weight: 700;
-            color: #ffaa00;
-            margin-top: 2px;
-        }
+        .node-meta-title { font-size: 12px; color: #cdd0d8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+        .node-meta-price { font-size: 13px; font-weight: 700; color: #ffaa00; margin-top: 2px; }
         .btn-node-shop-buy {
             background: linear-gradient(135deg, #ff4500, #ffaa00);
-            color: #000;
-            border: none;
-            border-radius: 6px;
-            padding: 6px;
-            font-size: 11px;
-            font-weight: 800;
-            margin-top: 6px;
-            cursor: pointer;
-            width: 100%;
+            color: #000; border: none; border-radius: 6px; padding: 6px;
+            font-size: 11px; font-weight: 800; margin-top: 6px; cursor: pointer; width: 100%;
         }
 
         /* View Router Panes */
@@ -435,8 +396,7 @@
         .modal-curtain-wrapper.active { display: flex; }
         
         .dialog-alert-box {
-            background: var(--bg-panel);
-            padding: 36px; border-radius: 24px; text-align: center; max-width: 420px; width: 90%;
+            background: var(--bg-panel); padding: 36px; border-radius: 24px; text-align: center; max-width: 420px; width: 90%;
         }
         .dialog-alert-box .status-icon-node { font-size: 52px; margin-bottom: 12px; }
         .dialog-alert-box h2 { font-size: 24px; margin-bottom: 6px; font-weight: 900; }
@@ -448,86 +408,32 @@
             border-radius: 30px; font-weight: 800; cursor: pointer; margin-top: 24px;
         }
 
-        /* ── Developer Admin Control Panel Overlay UI ── */
+        /* ── Developer Admin Overlay UI ── */
         .admin-modal-box {
-            background: #0d0f13;
-            border: 2px solid #ff4500;
-            width: 500px;
-            max-width: 95%;
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 0 40px rgba(255, 69, 0, 0.4);
-            font-family: 'Inter', sans-serif;
+            background: #0d0f13; border: 2px solid #ff4500; width: 500px; max-width: 95%;
+            border-radius: 16px; padding: 24px; box-shadow: 0 0 40px rgba(255, 69, 0, 0.4);
         }
         .admin-modal-box h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 20px;
-            color: #ff4500;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            border-bottom: 1px solid #222631;
-            padding-bottom: 10px;
+            font-family: 'Orbitron', sans-serif; font-size: 20px; color: #ff4500; margin-bottom: 20px;
+            text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #222631; padding-bottom: 10px;
         }
-        .admin-row-group {
-            margin-bottom: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .admin-row-group label {
-            font-size: 12px;
-            text-transform: uppercase;
-            font-weight: 700;
-            color: var(--text-muted);
-        }
-        .admin-flex-row {
-            display: flex;
-            gap: 10px;
-        }
+        .admin-row-group { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; }
+        .admin-row-group label { font-size: 12px; text-transform: uppercase; font-weight: 700; color: var(--text-muted); }
+        .admin-flex-row { display: flex; gap: 10px; }
         .admin-input-field {
-            flex-grow: 1;
-            background: #16191f;
-            border: 1px solid #222631;
-            padding: 10px;
-            color: #fff;
-            border-radius: 6px;
-            outline: none;
-            font-size: 14px;
+            flex-grow: 1; background: #16191f; border: 1px solid #222631; padding: 10px;
+            color: #fff; border-radius: 6px; outline: none; font-size: 14px;
         }
         .admin-input-field:focus { border-color: #ff4500; }
         .admin-btn {
-            background: #222631;
-            color: #fff;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 6px;
-            font-weight: 700;
-            cursor: pointer;
-            font-size: 13px;
-            transition: all 0.2s;
+            background: #222631; color: #fff; border: none; padding: 10px 16px;
+            border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 13px; transition: all 0.2s;
         }
         .admin-btn:hover { background: #ff4500; }
-        .admin-select {
-            background: #16191f;
-            color: #fff;
-            border: 1px solid #222631;
-            padding: 10px;
-            border-radius: 6px;
-            flex-grow: 1;
-            outline: none;
-        }
+        .admin-select { background: #16191f; color: #fff; border: 1px solid #222631; padding: 10px; border-radius: 6px; flex-grow: 1; outline: none; }
         .admin-close-btn {
-            width: 100%;
-            background: transparent;
-            border: 1px solid #222631;
-            color: var(--text-muted);
-            padding: 12px;
-            border-radius: 6px;
-            margin-top: 10px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: color 0.2s;
+            width: 100%; background: transparent; border: 1px solid #222631; color: var(--text-muted);
+            padding: 12px; border-radius: 6px; margin-top: 10px; font-weight: 700; cursor: pointer; transition: color 0.2s;
         }
         .admin-close-btn:hover { color: #fff; border-color: #ff4500; }
 
@@ -536,6 +442,21 @@
         .panel-flash-loss { box-shadow: inset 0 0 40px rgba(255, 68, 102, 0.15); }
         .shop-timer-badge { font-size: 11px; font-weight: 700; color: var(--text-muted); font-family: 'Orbitron', monospace; }
         .shop-timer-badge span { color: #ffaa00; margin-left: 3px; }
+
+        /* ── Footnote Branding Strip ── */
+        .footer-credits-banner {
+            width: 100%;
+            text-align: center;
+            padding: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text-muted);
+            letter-spacing: 0.15em;
+            background: #060709;
+            border-top: 1px solid #111317;
+            flex-shrink: 0;
+        }
 
         @media (max-width: 1280px) {
             .arena-grid { grid-template-columns: 1fr; gap: 16px; }
@@ -546,7 +467,7 @@
 <body>
 
     <aside class="sidebar">
-        <div class="sidebar-logo">▲</div>
+        <img class="sidebar-logo" src="https://logowik.com/content/uploads/images/modern-black-four-leaf-clover1719442008.logowik.com.webp" alt="Logo" />
         <div class="sidebar-item active" id="sideLinkMain" title="Upgrade Workspace">🎒</div>
         <div class="sidebar-item" id="sideLinkShop" title="Weapon Shop Supply Store">🛒</div>
     </aside>
@@ -554,7 +475,7 @@
     <div class="main-container">
         <nav class="top-navbar">
             <div class="nav-brand-section">
-                <span class="brand-logo-text">UPGRADER</span>
+                <span class="brand-logo-text">BLUSAMS UPGRADER</span>
                 <div class="ticker-stats">
                     <div>Live Simulation: <span>1,796 active</span></div>
                     <div>Upgrades Logged: <span>191,939,178</span></div>
@@ -648,6 +569,10 @@
                 </div>
             </section>
         </main>
+        
+        <footer class="footer-credits-banner">
+            CREDITS TO UPGRADER.VIP
+        </footer>
     </div>
 
     <!-- System Modal Context Alert Wrapper -->
@@ -712,7 +637,6 @@
             let currentShopSkins = [];
             let shopTimeRemaining = 300;
             
-            // Dynamic Override Rigger Value
             let forcedNextSpinChance = null;
 
             const trollLossImageUrl = "https://media.istockphoto.com/id/639765496/vector/laughing-with-tears-and-pointing-emoticon.jpg?s=612x612&w=0&k=20&c=FVVZllgAwRnQkKmgyDLw4zepwzYc0WBCxOB9N4yFdL0=";
@@ -832,7 +756,6 @@
             const wheelPod = document.getElementById('wheelPod');
             const winBanner = document.getElementById('winBanner');
 
-            // Admin Nodes References
             const adminPanelBtn = document.getElementById('adminPanelBtn');
             const adminOverlay = document.getElementById('adminOverlay');
             const adminCloseBtn = document.getElementById('adminCloseBtn');
@@ -1054,7 +977,6 @@
                     setWheelArcPercentage(0); upgradeBtn.disabled = true; return;
                 }
 
-                // Check if admin has overriden standard evaluation math
                 let chance = forcedNextSpinChance !== null ? forcedNextSpinChance : (selectedInputSkin.value / selectedTargetSkin.value) * 100;
                 if (chance > 100) chance = 100;
 
@@ -1095,7 +1017,6 @@
                 tickerGroup.style.transform = `rotate(${(rotations * 360) + ((targetDegrees + 180) % 360)}deg)`;
 
                 setTimeout(() => {
-                    // Clear out temporary admin rigged properties
                     forcedNextSpinChance = null;
                     adminRigInput.value = '';
 
