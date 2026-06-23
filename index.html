@@ -204,11 +204,13 @@
             color: var(--accent-gold);
             margin-bottom: 12px;
         }
-        .arena-bucket .skin-preview-img {
-            max-height: 120px;
-            max-width: 90%;
-            object-fit: contain;
-            filter: drop-shadow(0 12px 20px rgba(0,0,0,0.5));
+        .arena-bucket .skin-preview-graphic {
+            width: 140px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
             z-index: 2;
         }
         .arena-bucket .skin-title-node { font-weight: 700; font-size: 14px; color: #fff; margin-top: 10px; }
@@ -351,20 +353,12 @@
             overflow: hidden;
             position: relative;
         }
-        .node-fallback-svg {
-            position: absolute;
-            width: 36px;
-            height: 36px;
-            opacity: 0.08;
-            color: #fff;
-            z-index: 1;
-        }
-        .node-image-container img {
-            max-height: 90%;
-            max-width: 90%;
-            object-fit: contain;
-            position: relative;
-            z-index: 2;
+        .vector-render-icon {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .node-meta-title {
@@ -556,28 +550,42 @@
             let currentShopSkins = [];
             let shopTimeRemaining = 300;
 
-            // Alternative asset lookup format matching the updated production API routing
-            function getSkinCdnUrl(skinName) {
-                // Completely cleanses the string to match standard web asset endpoints
-                const cleaned = skinName
-                    .toLowerCase()
-                    .replace(' | ', '_')          // replace the separator cleanly
-                    .replace(/[^a-z0-9\s_]/g, '') // strip remaining odd symbols
-                    .trim()
-                    .replace(/\s+/g, '_');        // enforce strict underscores
-                
-                // Let's route directly via his static production mirror path
-                return `https://bymykel.github.io/CS2-API/api/images/skins/${cleaned}.png`;
+            // Highly reliable vector generator system replacing unstable external URL fetching layouts
+            function generateWeaponVectorIcon(skinName) {
+                const lower = skinName.toLowerCase();
+                let path = 'M3,12 H21 V14 H3 Z'; // generic baseline fallback line
+                let color = '#4a526d';           // custom default accent tint
+
+                // Dynamic design profiles matching weapon groups natively
+                if (lower.includes('knife') || lower.includes('gem')) {
+                    path = 'M16,5 L19,2 L21,4 L18,7 L13,12 L10,9 Z M10,9 L4,15 L3,17 L5,19 L7,18 L13,12 Z';
+                    color = '#9b5de5';
+                } else if (lower.includes('awp')) {
+                    path = 'M2,13 L6,10 L14,10 L22,11 L22,12 L16,13 L12,14 L5,14 Z M7,10 L9,7 L12,7 L13,10 Z M4,14 L2,17 L5,17 Z';
+                    color = '#3a86ff';
+                } else if (lower.includes('ak-47') || lower.includes('m4a4') || lower.includes('m4a1-s') || lower.includes('sg 553') || lower.includes('galil')) {
+                    path = 'M3,13 L8,11 L18,11 L22,12 L20,14 L12,14 L6,15 Z M10,11 L11,8 L13,8 L13,11 Z M5,14 L3,18 L6,16 Z';
+                    color = '#ff006e';
+                } else if (lower.includes('glock') || lower.includes('p250') || lower.includes('usp-s') || lower.includes('eagle')) {
+                    path = 'M7,9 L15,9 L15,12 L12,13 L12,17 L9,17 L7,13 Z';
+                    color = '#00f5d4';
+                } else if (lower.includes('gloves')) {
+                    path = 'M6,9 Q9,6 12,9 T18,9 V16 Q15,19 12,16 T6,16 Z';
+                    color = '#fee440';
+                }
+
+                return `
+                    <svg class="vector-render-icon" viewBox="0 0 24 24" style="color: ${color}; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));">
+                        <path d="${path}" fill="currentColor" />
+                    </svg>
+                `;
             }
 
             function generateWeaponCardHtml(skin, showBuyBtn = false) {
                 return `
                     <div class="node-meta-title">${skin.name}</div>
                     <div class="node-image-container">
-                        <svg class="node-fallback-svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M19 10.5V12h-2v-1.5H7V12H5v-1.5H2v-2h3V7h2v1.5h10V7h2v1.5h3v2h-3M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/>
-                        </svg>
-                        <img src="${skin.img}" onerror="this.style.display='none';">
+                        ${generateWeaponVectorIcon(skin.name)}
                     </div>
                     <div class="node-meta-price">$${skin.value.toFixed(2)}</div>
                     ${showBuyBtn ? '<button class="btn-node-shop-buy">Buy</button>' : ''}
@@ -647,8 +655,6 @@
                 { id: 'high20', tier: 'high', name: 'StatTrak AWP | Dragon Lore', value: 12500.00 }
             ];
 
-            masterSkinsDatabase.forEach(item => { item.img = getSkinCdnUrl(item.name); });
-
             const userInventory = [
                 { ...masterSkinsDatabase[0], id: 'init1' }, 
                 { ...masterSkinsDatabase[5], id: 'init2' },
@@ -689,7 +695,7 @@
                 depositBtn.addEventListener('click', () => { balance += 100; updateBalanceUI(); updateUpgradeLogic(); });
                 useBalanceBtn.addEventListener('click', () => {
                     if (isSpinning) return;
-                    selectedInputSkin = { id: 'balance_use', name: 'Raw Balance Injection', value: Math.min(balance, 100.00), isRawBalance: true, img: '' };
+                    selectedInputSkin = { id: 'balance_use', name: 'Raw Balance Injection', value: Math.min(balance, 100.00), isRawBalance: true };
                     renderInventory(); updateUpgradeLogic();
                 });
 
@@ -795,8 +801,8 @@
                 if (selectedInputSkin) {
                     inputDisplay.innerHTML = `
                         <div class="bucket-descriptor-label">Sacrifice Skin</div>
-                        <img class="skin-preview-img" src="${selectedInputSkin.img}" onerror="this.style.display='none';">
-                        <div class="skin-title-node">${selectedInputSkin.name}</div>
+                        <div class="skin-preview-graphic">${generateWeaponVectorIcon(selectedInputSkin.name || '')}</div>
+                        <div class="skin-title-node">${selectedInputSkin.name || 'Raw Balance'}</div>
                         <div class="skin-price-node">$${selectedInputSkin.value.toFixed(2)}</div>`;
                 } else {
                     inputDisplay.innerHTML = `<div class="bucket-descriptor-label">Sacrifice Skin</div><svg class="arena-fallback-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg><div style="color: var(--text-muted); font-size: 13px;">Select a skin from inventory to upgrade</div>`;
@@ -805,7 +811,7 @@
                 if (selectedTargetSkin) {
                     targetDisplay.innerHTML = `
                         <div class="bucket-descriptor-label">Target Upgrade</div>
-                        <img class="skin-preview-img" src="${selectedTargetSkin.img}" onerror="this.style.display='none';">
+                        <div class="skin-preview-graphic">${generateWeaponVectorIcon(selectedTargetSkin.name)}</div>
                         <div class="skin-title-node">${selectedTargetSkin.name}</div>
                         <div class="skin-price-node">$${selectedTargetSkin.value.toFixed(2)}</div>`;
                 } else {
@@ -861,7 +867,7 @@
                     isSpinning = false;
                     if (isWin) {
                         arenaPanel.classList.add('panel-flash-win');
-                        userInventory.push({ id: 'win_' + Date.now(), name: selectedTargetSkin.name, value: selectedTargetSkin.value, img: selectedTargetSkin.img });
+                        userInventory.push({ id: 'win_' + Date.now(), name: selectedTargetSkin.name, value: selectedTargetSkin.value });
                         setTimeout(() => { showResult(true, `🎉`, `Upgrade Success!`, `Acquired: ${selectedTargetSkin.name}`); cleanUpRollState(); }, 300);
                     } else {
                         arenaPanel.classList.add('panel-flash-loss');
