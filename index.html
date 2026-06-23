@@ -6,6 +6,39 @@
     <title>Blusams Upgrader</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;600;700;800;900&family=Orbitron:wght=700;800;900&display=swap" rel="stylesheet" />
     <style>
+                /* ── Float Slider Component ── */
+        .float-control-group {
+            margin-top: 20px;
+            padding: 16px;
+            background: #16191f;
+            border-radius: 12px;
+        }
+        .float-slider {
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, #ff4466 0%, #ffaa00 50%, #2196f3 100%);
+            border-radius: 4px;
+            appearance: none;
+            outline: none;
+            margin-top: 10px;
+        }
+        .float-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        .float-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
         /* ── Core Theme & Variables ── */
         *, *::before, *::after {
             box-sizing: border-box;
@@ -245,11 +278,16 @@
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.2s;
-        }
-        .btn-roll-upgrade:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255, 69, 0, 0.3); }
-        .btn-roll-upgrade:disabled { opacity: 0.2; cursor: not-allowed; }
-        .arena-odds-caption { font-size: 13px; color: var(--text-muted); margin-top: 10px; }
-        .arena-odds-caption strong { color: #ffaa00; }
+
+        <div class="float-control-group">
+    <div class="float-label">
+        <span>FN (0.00)</span>
+        <span>Float</span>
+        <span>BS (1.00)</span>
+    </div>
+    <input type="range" class="float-slider" min="0" max="1" step="0.01" value="0.05" id="floatSlider">
+    <div id="floatValueDisplay" style="text-align: center; font-size: 12px; margin-top: 5px; color: #fff;">0.05</div>
+</div>
 
         /* ── Win Detonation Banner ── */
         .win-detonation-banner {
