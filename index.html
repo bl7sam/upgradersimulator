@@ -110,7 +110,7 @@
             display: flex;
             align-items: center;
             gap: 24px;
-        }
+            }
         .brand-logo-text {
             font-family: 'Orbitron', sans-serif;
             font-weight: 900;
@@ -558,12 +558,15 @@
 
             // Updated image path configurations to line up perfectly with modern API paths
             function getSkinCdnUrl(skinName) {
+                // Formats name to match the official panorama image storage layout
                 const cleaned = skinName
                     .toLowerCase()
-                    .replace(/[^a-z0-9\s-]/g, '')
+                    .replace(/[^a-z0-9\s-]/g, '') // strip special characters like |
                     .trim()
-                    .replace(/\s+/g, '_');
-                return `https://raw.githubusercontent.com/ByMykel/CS2-API/main/public/images/skins/${cleaned}.png`;
+                    .replace(/\s+/g, '_');        // swap spaces for underscores
+                
+                // This is the correct live asset repository layout for his image CDN
+                return `https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/default_generated/${cleaned}_light.png`;
             }
 
             function generateWeaponCardHtml(skin, showBuyBtn = false) {
