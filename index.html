@@ -17,7 +17,6 @@
             --bg-panel: #111317;
             --bg-panel-inner: #16191f;
             --accent-gold: #ff4500;
-            --border-color: rgba(255, 255, 255, 0.04);
             --text-main: #e2e4e9;
             --text-muted: #626775;
         }
@@ -38,7 +37,6 @@
         .sidebar {
             width: 80px;
             background: #060709;
-            border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -66,7 +64,6 @@
             height: 50px;
             border-radius: 12px;
             background: #111318;
-            border: 1px solid rgba(255, 255, 255, 0.02);
             cursor: pointer;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
@@ -76,12 +73,10 @@
         }
         .sidebar-item:hover {
             transform: translateY(-2px);
-            border-color: rgba(255, 69, 0, 0.3);
             color: #fff;
         }
         .sidebar-item.active {
             background: rgba(255, 69, 0, 0.1);
-            border-color: #ff4500;
             color: #ff4500;
         }
 
@@ -97,7 +92,6 @@
         .top-navbar {
             height: 70px;
             background: #08090c;
-            border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -150,38 +144,37 @@
             box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
         }
 
-        /* ── Content Viewport Window ── */
+        /* ── Stretched Content Viewport Window ── */
         .workspace-viewport {
             flex-grow: 1;
-            padding: 24px;
+            padding: 16px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 16px;
         }
 
-        /* ── Arena Layout Panel ── */
+        /* ── Stretched Arena Panel Without Borders ── */
         .arena-grid {
             display: grid;
-            grid-template-columns: 1.4fr 1.2fr 1.4fr;
-            gap: 24px;
+            grid-template-columns: 1.5fr 1.1fr 1.5fr;
+            gap: 16px;
             background: var(--bg-panel);
-            border-radius: 24px;
-            padding: 32px;
-            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
             align-items: center;
+            width: 100%;
         }
         .arena-bucket {
             background: var(--bg-panel-inner);
-            border-radius: 20px;
-            height: 320px;
+            border-radius: 12px;
+            height: 340px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 32px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.02);
             position: relative;
             transition: border-color 0.2s;
         }
@@ -202,16 +195,16 @@
             margin-bottom: 12px;
         }
         .arena-bucket .skin-preview-graphic {
-            width: 180px;
-            height: 120px;
+            width: 220px;
+            height: 140px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             z-index: 2;
         }
-        .arena-bucket .skin-title-node { font-weight: 800; font-size: 16px; color: #fff; margin-top: 14px; }
-        .arena-bucket .skin-price-node { color: #ffaa00; font-weight: 900; margin-top: 6px; font-size: 15px; }
+        .arena-bucket .skin-title-node { font-weight: 800; font-size: 17px; color: #fff; margin-top: 14px; }
+        .arena-bucket .skin-price-node { color: #ffaa00; font-weight: 900; margin-top: 6px; font-size: 16px; }
 
         /* ── Dynamic Thick Wheel Dial Module ── */
         .dial-module {
@@ -222,8 +215,8 @@
         }
         .radial-wheel-pod {
             position: relative;
-            width: 260px;
-            height: 260px;
+            width: 280px;
+            height: 280px;
         }
         .radial-wheel-pod svg { width: 100%; height: 100%; }
         .radial-percentage-text {
@@ -232,7 +225,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             font-family: 'Orbitron', sans-serif;
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 900;
             color: #fff;
             text-shadow: 0 0 20px rgba(255, 69, 0, 0.4);
@@ -240,12 +233,12 @@
         .btn-roll-upgrade {
             margin-top: 24px;
             width: 100%;
-            max-width: 220px;
+            max-width: 240px;
             background: linear-gradient(135deg, #ff4500, #ffaa00);
             color: #000;
             border: none;
-            padding: 14px;
-            font-size: 15px;
+            padding: 16px;
+            font-size: 16px;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 0.05em;
@@ -258,60 +251,61 @@
         .arena-odds-caption { font-size: 13px; color: var(--text-muted); margin-top: 10px; }
         .arena-odds-caption strong { color: #ffaa00; }
 
-        /* ── Split Axis Workspace Board ── */
+        /* ── Wide Extended Horizon Board ── */
         .split-axis-board {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 16px;
             flex-grow: 1;
+            width: 100%;
         }
         .axis-card-panel {
             background: var(--bg-panel);
-            border-radius: 20px;
-            padding: 20px;
-            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
             display: flex;
             flex-direction: column;
-            height: 460px;
+            height: 480px;
         }
         .axis-panel-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             padding-bottom: 12px;
-            border-bottom: 1px solid var(--border-color);
         }
-        .axis-panel-header h3 { font-size: 14px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.04em; }
+        .axis-panel-header h3 { font-size: 15px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; }
         
         .tab-embedded-row { display: flex; gap: 8px; align-items: center; }
         .btn-embedded-utility {
             background: var(--bg-panel-inner);
-            border: 1px solid var(--border-color);
+            border: none;
             color: var(--text-muted);
-            padding: 6px 14px;
+            padding: 8px 16px;
             border-radius: 30px;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
+            transition: color 0.2s;
         }
-        .btn-embedded-utility:hover { color: #fff; border-color: rgba(255,255,255,0.1); }
+        .btn-embedded-utility:hover { color: #fff; }
 
         .select-filter-menu {
             background: var(--bg-panel-inner);
-            border: 1px solid var(--border-color);
+            border: none;
             color: var(--text-main);
-            padding: 6px 14px;
+            padding: 8px 16px;
             border-radius: 30px;
             font-size: 12px;
+            font-weight: 700;
             outline: none;
             cursor: pointer;
         }
 
-        /* ── Items Grid ── */
+        /* ── Stretched Matrix Elements ── */
         .skins-matrix-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
             gap: 12px;
             overflow-y: auto;
             flex-grow: 1;
@@ -320,27 +314,25 @@
         .node-matrix-item {
             background: var(--bg-panel-inner);
             border-radius: 12px;
-            padding: 12px;
-            border: 2px solid transparent;
+            padding: 14px;
             cursor: pointer;
             position: relative;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             transition: all 0.2s ease;
-            min-height: 150px;
+            min-height: 160px;
             text-align: center;
         }
         .node-matrix-item:hover { background: #1d212a; transform: translateY(-1px); }
         .node-matrix-item.selected-active {
-            border-color: #ff4500;
             background: #202530;
-            box-shadow: 0 0 20px rgba(255, 69, 0, 0.15);
+            box-shadow: inset 0 0 0 2px #ff4500, 0 0 25px rgba(255, 69, 0, 0.15);
         }
         
         .node-image-container {
             width: 100%;
-            height: 70px;
+            height: 75px;
             background: #0b0c0f;
             border-radius: 8px;
             margin: 6px 0;
@@ -359,7 +351,7 @@
         }
 
         .node-meta-title {
-            font-size: 11px;
+            font-size: 12px;
             color: #cdd0d8;
             white-space: nowrap;
             overflow: hidden;
@@ -367,7 +359,7 @@
             font-weight: 600;
         }
         .node-meta-price {
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 700;
             color: #ffaa00;
             margin-top: 2px;
@@ -377,7 +369,7 @@
             color: #000;
             border: none;
             border-radius: 6px;
-            padding: 5px;
+            padding: 6px;
             font-size: 11px;
             font-weight: 800;
             margin-top: 6px;
@@ -397,7 +389,7 @@
         }
         .modal-curtain-wrapper.active { display: flex; }
         .dialog-alert-box {
-            background: var(--bg-panel); border: 1px solid var(--border-color);
+            background: var(--bg-panel);
             padding: 36px; border-radius: 24px; text-align: center; max-width: 420px; width: 90%;
         }
         .dialog-alert-box .status-icon-node { font-size: 52px; margin-bottom: 12px; }
@@ -411,14 +403,14 @@
         }
 
         #tickerGroup { transform-origin: 100px 100px; transition: transform 2.5s cubic-bezier(0.1, 0.8, 0.1, 1); }
-        .panel-flash-win { border-color: #ffaa00 !important; box-shadow: 0 0 30px rgba(255, 170, 0, 0.2); }
-        .panel-flash-loss { border-color: #ff4466 !important; box-shadow: 0 0 30px rgba(255, 68, 102, 0.2); }
+        .panel-flash-win { box-shadow: inset 0 0 40px rgba(255, 170, 0, 0.15); }
+        .panel-flash-loss { box-shadow: inset 0 0 40px rgba(255, 68, 102, 0.15); }
         .shop-timer-badge { font-size: 11px; font-weight: 700; color: var(--text-muted); font-family: 'Orbitron', monospace; }
         .shop-timer-badge span { color: #ffaa00; margin-left: 3px; }
 
         @media (max-width: 1280px) {
-            .arena-grid { grid-template-columns: 1fr; gap: 20px; }
-            .arena-bucket { height: 260px; }
+            .arena-grid { grid-template-columns: 1fr; gap: 16px; }
+            .arena-bucket { height: 280px; }
         }
     </style>
 </head>
@@ -450,14 +442,12 @@
 
         <main class="workspace-viewport">
             <section class="arena-grid" id="arenaPanel">
-                <!-- Large Input Container -->
                 <div class="arena-bucket" id="inputDisplay">
                     <div class="bucket-descriptor-label">Sacrifice Skin</div>
                     <svg class="arena-fallback-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
                     <div style="color: var(--text-muted); font-size: 13px;">Select a skin from inventory to upgrade</div>
                 </div>
 
-                <!-- Thick Custom Gradient Wheel -->
                 <div class="dial-module">
                     <div class="radial-wheel-pod">
                         <svg viewBox="0 0 200 200">
@@ -484,7 +474,6 @@
                     <div class="arena-odds-caption" id="oddsDisplay">Win chance: <strong>0.00%</strong></div>
                 </div>
 
-                <!-- Large Target Container -->
                 <div class="arena-bucket" id="targetDisplay">
                     <div class="bucket-descriptor-label">Target Upgrade</div>
                     <svg class="arena-fallback-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
@@ -548,7 +537,6 @@
             let currentShopSkins = [];
             let shopTimeRemaining = 300;
 
-            // URL link target for the troll window popup
             const trollLossImageUrl = "https://media.istockphoto.com/id/639765496/vector/laughing-with-tears-and-pointing-emoticon.jpg?s=612x612&w=0&k=20&c=FVVZllgAwRnQkKmgyDLw4zepwzYc0WBCxOB9N4yFdL0=";
 
             function generateWeaponVectorIcon(skinName) {
@@ -852,16 +840,12 @@
                         setTimeout(() => { showResult(true, `🎉`, `Upgrade Success!`, `Acquired: ${selectedTargetSkin.name}`); cleanUpRollState(); }, 300);
                     } else {
                         arenaPanel.classList.add('panel-flash-loss');
-                        
-                        // ── POP OUT TROLL WINDOW ON LOSS ──
                         triggerTrollWindow();
-
                         setTimeout(() => { showResult(false, `💔`, `Upgrade Failed`, `Destroyed trying to hit: ${selectedTargetSkin.name}`); cleanUpRollState(); }, 300);
                     }
                 }, 2600);
             }
 
-            // Launches separate window containing the laughing pointing emoji
             function triggerTrollWindow() {
                 try {
                     const width = 500;
@@ -889,7 +873,6 @@
                                         justify-content: center;
                                         height: 100vh;
                                         overflow: hidden;
-                                        font-family: 'sans-serif';
                                     }
                                     img {
                                         max-width: 90%;
