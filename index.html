@@ -1291,6 +1291,220 @@
             border-color: var(--accent);
         }
 
+        /* ── Battle Modal ── */
+        .battle-modal-box {
+            background: var(--bg-panel);
+            border: 2px solid var(--accent);
+            width: 95%;
+            max-width: 1200px;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 0 80px var(--shadow-color);
+            max-height: 90vh;
+            overflow-y: auto;
+            transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+            animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .battle-modal-box h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--accent);
+            text-align: center;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            text-shadow: 0 0 30px var(--shadow-color);
+        }
+        .battle-container {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 16px;
+            align-items: stretch;
+        }
+        .battle-side {
+            background: var(--bg-panel-inner);
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            transition: border-color 0.3s, box-shadow 0.3s;
+            min-height: 300px;
+        }
+        .battle-side h3 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            color: var(--text-main);
+            text-align: center;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 16px;
+        }
+        .battle-side .battle-total {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+        }
+        .battle-side .battle-total span {
+            color: var(--accent);
+            font-weight: 900;
+        }
+        .battle-side.winner {
+            border-color: #ffd700;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.2);
+        }
+        .battle-side.winner h3 {
+            color: #ffd700;
+        }
+        .battle-slots {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+        }
+        .battle-slot {
+            background: var(--bg-main);
+            border-radius: 10px;
+            padding: 6px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .battle-slot .slot-icon {
+            width: 100%;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .battle-slot .slot-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+        .battle-slot .slot-value {
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        .battle-slot.revealed {
+            border-color: var(--accent);
+            box-shadow: 0 0 15px var(--shadow-color);
+        }
+        .battle-slot.highlight {
+            border-color: #ffd700;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+        }
+        .battle-vs {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 28px;
+            color: var(--text-muted);
+            padding: 0 8px;
+            text-shadow: 0 0 20px var(--shadow-color);
+        }
+        .battle-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+            flex-wrap: wrap;
+        }
+        .battle-controls input[type="number"] {
+            background: var(--bg-panel-inner);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 10px 16px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 700;
+            width: 160px;
+            outline: none;
+            transition: border-color 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+        .battle-controls input[type="number"]:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 25px var(--shadow-color);
+        }
+        .battle-controls input[type="number"]::-webkit-inner-spin-button {
+            opacity: 1;
+        }
+        .battle-btn {
+            background: linear-gradient(135deg, var(--accent), #ffaa00);
+            color: #000;
+            border: none;
+            padding: 10px 32px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 0 30px var(--shadow-color);
+            font-family: 'Inter', sans-serif;
+        }
+        .battle-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 0 50px var(--shadow-color);
+        }
+        .battle-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .battle-result-banner {
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 12px;
+            text-shadow: 0 0 30px currentColor;
+        }
+        .battle-result-banner.win {
+            color: #ffd700;
+        }
+        .battle-result-banner.lose {
+            color: #ff4466;
+        }
+
+        .battle-close-btn {
+            width: 100%;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+        }
+        .battle-close-btn:hover {
+            color: var(--text-main);
+            border-color: var(--accent);
+        }
+
         /* ── Responsive ── */
         @media (max-width: 1280px) {
             .arena-grid {
@@ -1336,6 +1550,17 @@
             }
             .theme-preset-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+            .battle-container {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .battle-vs {
+                padding: 8px 0;
+                font-size: 24px;
+            }
+            .battle-slots {
+                grid-template-columns: repeat(5, 1fr);
             }
         }
 
@@ -1432,6 +1657,36 @@
             .theme-modal-box {
                 padding: 16px;
             }
+            .battle-modal-box {
+                padding: 16px;
+                width: 98%;
+            }
+            .battle-slots {
+                grid-template-columns: repeat(5, 1fr);
+                gap: 4px;
+            }
+            .battle-slot {
+                min-height: 60px;
+                padding: 4px;
+            }
+            .battle-slot .slot-icon {
+                height: 30px;
+            }
+            .battle-controls {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .battle-controls input[type="number"] {
+                width: 100%;
+                max-width: 200px;
+            }
+            .battle-vs {
+                font-size: 20px;
+                padding: 4px 0;
+            }
+            .battle-result-banner {
+                font-size: 20px;
+            }
         }
     </style>
 </head>
@@ -1443,6 +1698,7 @@
         <img class="sidebar-logo" src="https://i.imgur.com/gVudCXv.png" alt="Logo" />
         <div class="sidebar-item active" id="sideLinkMain" title="Upgrade Workspace">🎒</div>
         <div class="sidebar-item" id="sideLinkShop" title="Weapon Shop Supply Store">🛒</div>
+        <div class="sidebar-item" id="sideLinkBattle" title="Case Battles">⚔️</div>
     </aside>
 
     <div class="main-container">
@@ -1566,6 +1822,7 @@
         </footer>
     </div>
 
+    <!-- Result Overlay -->
     <div class="modal-curtain-wrapper" id="resultOverlay">
         <div class="dialog-alert-box">
             <div class="status-icon-node" id="resultIcon">🎉</div>
@@ -1575,10 +1832,10 @@
         </div>
     </div>
 
+    <!-- Admin Overlay -->
     <div class="modal-curtain-wrapper" id="adminOverlay">
         <div class="admin-modal-box">
             <h2>System Admin Terminal</h2>
-
             <div class="admin-row-group">
                 <label>Set Wallet Fake Balance ($)</label>
                 <div class="admin-flex-row">
@@ -1586,7 +1843,6 @@
                     <button class="admin-btn" id="adminSetMoneyBtn">Apply</button>
                 </div>
             </div>
-
             <div class="admin-row-group">
                 <label>Inject Asset To Inventory</label>
                 <div class="admin-flex-row">
@@ -1594,7 +1850,6 @@
                     <button class="admin-btn" id="adminAddSkinBtn">Add</button>
                 </div>
             </div>
-
             <div class="admin-row-group">
                 <label>Remove Active Inventory Asset</label>
                 <div class="admin-flex-row">
@@ -1602,7 +1857,6 @@
                     <button class="admin-btn" id="adminRemoveSkinBtn" style="background:#ff4466;">Remove</button>
                 </div>
             </div>
-
             <div class="admin-row-group">
                 <label>Rig Next Trade Roll Chance (%)</label>
                 <div class="admin-flex-row">
@@ -1610,11 +1864,11 @@
                     <button class="admin-btn" id="adminRigBtn">Rig Spin</button>
                 </div>
             </div>
-
             <button class="admin-close-btn" id="adminCloseBtn">Disconnect Terminal</button>
         </div>
     </div>
 
+    <!-- Theme Overlay -->
     <div class="modal-curtain-wrapper" id="themeOverlay">
         <div class="theme-modal-box">
             <h2>🎨 Theme Customizer</h2>
@@ -1647,6 +1901,33 @@
                 </div>
             </div>
             <button class="theme-close-btn" id="themeCloseBtn">Close</button>
+        </div>
+    </div>
+
+    <!-- ─── BATTLE OVERLAY ─── -->
+    <div class="modal-curtain-wrapper" id="battleOverlay">
+        <div class="battle-modal-box">
+            <h2>⚔️ Case Battle</h2>
+            <div class="battle-container">
+                <div class="battle-side" id="playerSide">
+                    <h3>Your Rolls</h3>
+                    <div class="battle-slots" id="playerSlots"></div>
+                    <div class="battle-total">Total: <span id="playerTotal">$0.00</span></div>
+                </div>
+                <div class="battle-vs">VS</div>
+                <div class="battle-side" id="botSide">
+                    <h3>Bot's Rolls</h3>
+                    <div class="battle-slots" id="botSlots"></div>
+                    <div class="battle-total">Total: <span id="botTotal">$0.00</span></div>
+                </div>
+            </div>
+            <div id="battleResult" class="battle-result-banner"></div>
+            <div class="battle-controls">
+                <input type="number" id="battleBetInput" min="100" max="5000" value="100" step="100" />
+                <button class="battle-btn" id="startBattleBtn">⚔️ Start Battle</button>
+                <span style="color: var(--text-muted); font-size: 13px; font-weight: 500;">Bet: $100 - $5,000</span>
+            </div>
+            <button class="battle-close-btn" id="battleCloseBtn">Close</button>
         </div>
     </div>
 
@@ -1720,6 +2001,9 @@
             let forcedNextSpinChance = null;
             let currentWearValue = 0;
 
+            // Battle state
+            let isBattling = false;
+
             const trollLossImageUrl =
                 "https://media.istockphoto.com/id/639765496/vector/laughing-with-tears-and-pointing-emoticon.jpg?s=612x612&w=0&k=20&c=FVVZllgAwRnQkKmgyDLw4zepwzYc0WBCxOB9N4yFdL0=";
 
@@ -1744,7 +2028,6 @@
                     }
                     if (Array.isArray(state.inventory) && state.inventory.length > 0) {
                         userInventory = state.inventory;
-                        // Ensure each skin has a valid id
                         userInventory.forEach(s => { if (!s.id) s.id = 'loaded_' + Date.now() + Math.random(); });
                         return true;
                     }
@@ -1811,6 +2094,20 @@
             const customBorder = document.getElementById('customBorder');
             const customSidebar = document.getElementById('customSidebar');
             const customNavbar = document.getElementById('customNavbar');
+
+            // Battle refs
+            const battleOverlay = document.getElementById('battleOverlay');
+            const battleCloseBtn = document.getElementById('battleCloseBtn');
+            const sideLinkBattle = document.getElementById('sideLinkBattle');
+            const startBattleBtn = document.getElementById('startBattleBtn');
+            const battleBetInput = document.getElementById('battleBetInput');
+            const playerSlots = document.getElementById('playerSlots');
+            const botSlots = document.getElementById('botSlots');
+            const playerTotal = document.getElementById('playerTotal');
+            const botTotal = document.getElementById('botTotal');
+            const battleResult = document.getElementById('battleResult');
+            const playerSide = document.getElementById('playerSide');
+            const botSide = document.getElementById('botSide');
 
             // ── Theme presets ──
             const presets = {
@@ -2026,12 +2323,159 @@
                 }
             }
 
+            // ── BATTLE LOGIC ──
+            function renderBattleSlots(slotsContainer, skins, totalElement, sideElement) {
+                slotsContainer.innerHTML = '';
+                let total = 0;
+                skins.forEach((skin, index) => {
+                    const slot = document.createElement('div');
+                    slot.className = 'battle-slot';
+                    if (skin) {
+                        slot.classList.add('revealed');
+                        slot.innerHTML = `
+                                <div class="slot-icon">${generateWeaponVectorIcon(skin.name, 0)}</div>
+                                <div class="slot-value">$${skin.value.toFixed(2)}</div>
+                            `;
+                        total += skin.value;
+                    } else {
+                        slot.innerHTML = `<div class="slot-icon" style="opacity:0.2;">?</div>`;
+                    }
+                    slotsContainer.appendChild(slot);
+                });
+                totalElement.textContent = `$${total.toFixed(2)}`;
+                return total;
+            }
+
+            function getRandomSkin() {
+                const idx = Math.floor(Math.random() * MASTER_SKINS_DATABASE.length);
+                return { ...MASTER_SKINS_DATABASE[idx] };
+            }
+
+            function startBattle() {
+                if (isBattling) return;
+                const bet = parseInt(battleBetInput.value);
+
+                if (isNaN(bet) || bet < 100 || bet > 5000) {
+                    alert('Bet must be between $100 and $5,000.');
+                    return;
+                }
+                if (bet > balance) {
+                    alert('Insufficient balance!');
+                    return;
+                }
+
+                // Deduct bet
+                balance -= bet;
+                updateBalanceUI();
+                saveGameState();
+
+                isBattling = true;
+                startBattleBtn.disabled = true;
+                battleResult.textContent = '';
+                battleResult.className = 'battle-result-banner';
+                playerSide.classList.remove('winner');
+                botSide.classList.remove('winner');
+
+                // Generate 10 skins for each side
+                const playerSkins = [];
+                const botSkins = [];
+                for (let i = 0; i < 10; i++) {
+                    playerSkins.push(getRandomSkin());
+                    botSkins.push(getRandomSkin());
+                }
+
+                // Animate revealing (one by one for dramatic effect)
+                let playerRevealed = [];
+                let botRevealed = [];
+                let revealIndex = 0;
+
+                // Clear slots visually
+                playerSlots.innerHTML = '';
+                botSlots.innerHTML = '';
+                for (let i = 0; i < 10; i++) {
+                    const pSlot = document.createElement('div');
+                    pSlot.className = 'battle-slot';
+                    pSlot.innerHTML = `<div class="slot-icon" style="opacity:0.2;">?</div>`;
+                    playerSlots.appendChild(pSlot);
+
+                    const bSlot = document.createElement('div');
+                    bSlot.className = 'battle-slot';
+                    bSlot.innerHTML = `<div class="slot-icon" style="opacity:0.2;">?</div>`;
+                    botSlots.appendChild(bSlot);
+                }
+
+                const interval = setInterval(() => {
+                    if (revealIndex >= 10) {
+                        clearInterval(interval);
+                        // Calculate totals and determine winner
+                        const playerTotalVal = playerSkins.reduce((sum, s) => sum + s.value, 0);
+                        const botTotalVal = botSkins.reduce((sum, s) => sum + s.value, 0);
+                        playerTotal.textContent = `$${playerTotalVal.toFixed(2)}`;
+                        botTotal.textContent = `$${botTotalVal.toFixed(2)}`;
+
+                        let resultMsg = '';
+                        let isWin = false;
+                        if (playerTotalVal > botTotalVal) {
+                            resultMsg = `🏆 You Win! +$${(bet * 2).toFixed(2)}`;
+                            isWin = true;
+                            balance += bet * 2;
+                            playerSide.classList.add('winner');
+                            // REMOVED: playerSkins.forEach(s => { userInventory.push({ ...s, id: 'battle_' + Date.now() + Math.random() }); });
+                            renderInventory();
+                            updateBalanceUI();
+                            saveGameState();
+                        } else if (botTotalVal > playerTotalVal) {
+                            resultMsg = `💀 Bot Wins! You lost $${bet.toFixed(2)}`;
+                            isWin = false;
+                            botSide.classList.add('winner');
+                        } else {
+                            resultMsg = `🤝 It's a Tie! Bet refunded.`;
+                            balance += bet;
+                            // REMOVED: playerSkins.forEach(s => { userInventory.push({ ...s, id: 'battle_' + Date.now() + Math.random() }); });
+                            renderInventory();
+                            updateBalanceUI();
+                            saveGameState();
+                        }
+
+                        battleResult.textContent = resultMsg;
+                        battleResult.className = 'battle-result-banner ' + (isWin ? 'win' : 'lose');
+                        if (playerTotalVal === botTotalVal) {
+                            battleResult.className = 'battle-result-banner';
+                            battleResult.style.color = '#ffd700';
+                        }
+
+                        isBattling = false;
+                        startBattleBtn.disabled = false;
+                        return;
+                    }
+
+                    // Reveal next skin for both sides
+                    const pSkin = playerSkins[revealIndex];
+                    const bSkin = botSkins[revealIndex];
+
+                    const pSlot = playerSlots.children[revealIndex];
+                    pSlot.classList.add('revealed');
+                    pSlot.innerHTML = `
+                            <div class="slot-icon">${generateWeaponVectorIcon(pSkin.name, 0)}</div>
+                            <div class="slot-value">$${pSkin.value.toFixed(2)}</div>
+                        `;
+
+                    const bSlot = botSlots.children[revealIndex];
+                    bSlot.classList.add('revealed');
+                    bSlot.innerHTML = `
+                            <div class="slot-icon">${generateWeaponVectorIcon(bSkin.name, 0)}</div>
+                            <div class="slot-value">$${bSkin.value.toFixed(2)}</div>
+                        `;
+
+                    revealIndex++;
+                }, 300);
+            }
+
             // ── Init ──
             function init() {
                 loadTheme();
                 renderPresets();
 
-                // Load game state
                 const loaded = loadGameState();
                 if (!loaded) {
                     userInventory = [...DEFAULT_INVENTORY];
@@ -2128,6 +2572,42 @@
 
                 upgradeBtn.addEventListener('click', startUpgradeRoll);
                 resultCloseBtn.addEventListener('click', () => resultOverlay.classList.remove('active'));
+
+                // ── Battle Event Listeners ──
+                sideLinkBattle.addEventListener('click', () => {
+                    battleOverlay.classList.add('active');
+                    // Reset battle UI
+                    battleResult.textContent = '';
+                    battleResult.className = 'battle-result-banner';
+                    playerSide.classList.remove('winner');
+                    botSide.classList.remove('winner');
+                    playerSlots.innerHTML = '';
+                    botSlots.innerHTML = '';
+                    playerTotal.textContent = '$0.00';
+                    botTotal.textContent = '$0.00';
+                    for (let i = 0; i < 10; i++) {
+                        const pSlot = document.createElement('div');
+                        pSlot.className = 'battle-slot';
+                        pSlot.innerHTML = `<div class="slot-icon" style="opacity:0.2;">?</div>`;
+                        playerSlots.appendChild(pSlot);
+                        const bSlot = document.createElement('div');
+                        bSlot.className = 'battle-slot';
+                        bSlot.innerHTML = `<div class="slot-icon" style="opacity:0.2;">?</div>`;
+                        botSlots.appendChild(bSlot);
+                    }
+                    startBattleBtn.disabled = false;
+                    isBattling = false;
+                });
+
+                battleCloseBtn.addEventListener('click', () => {
+                    battleOverlay.classList.remove('active');
+                });
+
+                battleOverlay.addEventListener('click', (e) => {
+                    if (e.target === battleOverlay) battleOverlay.classList.remove('active');
+                });
+
+                startBattleBtn.addEventListener('click', startBattle);
             }
 
             function handleAdminVerification() {
@@ -2164,21 +2644,16 @@
             function initViewRouting() {
                 const sMain = document.getElementById('sideLinkMain');
                 const sShop = document.getElementById('sideLinkShop');
-                const paneInv = document.getElementById('pane-inventory');
-                const paneShop = document.getElementById('pane-shop');
 
                 sMain.addEventListener('click', () => {
-                    sShop.classList.remove('active');
+                    document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
                     sMain.classList.add('active');
-                    paneShop.classList.remove('active');
-                    paneInv.classList.add('active');
                 });
                 sShop.addEventListener('click', () => {
-                    sMain.classList.remove('active');
+                    document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
                     sShop.classList.add('active');
-                    paneInv.classList.remove('active');
-                    paneShop.classList.add('active');
                 });
+                // Battle button handled separately
             }
 
             function generateShopOffers() {
