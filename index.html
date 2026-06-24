@@ -18,18 +18,79 @@
             --bg-main: #0a0b0d;
             --bg-panel: #111317;
             --bg-panel-inner: #16191f;
-            --accent-gold: #ff4500;
+            --accent: #ff4500;
             --text-main: #e2e4e9;
             --text-muted: #626775;
+            --border-color: #222631;
+            --shadow-color: rgba(255, 69, 0, 0.3);
+            --sidebar-bg: #060709;
+            --navbar-bg: #08090c;
+            --footer-bg: #060709;
         }
         body {
             background: var(--bg-main);
             min-height: 100vh;
             display: flex;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             color: var(--text-main);
             overflow: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+            position: relative;
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
+        /* ── Animated background overlay ── */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+            animation: gridMove 20s linear infinite;
+        }
+        @keyframes gridMove {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(40px, 40px);
+            }
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 40%, var(--accent) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, var(--accent) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, #0a0b0d 0%, transparent 70%);
+            opacity: 0.08;
+            animation: bgPulse 15s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 0;
+        }
+        @keyframes bgPulse {
+            0% {
+                opacity: 0.05;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0.12;
+                transform: scale(1.1);
+            }
+        }
+
         ::-webkit-scrollbar {
             width: 5px;
             height: 5px;
@@ -38,17 +99,32 @@
             background: var(--bg-main);
         }
         ::-webkit-scrollbar-thumb {
-            background: #222631;
+            background: var(--border-color);
             border-radius: 10px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #ffaa00;
+            background: var(--accent);
+        }
+
+        /* ── Noise texture ── */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.012;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 256px 256px;
         }
 
         /* ── Main App Shell Layout ── */
         .sidebar {
             width: 80px;
-            background: #060709;
+            background: var(--sidebar-bg);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -56,6 +132,10 @@
             gap: 16px;
             flex-shrink: 0;
             z-index: 10;
+            transition: background 0.3s ease;
+            border-right: 1px solid var(--border-color);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
         .sidebar-logo {
             width: 46px;
@@ -63,26 +143,38 @@
             object-fit: contain;
             margin-bottom: 20px;
             border-radius: 8px;
+            filter: drop-shadow(0 0 15px var(--shadow-color));
+            transition: filter 0.3s;
         }
         .sidebar-item {
             width: 50px;
             height: 50px;
-            border-radius: 12px;
-            background: #111318;
+            border-radius: 14px;
+            background: var(--bg-panel-inner);
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 20px;
+            color: var(--text-muted);
+            position: relative;
+            border: 1px solid transparent;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
         }
         .sidebar-item:hover {
-            transform: translateY(-2px);
-            color: #fff;
+            transform: translateY(-3px) scale(1.05);
+            color: var(--text-main);
+            border-color: var(--accent);
+            box-shadow: 0 0 25px var(--shadow-color);
         }
         .sidebar-item.active {
-            background: rgba(255, 69, 0, 0.1);
-            color: #ff4500;
+            background: rgba(255, 69, 0, 0.12);
+            color: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 0 35px var(--shadow-color);
         }
 
         .main-container {
@@ -91,17 +183,23 @@
             flex-direction: column;
             height: 100vh;
             overflow: hidden;
+            position: relative;
+            z-index: 1;
         }
 
         /* ── Top Control Banner ── */
         .top-navbar {
             height: 70px;
-            background: #08090c;
+            background: var(--navbar-bg);
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 32px;
             flex-shrink: 0;
+            transition: background 0.3s ease;
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
         .nav-brand-section {
             display: flex;
@@ -111,20 +209,32 @@
         .brand-logo-text {
             font-family: 'Orbitron', sans-serif;
             font-weight: 900;
-            font-size: 24px;
-            letter-spacing: 0.06em;
-            color: #fff;
-            text-shadow: 0 0 20px rgba(255, 69, 0, 0.2);
+            font-size: 22px;
+            letter-spacing: 0.08em;
+            color: var(--text-main);
+            text-shadow: 0 0 20px var(--shadow-color);
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+            animation: glowPulse 4s ease-in-out infinite alternate;
+        }
+        @keyframes glowPulse {
+            0% {
+                text-shadow: 0 0 20px var(--shadow-color);
+            }
+            100% {
+                text-shadow: 0 0 50px var(--shadow-color), 0 0 100px var(--shadow-color);
+            }
         }
         .ticker-stats {
             display: flex;
             gap: 20px;
             font-size: 12px;
             color: var(--text-muted);
-            font-weight: 500;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.02em;
         }
         .ticker-stats span {
-            color: #e2e4e9;
+            color: var(--text-main);
             font-weight: 700;
             margin-left: 4px;
         }
@@ -136,37 +246,75 @@
         }
         .wallet-display-wrapper {
             text-align: right;
+            position: relative;
         }
         .wallet-label {
-            font-size: 11px;
+            font-size: 10px;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.08em;
             font-weight: 700;
+            font-family: 'Inter', sans-serif;
         }
         .wallet-value {
             font-size: 17px;
             font-weight: 800;
-            color: #ffaa00;
+            color: var(--accent);
+            transition: color 0.3s ease;
+            animation: pulseGlow 2.5s ease-in-out infinite;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.02em;
+        }
+        @keyframes pulseGlow {
+            0%,
+            100% {
+                text-shadow: 0 0 10px var(--shadow-color);
+            }
+            50% {
+                text-shadow: 0 0 30px var(--shadow-color), 0 0 60px var(--shadow-color);
+            }
         }
 
-        .btn-admin-panel-trigger {
-            background: #ff4500;
+        .btn-admin-panel-trigger,
+        .btn-theme-trigger {
+            background: var(--accent);
             color: #fff;
             border: none;
             padding: 9px 20px;
             font-weight: 800;
-            border-radius: 8px;
+            border-radius: 30px;
             cursor: pointer;
-            font-size: 12px;
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 0.05em;
-            transition: all 0.2s;
-            box-shadow: 0 0 15px rgba(255, 69, 0, 0.3);
+            font-size: 11px;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 0 20px var(--shadow-color);
+            position: relative;
+            overflow: hidden;
         }
-        .btn-admin-panel-trigger:hover {
-            background: #ff5511;
-            box-shadow: 0 0 25px rgba(255, 69, 0, 0.6);
+        .btn-admin-panel-trigger::after,
+        .btn-theme-trigger::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        .btn-admin-panel-trigger:hover::after,
+        .btn-theme-trigger:hover::after {
+            opacity: 1;
+        }
+        .btn-admin-panel-trigger:hover,
+        .btn-theme-trigger:hover {
+            filter: brightness(1.15);
+            box-shadow: 0 0 35px var(--shadow-color);
+            transform: scale(1.04);
         }
 
         /* ── Workspace Viewport Window ── */
@@ -185,15 +333,46 @@
             grid-template-columns: 1.5fr 1.1fr 1.5fr;
             gap: 16px;
             background: var(--bg-panel);
-            border-radius: 16px;
+            border-radius: 20px;
             padding: 24px;
             align-items: stretch;
             width: 100%;
             position: relative;
+            transition: background 0.3s ease;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+        .arena-grid::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            border-radius: 20px;
+            padding: 1px;
+            background: linear-gradient(135deg, var(--accent), transparent 30%, var(--accent) 70%, transparent);
+            background-size: 300% 300%;
+            animation: borderGlow 6s ease-in-out infinite alternate;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+        @keyframes borderGlow {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 100% 50%;
+            }
         }
         .arena-bucket {
             background: var(--bg-panel-inner);
-            border-radius: 12px;
+            border-radius: 16px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -201,24 +380,35 @@
             padding: 32px 20px;
             text-align: center;
             position: relative;
-            transition: border-color 0.2s;
+            transition: background 0.3s ease, border-color 0.2s, box-shadow 0.3s, transform 0.2s;
             min-height: 300px;
+            border: 1px solid transparent;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .arena-bucket:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 40px var(--shadow-color), inset 0 2px 4px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
         }
         .bucket-descriptor-label {
-            font-size: 12px;
+            font-size: 10px;
             color: var(--text-muted);
             text-transform: uppercase;
             position: absolute;
-            top: 22px;
-            font-weight: 800;
-            letter-spacing: 0.08em;
+            top: 18px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            background: var(--bg-panel-inner);
+            padding: 0 12px;
+            font-family: 'Inter', sans-serif;
         }
         .arena-fallback-icon {
             width: 56px;
             height: 56px;
-            opacity: 0.1;
-            color: #ffaa00;
+            opacity: 0.12;
+            color: var(--accent);
             margin-bottom: 12px;
+            transition: all 0.3s;
         }
         .arena-bucket .skin-preview-graphic {
             width: 100%;
@@ -231,23 +421,28 @@
             z-index: 2;
         }
         .arena-bucket .skin-title-node {
-            font-weight: 800;
-            font-size: 17px;
-            color: #fff;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text-main);
             margin-top: 14px;
+            text-shadow: 0 0 20px var(--shadow-color);
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.01em;
         }
         .arena-bucket .skin-price-node {
-            color: #ffaa00;
-            font-weight: 900;
+            color: var(--accent);
+            font-weight: 800;
             margin-top: 6px;
             font-size: 16px;
+            text-shadow: 0 0 20px var(--shadow-color);
+            font-family: 'Inter', sans-serif;
         }
 
         /* ── TARGET BUCKET WITH WEAR SLIDER ── */
         .target-bucket-wrap {
             position: relative;
             background: var(--bg-panel-inner);
-            border-radius: 12px;
+            border-radius: 16px;
             min-height: 300px;
             display: flex;
             flex-direction: column;
@@ -255,33 +450,48 @@
             justify-content: center;
             padding: 32px 20px 24px;
             text-align: center;
+            transition: background 0.3s ease, border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+            border: 1px solid transparent;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .target-bucket-wrap:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 40px var(--shadow-color), inset 0 2px 4px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
         }
         .target-bucket-wrap .bucket-descriptor-label {
             position: absolute;
-            top: 22px;
-            font-size: 12px;
+            top: 18px;
+            font-size: 10px;
             color: var(--text-muted);
             text-transform: uppercase;
-            font-weight: 800;
-            letter-spacing: 0.08em;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            background: var(--bg-panel-inner);
+            padding: 0 12px;
+            font-family: 'Inter', sans-serif;
         }
 
         /* ── WEAR SLIDER ── */
         .wear-slider-container {
             position: absolute;
-            top: 52px;
+            top: 48px;
             left: 50%;
             transform: translateX(-50%);
             width: calc(100% - 32px);
             max-width: 280px;
-            background: rgba(10, 11, 13, 0.7);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border-radius: 12px;
+            background: rgba(10, 11, 13, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 14px;
             padding: 8px 16px 10px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
             z-index: 10;
+            transition: border-color 0.3s ease;
+        }
+        .wear-slider-container:hover {
+            border-color: var(--accent);
         }
         .wear-slider-header {
             display: flex;
@@ -293,11 +503,14 @@
             text-transform: uppercase;
             letter-spacing: 0.08em;
             margin-bottom: 2px;
+            font-family: 'Inter', sans-serif;
         }
         .wear-slider-header .wear-value {
-            color: #ffaa00;
-            font-family: 'Orbitron', monospace;
+            color: var(--accent);
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
             font-size: 12px;
+            text-shadow: 0 0 10px var(--shadow-color);
         }
         .wear-slider-track {
             position: relative;
@@ -325,26 +538,26 @@
         .wear-slider-track input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
             background: #fff;
             border-radius: 50%;
-            border: 2px solid #ff4500;
-            box-shadow: 0 0 12px rgba(255, 69, 0, 0.4);
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 16px var(--shadow-color);
             transition: all 0.15s;
             cursor: grab;
         }
         .wear-slider-track input[type="range"]::-webkit-slider-thumb:hover {
             transform: scale(1.15);
-            box-shadow: 0 0 20px rgba(255, 69, 0, 0.6);
+            box-shadow: 0 0 24px var(--shadow-color);
         }
         .wear-slider-track input[type="range"]::-moz-range-thumb {
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
             background: #fff;
             border-radius: 50%;
-            border: 2px solid #ff4500;
-            box-shadow: 0 0 12px rgba(255, 69, 0, 0.4);
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 16px var(--shadow-color);
             cursor: grab;
         }
         .wear-slider-labels {
@@ -357,9 +570,11 @@
             text-transform: uppercase;
             padding: 0 2px;
             margin-top: 1px;
+            font-family: 'Inter', sans-serif;
         }
         .wear-slider-labels span.active-label {
-            color: #fff;
+            color: var(--text-main);
+            text-shadow: 0 0 10px var(--shadow-color);
         }
 
         /* ── Wheel Dial Module ── */
@@ -379,6 +594,7 @@
         .radial-wheel-pod svg {
             width: 100%;
             height: 100%;
+            filter: drop-shadow(0 0 30px var(--shadow-color));
         }
         .radial-percentage-text {
             position: absolute;
@@ -386,43 +602,69 @@
             left: 50%;
             transform: translate(-50%, -50%);
             font-family: 'Orbitron', sans-serif;
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 900;
-            color: #fff;
-            text-shadow: 0 0 20px rgba(255, 69, 0, 0.4);
-            transition: opacity 0.3s ease;
+            color: var(--text-main);
+            text-shadow: 0 0 30px var(--shadow-color);
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+            animation: pulseGlow 2.5s ease-in-out infinite;
+            letter-spacing: 0.04em;
         }
         .btn-roll-upgrade {
             margin-top: 24px;
             width: 100%;
             max-width: 240px;
-            background: linear-gradient(135deg, #ff4500, #ffaa00);
+            background: linear-gradient(135deg, var(--accent), #ffaa00);
             color: #000;
             border: none;
-            padding: 16px;
-            font-size: 16px;
-            font-weight: 900;
+            padding: 16px 24px;
+            font-size: 15px;
+            font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            border-radius: 12px;
+            letter-spacing: 0.08em;
+            border-radius: 50px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 0 30px var(--shadow-color);
+            position: relative;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-roll-upgrade::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        .btn-roll-upgrade:hover:not(:disabled)::after {
+            opacity: 1;
         }
         .btn-roll-upgrade:hover:not(:disabled) {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.3);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 40px var(--shadow-color);
         }
         .btn-roll-upgrade:disabled {
             opacity: 0.2;
             cursor: not-allowed;
+            transform: none;
         }
         .arena-odds-caption {
             font-size: 13px;
             color: var(--text-muted);
             margin-top: 10px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
         }
         .arena-odds-caption strong {
-            color: #ffaa00;
+            color: var(--accent);
+            text-shadow: 0 0 10px var(--shadow-color);
+            font-weight: 700;
         }
 
         /* ── Win Detonation Banner ── */
@@ -432,11 +674,11 @@
             left: 50%;
             transform: translate(-50%, -50%) scale(0.5);
             font-family: 'Orbitron', sans-serif;
-            font-size: 42px;
+            font-size: 48px;
             font-weight: 900;
-            color: #ffaa00;
-            text-shadow: 0 0 30px #ff4500, 0 0 60px #ffaa00;
-            letter-spacing: 0.1em;
+            color: var(--accent);
+            text-shadow: 0 0 40px var(--accent), 0 0 80px var(--accent);
+            letter-spacing: 0.08em;
             opacity: 0;
             pointer-events: none;
             z-index: 20;
@@ -446,6 +688,18 @@
         .win-detonation-banner.detonated {
             opacity: 1;
             transform: translate(-50%, -50%) scale(1);
+            animation: winPulse 0.6s ease-in-out 3;
+        }
+        @keyframes winPulse {
+            0%,
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                text-shadow: 0 0 40px var(--accent), 0 0 80px var(--accent);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.15);
+                text-shadow: 0 0 80px var(--accent), 0 0 160px var(--accent);
+            }
         }
 
         /* Kinetic Animation Keyframes */
@@ -460,10 +714,10 @@
 
         @keyframes violentShake {
             0% {
-                transform: translate(4px, 2px) rotate(2deg);
+                transform: translate(6px, 3px) rotate(3deg);
             }
             100% {
-                transform: translate(-4px, -2px) rotate(-2deg);
+                transform: translate(-6px, -3px) rotate(-3deg);
             }
         }
 
@@ -476,11 +730,20 @@
         }
         .axis-card-panel {
             background: var(--bg-panel);
-            border-radius: 16px;
+            border-radius: 20px;
             padding: 24px;
             display: flex;
             flex-direction: column;
             height: 480px;
+            transition: background 0.3s ease;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+        .axis-card-panel:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 40px var(--shadow-color);
         }
         .axis-panel-header {
             display: flex;
@@ -488,13 +751,16 @@
             justify-content: space-between;
             margin-bottom: 20px;
             padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
         }
         .axis-panel-header h3 {
-            font-size: 15px;
-            font-weight: 800;
-            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.08em;
+            text-shadow: 0 0 10px var(--shadow-color);
+            font-family: 'Inter', sans-serif;
         }
 
         .tab-embedded-row {
@@ -506,27 +772,41 @@
             background: var(--bg-panel-inner);
             border: none;
             color: var(--text-muted);
-            padding: 8px 16px;
+            padding: 8px 18px;
             border-radius: 30px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             cursor: pointer;
-            transition: color 0.2s;
+            transition: all 0.25s;
+            border: 1px solid transparent;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            font-family: 'Inter', sans-serif;
         }
         .btn-embedded-utility:hover {
-            color: #fff;
+            color: var(--text-main);
+            border-color: var(--accent);
+            box-shadow: 0 0 25px var(--shadow-color);
+            transform: scale(1.02);
         }
 
         .select-filter-menu {
             background: var(--bg-panel-inner);
-            border: none;
+            border: 1px solid var(--border-color);
             color: var(--text-main);
-            padding: 8px 16px;
+            padding: 8px 18px;
             border-radius: 30px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             outline: none;
             cursor: pointer;
+            transition: all 0.25s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            font-family: 'Inter', sans-serif;
+        }
+        .select-filter-menu:hover,
+        .select-filter-menu:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 25px var(--shadow-color);
         }
 
         /* ── Matrix Elements ── */
@@ -540,31 +820,39 @@
         }
         .node-matrix-item {
             background: var(--bg-panel-inner);
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 14px;
             cursor: pointer;
             position: relative;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: all 0.2s ease;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
             min-height: 160px;
             text-align: center;
+            border: 1px solid transparent;
+            transform: scale(1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
         .node-matrix-item:hover {
             background: #1d212a;
-            transform: translateY(-1px);
+            transform: translateY(-3px) scale(1.03);
+            border-color: var(--accent);
+            box-shadow: 0 0 30px var(--shadow-color);
+            z-index: 2;
         }
         .node-matrix-item.selected-active {
             background: #202530;
-            box-shadow: inset 0 0 0 2px #ff4500, 0 0 25px rgba(255, 69, 0, 0.15);
+            border-color: var(--accent);
+            box-shadow: inset 0 0 0 2px var(--accent), 0 0 35px var(--shadow-color);
+            transform: scale(1.04);
         }
 
         .node-image-container {
             width: 100%;
             height: 75px;
-            background: #0b0c0f;
-            border-radius: 8px;
+            background: var(--bg-main);
+            border-radius: 10px;
             margin: 6px 0;
             display: flex;
             align-items: center;
@@ -578,33 +866,48 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: filter 0.3s;
+        }
+        .node-matrix-item:hover .vector-render-icon {
+            filter: drop-shadow(0 0 15px var(--shadow-color));
         }
 
         .node-meta-title {
             font-size: 12px;
-            color: #cdd0d8;
+            color: var(--text-muted);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             font-weight: 600;
+            transition: color 0.3s ease;
+            font-family: 'Inter', sans-serif;
         }
         .node-meta-price {
             font-size: 13px;
             font-weight: 700;
-            color: #ffaa00;
+            color: var(--accent);
             margin-top: 2px;
+            text-shadow: 0 0 10px var(--shadow-color);
+            font-family: 'Inter', sans-serif;
         }
         .btn-node-shop-buy {
-            background: linear-gradient(135deg, #ff4500, #ffaa00);
+            background: linear-gradient(135deg, var(--accent), #ffaa00);
             color: #000;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             padding: 6px;
             font-size: 11px;
             font-weight: 800;
             margin-top: 6px;
             cursor: pointer;
             width: 100%;
+            transition: all 0.25s;
+            box-shadow: 0 0 15px var(--shadow-color);
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-node-shop-buy:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px var(--shadow-color);
         }
 
         /* View Router Panes */
@@ -625,8 +928,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(6px);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             z-index: 999;
             align-items: center;
             justify-content: center;
@@ -642,57 +946,88 @@
             text-align: center;
             max-width: 420px;
             width: 90%;
+            transition: background 0.3s ease;
+            border: 1px solid var(--accent);
+            box-shadow: 0 0 80px var(--shadow-color);
+            animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes modalPop {
+            0% {
+                transform: scale(0.8) rotate(-2deg);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
         }
         .dialog-alert-box .status-icon-node {
-            font-size: 52px;
+            font-size: 56px;
             margin-bottom: 12px;
         }
         .dialog-alert-box h2 {
             font-size: 24px;
             margin-bottom: 6px;
-            font-weight: 900;
+            font-weight: 800;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.02em;
         }
         .dialog-alert-box p {
             font-size: 14px;
             color: var(--text-muted);
             line-height: 1.5;
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
         }
         .dialog-alert-box .win-heading-text {
-            color: #ffaa00;
+            color: var(--accent);
+            text-shadow: 0 0 40px var(--shadow-color);
         }
         .dialog-alert-box .loss-heading-text {
             color: #ff4466;
+            text-shadow: 0 0 40px rgba(255, 68, 102, 0.3);
         }
         .dialog-alert-box button {
-            background: linear-gradient(135deg, #ff4500, #ffaa00);
+            background: linear-gradient(135deg, var(--accent), #ffaa00);
             color: #000;
             border: none;
             padding: 10px 36px;
-            border-radius: 30px;
+            border-radius: 40px;
             font-weight: 800;
             cursor: pointer;
             margin-top: 24px;
+            transition: all 0.25s;
+            box-shadow: 0 0 30px var(--shadow-color);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+        }
+        .dialog-alert-box button:hover {
+            transform: scale(1.05);
         }
 
         /* ── Developer Admin Overlay UI ── */
         .admin-modal-box {
-            background: #0d0f13;
-            border: 2px solid #ff4500;
+            background: var(--bg-panel);
+            border: 2px solid var(--accent);
             width: 500px;
             max-width: 95%;
-            border-radius: 16px;
+            border-radius: 20px;
             padding: 24px;
-            box-shadow: 0 0 40px rgba(255, 69, 0, 0.4);
+            box-shadow: 0 0 60px var(--shadow-color);
+            transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+            animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .admin-modal-box h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 20px;
-            color: #ff4500;
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--accent);
             margin-bottom: 20px;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            border-bottom: 1px solid #222631;
+            letter-spacing: 0.06em;
+            border-bottom: 1px solid var(--border-color);
             padding-bottom: 10px;
+            text-shadow: 0 0 20px var(--shadow-color);
         }
         .admin-row-group {
             margin-bottom: 16px;
@@ -701,10 +1036,12 @@
             gap: 6px;
         }
         .admin-row-group label {
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
             font-weight: 700;
             color: var(--text-muted);
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.06em;
         }
         .admin-flex-row {
             display: flex;
@@ -712,55 +1049,68 @@
         }
         .admin-input-field {
             flex-grow: 1;
-            background: #16191f;
-            border: 1px solid #222631;
+            background: var(--bg-panel-inner);
+            border: 1px solid var(--border-color);
             padding: 10px;
-            color: #fff;
-            border-radius: 6px;
+            color: var(--text-main);
+            border-radius: 10px;
             outline: none;
             font-size: 14px;
+            transition: background 0.3s, border-color 0.3s, color 0.3s;
+            font-family: 'Inter', sans-serif;
         }
         .admin-input-field:focus {
-            border-color: #ff4500;
+            border-color: var(--accent);
+            box-shadow: 0 0 25px var(--shadow-color);
         }
         .admin-btn {
-            background: #222631;
-            color: #fff;
+            background: var(--border-color);
+            color: var(--text-main);
             border: none;
             padding: 10px 16px;
-            border-radius: 6px;
+            border-radius: 10px;
             font-weight: 700;
             cursor: pointer;
             font-size: 13px;
-            transition: all 0.2s;
+            transition: all 0.25s;
+            font-family: 'Inter', sans-serif;
         }
         .admin-btn:hover {
-            background: #ff4500;
+            background: var(--accent);
+            color: #000;
+            box-shadow: 0 0 25px var(--shadow-color);
+            transform: scale(1.02);
         }
         .admin-select {
-            background: #16191f;
-            color: #fff;
-            border: 1px solid #222631;
+            background: var(--bg-panel-inner);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
             padding: 10px;
-            border-radius: 6px;
+            border-radius: 10px;
             flex-grow: 1;
             outline: none;
+            transition: background 0.3s, color 0.3s, border-color 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+        .admin-select:focus {
+            border-color: var(--accent);
         }
         .admin-close-btn {
             width: 100%;
             background: transparent;
-            border: 1px solid #222631;
+            border: 1px solid var(--border-color);
             color: var(--text-muted);
             padding: 12px;
-            border-radius: 6px;
+            border-radius: 10px;
             margin-top: 10px;
             font-weight: 700;
             cursor: pointer;
-            transition: color 0.2s;
+            transition: color 0.2s, border-color 0.2s;
+            font-family: 'Inter', sans-serif;
         }
         .admin-close-btn:hover {
-            color: #fff;
-            border-color: #ff4500;
+            color: var(--text-main);
+            border-color: var(--accent);
         }
 
         #tickerGroup {
@@ -768,19 +1118,19 @@
             transition: transform 2.5s cubic-bezier(0.1, 0.8, 0.1, 1);
         }
         .panel-flash-win {
-            box-shadow: inset 0 0 40px rgba(255, 170, 0, 0.15);
+            box-shadow: inset 0 0 60px rgba(255, 170, 0, 0.2);
         }
         .panel-flash-loss {
-            box-shadow: inset 0 0 40px rgba(255, 68, 102, 0.15);
+            box-shadow: inset 0 0 60px rgba(255, 68, 102, 0.2);
         }
         .shop-timer-badge {
             font-size: 11px;
             font-weight: 700;
             color: var(--text-muted);
-            font-family: 'Orbitron', monospace;
+            font-family: 'Inter', sans-serif;
         }
         .shop-timer-badge span {
-            color: #ffaa00;
+            color: var(--accent);
             margin-left: 3px;
         }
 
@@ -789,14 +1139,156 @@
             width: 100%;
             text-align: center;
             padding: 12px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 11px;
-            font-weight: 800;
+            font-family: 'Inter', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
             color: var(--text-muted);
             letter-spacing: 0.15em;
-            background: #060709;
-            border-top: 1px solid #111317;
+            text-transform: uppercase;
+            background: var(--footer-bg);
+            border-top: 1px solid var(--border-color);
             flex-shrink: 0;
+            transition: background 0.3s, color 0.3s, border-color 0.3s;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        /* ── Theme Modal ── */
+        .theme-modal-box {
+            background: var(--bg-panel);
+            border: 2px solid var(--accent);
+            width: 540px;
+            max-width: 95%;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 0 60px var(--shadow-color);
+            max-height: 90vh;
+            overflow-y: auto;
+            transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+            animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .theme-modal-box h2 {
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            text-shadow: 0 0 20px var(--shadow-color);
+        }
+        .theme-preset-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .theme-preset-btn {
+            background: var(--bg-panel-inner);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 10px 8px;
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.25s;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            font-family: 'Inter', sans-serif;
+        }
+        .theme-preset-btn .preset-swatch {
+            width: 100%;
+            height: 24px;
+            border-radius: 8px;
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+        }
+        .theme-preset-btn:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px var(--shadow-color);
+        }
+        .theme-preset-btn.active-preset {
+            border-color: var(--accent);
+            box-shadow: 0 0 40px var(--shadow-color);
+        }
+        .theme-custom-section {
+            border-top: 1px solid var(--border-color);
+            padding-top: 16px;
+            margin-top: 4px;
+        }
+        .theme-custom-section h3 {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 12px;
+            font-family: 'Inter', sans-serif;
+        }
+        .theme-color-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        .theme-color-row label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            min-width: 70px;
+            font-family: 'Inter', sans-serif;
+        }
+        .theme-color-row input[type="color"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 38px;
+            height: 38px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            background: transparent;
+            cursor: pointer;
+            padding: 2px;
+            transition: border-color 0.3s;
+        }
+        .theme-color-row input[type="color"]:hover {
+            border-color: var(--accent);
+        }
+        .theme-color-row input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+        .theme-color-row input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: 8px;
+        }
+        .theme-color-row input[type="color"]::-moz-color-swatch {
+            border: none;
+            border-radius: 8px;
+        }
+        .theme-close-btn {
+            width: 100%;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .theme-close-btn:hover {
+            color: var(--text-main);
+            border-color: var(--accent);
         }
 
         /* ── Responsive ── */
@@ -841,6 +1333,9 @@
             }
             .win-detonation-banner {
                 font-size: 28px;
+            }
+            .theme-preset-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
@@ -888,12 +1383,12 @@
                 height: 4px;
             }
             .wear-slider-track input[type="range"]::-webkit-slider-thumb {
-                width: 12px;
-                height: 12px;
+                width: 14px;
+                height: 14px;
             }
             .wear-slider-track input[type="range"]::-moz-range-thumb {
-                width: 12px;
-                height: 12px;
+                width: 14px;
+                height: 14px;
             }
             .wear-slider-labels {
                 font-size: 7px;
@@ -931,10 +1426,18 @@
             .node-image-container {
                 height: 55px;
             }
+            .theme-preset-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .theme-modal-box {
+                padding: 16px;
+            }
         }
     </style>
 </head>
 <body>
+
+    <div class="noise-overlay"></div>
 
     <aside class="sidebar">
         <img class="sidebar-logo" src="https://i.imgur.com/gVudCXv.png" alt="Logo" />
@@ -956,36 +1459,35 @@
                     <div class="wallet-label">Fake Balance</div>
                     <div class="wallet-value" id="balanceDisplay">$5,000.00</div>
                 </div>
+                <button class="btn-theme-trigger" id="themeBtn">🎨 Theme</button>
                 <button class="btn-admin-panel-trigger" id="adminPanelBtn">ADMIN PANEL</button>
             </div>
         </nav>
 
         <main class="workspace-viewport">
             <section class="arena-grid" id="arenaPanel">
-                <!-- Input Bucket -->
                 <div class="arena-bucket" id="inputDisplay">
                     <div class="bucket-descriptor-label">Sacrifice Skin</div>
                     <svg class="arena-fallback-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
                     <div style="color: var(--text-muted); font-size: 13px;">Select a skin from inventory to upgrade</div>
                 </div>
 
-                <!-- Dial Module -->
                 <div class="dial-module">
                     <div class="win-detonation-banner" id="winBanner">YOU WIN</div>
                     <div class="radial-wheel-pod" id="wheelPod">
                         <svg viewBox="0 0 200 200">
-                            <circle cx="100" cy="100" r="80" fill="none" stroke="#16191f" stroke-width="22" />
-                            <circle cx="100" cy="100" r="80" fill="none" stroke="#222631" stroke-width="18" />
+                            <circle cx="100" cy="100" r="80" fill="none" stroke="var(--bg-panel-inner)" stroke-width="22" />
+                            <circle cx="100" cy="100" r="80" fill="none" stroke="var(--border-color)" stroke-width="18" />
                             <circle cx="100" cy="100" r="80" fill="none" stroke="url(#fireGradient)" stroke-width="18"
                             stroke-linecap="round" stroke-dasharray="502.65" stroke-dashoffset="502.65"
                             id="wheelArc" transform="rotate(-90 100 100)" />
                             <g id="tickerGroup">
-                                <polygon points="100,180 93,194 107,194" fill="#ff4500" />
-                                <line x1="100" y1="180" x2="100" y2="164" stroke="#ff4500" stroke-width="4" stroke-linecap="round" />
+                                <polygon points="100,180 93,194 107,194" fill="var(--accent)" />
+                                <line x1="100" y1="180" x2="100" y2="164" stroke="var(--accent)" stroke-width="4" stroke-linecap="round" />
                             </g>
                             <defs>
                                 <linearGradient id="fireGradient" x1="0%" y1="100%" x2="100%" y2="0%">
-                                    <stop offset="0%" stop-color="#ff2a00" />
+                                    <stop offset="0%" stop-color="var(--accent)" />
                                     <stop offset="50%" stop-color="#ff7700" />
                                     <stop offset="100%" stop-color="#ffdd00" />
                                 </linearGradient>
@@ -997,11 +1499,9 @@
                     <div class="arena-odds-caption" id="oddsDisplay">Win chance: <strong>0.00%</strong></div>
                 </div>
 
-                <!-- Target Bucket with WEAR SLIDER on top of skin image -->
                 <div class="target-bucket-wrap" id="targetWrap">
                     <div class="bucket-descriptor-label">Target Upgrade</div>
 
-                    <!-- ─── WEAR SLIDER (FN → BS) ─── -->
                     <div class="wear-slider-container" id="wearSliderContainer">
                         <div class="wear-slider-header">
                             <span>Wear</span>
@@ -1019,7 +1519,6 @@
                         </div>
                     </div>
 
-                    <!-- Target content (dynamic) -->
                     <div id="targetContent" style="margin-top: 30px;">
                         <svg class="arena-fallback-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
                         <div style="color: var(--text-muted); font-size: 13px;">Choose a target outcome weapon card</div>
@@ -1067,7 +1566,6 @@
         </footer>
     </div>
 
-    <!-- System Modal Context Alert Wrapper -->
     <div class="modal-curtain-wrapper" id="resultOverlay">
         <div class="dialog-alert-box">
             <div class="status-icon-node" id="resultIcon">🎉</div>
@@ -1077,7 +1575,6 @@
         </div>
     </div>
 
-    <!-- Developer Overriding Admin Interface -->
     <div class="modal-curtain-wrapper" id="adminOverlay">
         <div class="admin-modal-box">
             <h2>System Admin Terminal</h2>
@@ -1118,197 +1615,48 @@
         </div>
     </div>
 
+    <div class="modal-curtain-wrapper" id="themeOverlay">
+        <div class="theme-modal-box">
+            <h2>🎨 Theme Customizer</h2>
+            <div class="theme-preset-grid" id="themePresetGrid"></div>
+            <div class="theme-custom-section">
+                <h3>Custom Colors</h3>
+                <div class="theme-color-row">
+                    <label>Background</label>
+                    <input type="color" id="customBgMain" value="#0a0b0d" />
+                    <label style="min-width:50px;">Panel</label>
+                    <input type="color" id="customBgPanel" value="#111317" />
+                    <label style="min-width:50px;">Inner</label>
+                    <input type="color" id="customBgInner" value="#16191f" />
+                </div>
+                <div class="theme-color-row">
+                    <label>Accent</label>
+                    <input type="color" id="customAccent" value="#ff4500" />
+                    <label style="min-width:50px;">Text</label>
+                    <input type="color" id="customText" value="#e2e4e9" />
+                    <label style="min-width:50px;">Muted</label>
+                    <input type="color" id="customTextMuted" value="#626775" />
+                </div>
+                <div class="theme-color-row">
+                    <label>Border</label>
+                    <input type="color" id="customBorder" value="#222631" />
+                    <label style="min-width:50px;">Sidebar</label>
+                    <input type="color" id="customSidebar" value="#060709" />
+                    <label style="min-width:50px;">Navbar</label>
+                    <input type="color" id="customNavbar" value="#08090c" />
+                </div>
+            </div>
+            <button class="theme-close-btn" id="themeCloseBtn">Close</button>
+        </div>
+    </div>
+
     <script>
         (function() {
             'use strict';
 
-            let balance = 5000.00;
-            let selectedInputSkin = null;
-            let selectedTargetSkin = null;
-            let isSpinning = false;
-            let currentShopSkins = [];
-            let shopTimeRemaining = 300;
-
-            let forcedNextSpinChance = null;
-
-            // Wear state
-            let currentWearValue = 0; // 0 = FN, 100 = BS
-
-            const trollLossImageUrl =
-                "https://media.istockphoto.com/id/639765496/vector/laughing-with-tears-and-pointing-emoticon.jpg?s=612x612&w=0&k=20&c=FVVZllgAwRnQkKmgyDLw4zepwzYc0WBCxOB9N4yFdL0=";
-
-            // ── DOM refs ──
-            const balanceDisplay = document.getElementById('balanceDisplay');
-            const inventoryGrid = document.getElementById('inventoryGrid');
-            const targetGrid = document.getElementById('targetGrid');
-            const shopGrid = document.getElementById('shopGrid');
-            const inputDisplay = document.getElementById('inputDisplay');
-            const targetContent = document.getElementById('targetContent');
-            const targetWrap = document.getElementById('targetWrap');
-            const wheelArc = document.getElementById('wheelArc');
-            const wheelPercentDisplay = document.getElementById('wheelPercentDisplay');
-            const tickerGroup = document.getElementById('tickerGroup');
-            const upgradeBtn = document.getElementById('upgradeBtn');
-            const oddsDisplay = document.getElementById('oddsDisplay');
-            const useBalanceBtn = document.getElementById('useBalanceBtn');
-            const priceFilter = document.getElementById('priceFilter');
-            const timerText = document.getElementById('timerText');
-            const arenaPanel = document.getElementById('arenaPanel');
-            const resultOverlay = document.getElementById('resultOverlay');
-            const resultIcon = document.getElementById('resultIcon');
-            const resultTitle = document.getElementById('resultTitle');
-            const resultSub = document.getElementById('resultSub');
-            const resultCloseBtn = document.getElementById('resultCloseBtn');
-            const wheelPod = document.getElementById('wheelPod');
-            const winBanner = document.getElementById('winBanner');
-
-            // ── Wear slider refs ──
-            const wearSlider = document.getElementById('wearSlider');
-            const wearValueDisplay = document.getElementById('wearValueDisplay');
-            const labelFn = document.getElementById('labelFn');
-            const labelMw = document.getElementById('labelMw');
-            const labelFt = document.getElementById('labelFt');
-            const labelWw = document.getElementById('labelWw');
-            const labelBs = document.getElementById('labelBs');
-
-            const adminPanelBtn = document.getElementById('adminPanelBtn');
-            const adminOverlay = document.getElementById('adminOverlay');
-            const adminCloseBtn = document.getElementById('adminCloseBtn');
-            const adminMoneyInput = document.getElementById('adminMoneyInput');
-            const adminSetMoneyBtn = document.getElementById('adminSetMoneyBtn');
-            const adminAddSkinSelect = document.getElementById('adminAddSkinSelect');
-            const adminAddSkinBtn = document.getElementById('adminAddSkinBtn');
-            const adminRemoveSkinSelect = document.getElementById('adminRemoveSkinSelect');
-            const adminRemoveSkinBtn = document.getElementById('adminRemoveSkinBtn');
-            const adminRigInput = document.getElementById('adminRigInput');
-            const adminRigBtn = document.getElementById('adminRigBtn');
-
-            // ── Price adjustment based on wear ──
-            function getWearMultiplier(wear) {
-                if (wear < 15) return 1.0; // FN
-                if (wear < 35) return 0.85; // MW
-                if (wear < 60) return 0.70; // FT
-                if (wear < 80) return 0.55; // WW
-                return 0.40; // BS
-            }
-
-            function getAdjustedPrice(skin, wear) {
-                if (!skin) return 0;
-                const base = skin.baseValue || skin.value;
-                return parseFloat((base * getWearMultiplier(wear)).toFixed(2));
-            }
-
-            // ── Helpers ──
-            function generateWeaponVectorIcon(skinName, wear = 0) {
-                if (!skinName) return `<svg class="vector-render-icon" viewBox="0 0 240 240"></svg>`;
-                const lower = skinName.toLowerCase();
-                let path = '';
-                let color = '#4a526d';
-
-                // Wear affects color brightness slightly (just for fun)
-                const wearFactor = 1 - (wear / 100) * 0.4;
-
-                if (lower.includes('knife') || lower.includes('gem')) {
-                    path =
-                        `<path d="M170,30 C185,15 195,15 195,25 C195,40 160,85 110,125 L85,100 C125,50 155,45 170,30 Z M80,105 L25,160 C20,165 20,175 25,180 L40,195 C45,200 55,200 60,195 L115,140 Z" fill="currentColor"/><rect x="70" y="110" width="12" height="30" transform="rotate(-45 70 110)" fill="#111317"/>`;
-                    color = '#ffaa00';
-                } else if (lower.includes('awp')) {
-                    path =
-                        `<path d="M10,105 L45,95 L90,95 L190,100 L230,102 L230,108 L170,112 L100,115 L45,115 L10,125 Z M55,95 L60,80 L105,80 L110,95 Z M85,80 L85,70 L135,70 L135,95 Z M30,115 L10,145 L40,145 Z M120,115 L110,135 L135,135 Z" fill="currentColor"/>`;
-                    color = '#2196f3';
-                } else if (lower.includes('ak-47') || lower.includes('m4a4') || lower.includes('m4a1-s') || lower.includes(
-                    'sg 553') || lower.includes('galil') || lower.includes('mac-10')) {
-                    path =
-                        `<path d="M15,115 L55,100 L120,100 L210,102 L225,105 L215,115 L150,115 L120,118 L60,122 Z M80,100 L85,82 L120,82 L120,100 Z M40,118 L20,150 L50,145 Z M105,116 L95,140 L115,140 Z" fill="currentColor"/>`;
-                    color = '#e91e63';
-                } else if (lower.includes('glock') || lower.includes('p250') || lower.includes('usp-s') || lower.includes(
-                    'eagle')) {
-                    path =
-                        `<path d="M50,85 L165,85 L165,122 L135,125 L125,180 L85,180 L85,135 L50,135 Z M115,125 A 12 12 0 1 0 115,149 A 12 12 0 1 0 115,125 Z" fill="currentColor"/>`;
-                    color = '#00f5d4';
-                } else if (lower.includes('gloves') || lower.includes('vice')) {
-                    path =
-                        `<path d="M40,90 Q70,50 110,80 Q150,50 180,90 L170,170 Q110,200 50,170 Z M70,95 L70,140 M110,95 L110,145 M150,95 L150,140" fill="currentColor" stroke="rgba(0,0,0,0.2)" stroke-width="6"/>`;
-                    color = '#ffdd00';
-                } else {
-                    path = `<path d="M30,70 L170,70 L200,100 L170,130 L30,130 Z" fill="currentColor"/>`;
-                }
-
-                // Apply wear to color
-                const rgb = hexToRgb(color);
-                if (rgb) {
-                    const r = Math.round(rgb.r * wearFactor);
-                    const g = Math.round(rgb.g * wearFactor);
-                    const b = Math.round(rgb.b * wearFactor);
-                    color = `rgb(${r},${g},${b})`;
-                }
-
-                return `<svg class="vector-render-icon" viewBox="0 0 240 240" style="color: ${color}; width: 100%; height: 100%; padding: 10px;">${path}</svg>`;
-            }
-
-            function hexToRgb(hex) {
-                const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-                return result ? {
-                    r: parseInt(result[1], 16),
-                    g: parseInt(result[2], 16),
-                    b: parseInt(result[3], 16)
-                } : null;
-            }
-
-            function generateWeaponCardHtml(skin, showBuyBtn = false, wear = 0) {
-                const price = getAdjustedPrice(skin, wear);
-                return `
-                        <div class="node-meta-title">${skin.name}</div>
-                        <div class="node-image-container">
-                            ${generateWeaponVectorIcon(skin.name, wear)}
-                        </div>
-                        <div class="node-meta-price">$${price.toFixed(2)}</div>
-                        ${showBuyBtn ? '<button class="btn-node-shop-buy">Buy</button>' : ''}
-                    `;
-            }
-
-            // ── Wear slider logic ──
-            function updateWearDisplay() {
-                const val = parseInt(wearSlider.value, 10);
-                currentWearValue = val;
-                let label = 'FN';
-                if (val >= 80) label = 'BS';
-                else if (val >= 60) label = 'WW';
-                else if (val >= 35) label = 'FT';
-                else if (val >= 15) label = 'MW';
-                wearValueDisplay.textContent = label;
-
-                // Highlight active label
-                [labelFn, labelMw, labelFt, labelWw, labelBs].forEach(el => el.classList.remove('active-label'));
-                if (val < 15) labelFn.classList.add('active-label');
-                else if (val < 35) labelMw.classList.add('active-label');
-                else if (val < 60) labelFt.classList.add('active-label');
-                else if (val < 80) labelWw.classList.add('active-label');
-                else labelBs.classList.add('active-label');
-
-                // Update target preview and upgrade logic
-                updateTargetPreview();
-                updateUpgradeLogic();
-            }
-
-            function updateTargetPreview() {
-                if (selectedTargetSkin) {
-                    const adjustedPrice = getAdjustedPrice(selectedTargetSkin, currentWearValue);
-                    targetContent.innerHTML = `
-                            <div class="skin-preview-graphic">${generateWeaponVectorIcon(selectedTargetSkin.name, currentWearValue)}</div>
-                            <div class="skin-title-node">${selectedTargetSkin.name}</div>
-                            <div class="skin-price-node">$${adjustedPrice.toFixed(2)}</div>
-                            <div style="font-size:11px; color: var(--text-muted); margin-top:4px;">Wear: ${wearValueDisplay.textContent}</div>
-                        `;
-                } else {
-                    targetContent.innerHTML = `
-                            <svg class="arena-fallback-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-                            <div style="color: var(--text-muted); font-size: 13px;">Choose a target outcome weapon card</div>
-                        `;
-                }
-            }
-
-            const masterSkinsDatabase = [
+            // ── Default state ──
+            const DEFAULT_BALANCE = 5000.00;
+            const MASTER_SKINS_DATABASE = [
                 { id: 'low1', tier: 'low', name: 'P250 | Sand Dune', baseValue: 5.00 },
                 { id: 'low2', tier: 'low', name: 'Glock-18 | Bunsen Burner', baseValue: 8.50 },
                 { id: 'low3', tier: 'low', name: 'SG 553 | Aloha', baseValue: 12.00 },
@@ -1353,30 +1701,365 @@
                 { id: 'high14', tier: 'high', name: 'AWP | Dragon Lore', baseValue: 9500.00 },
                 { id: 'high18', tier: 'high', name: 'Butterfly Knife | Sapphire', baseValue: 12000.00 }
             ];
+            MASTER_SKINS_DATABASE.forEach(s => { s.value = s.baseValue; });
 
-            // Convert to have a 'value' property that is the base value for compatibility
-            masterSkinsDatabase.forEach(s => { s.value = s.baseValue; });
-
-            const userInventory = [
-                { ...masterSkinsDatabase[0], id: 'init1' },
-                { ...masterSkinsDatabase[4], id: 'init2' },
-                { ...masterSkinsDatabase[9], id: 'init3' }
+            const DEFAULT_INVENTORY = [
+                { ...MASTER_SKINS_DATABASE[0], id: 'init1' },
+                { ...MASTER_SKINS_DATABASE[4], id: 'init2' },
+                { ...MASTER_SKINS_DATABASE[9], id: 'init3' }
             ];
+
+            // ── State ──
+            let balance = DEFAULT_BALANCE;
+            let userInventory = [];
+            let selectedInputSkin = null;
+            let selectedTargetSkin = null;
+            let isSpinning = false;
+            let currentShopSkins = [];
+            let shopTimeRemaining = 300;
+            let forcedNextSpinChance = null;
+            let currentWearValue = 0;
+
+            const trollLossImageUrl =
+                "https://media.istockphoto.com/id/639765496/vector/laughing-with-tears-and-pointing-emoticon.jpg?s=612x612&w=0&k=20&c=FVVZllgAwRnQkKmgyDLw4zepwzYc0WBCxOB9N4yFdL0=";
+
+            // ── Persistence helpers ──
+            function saveGameState() {
+                try {
+                    const state = {
+                        balance: balance,
+                        inventory: userInventory
+                    };
+                    localStorage.setItem('blusams_upgrader_state', JSON.stringify(state));
+                } catch (e) { /* ignore */ }
+            }
+
+            function loadGameState() {
+                try {
+                    const raw = localStorage.getItem('blusams_upgrader_state');
+                    if (!raw) return false;
+                    const state = JSON.parse(raw);
+                    if (typeof state.balance === 'number') {
+                        balance = state.balance;
+                    }
+                    if (Array.isArray(state.inventory) && state.inventory.length > 0) {
+                        userInventory = state.inventory;
+                        // Ensure each skin has a valid id
+                        userInventory.forEach(s => { if (!s.id) s.id = 'loaded_' + Date.now() + Math.random(); });
+                        return true;
+                    }
+                    return false;
+                } catch (e) {
+                    return false;
+                }
+            }
+
+            // ── DOM refs ──
+            const balanceDisplay = document.getElementById('balanceDisplay');
+            const inventoryGrid = document.getElementById('inventoryGrid');
+            const targetGrid = document.getElementById('targetGrid');
+            const shopGrid = document.getElementById('shopGrid');
+            const inputDisplay = document.getElementById('inputDisplay');
+            const targetContent = document.getElementById('targetContent');
+            const wheelArc = document.getElementById('wheelArc');
+            const wheelPercentDisplay = document.getElementById('wheelPercentDisplay');
+            const tickerGroup = document.getElementById('tickerGroup');
+            const upgradeBtn = document.getElementById('upgradeBtn');
+            const oddsDisplay = document.getElementById('oddsDisplay');
+            const useBalanceBtn = document.getElementById('useBalanceBtn');
+            const priceFilter = document.getElementById('priceFilter');
+            const timerText = document.getElementById('timerText');
+            const arenaPanel = document.getElementById('arenaPanel');
+            const resultOverlay = document.getElementById('resultOverlay');
+            const resultIcon = document.getElementById('resultIcon');
+            const resultTitle = document.getElementById('resultTitle');
+            const resultSub = document.getElementById('resultSub');
+            const resultCloseBtn = document.getElementById('resultCloseBtn');
+            const wheelPod = document.getElementById('wheelPod');
+            const winBanner = document.getElementById('winBanner');
+            const wearSlider = document.getElementById('wearSlider');
+            const wearValueDisplay = document.getElementById('wearValueDisplay');
+            const labelFn = document.getElementById('labelFn');
+            const labelMw = document.getElementById('labelMw');
+            const labelFt = document.getElementById('labelFt');
+            const labelWw = document.getElementById('labelWw');
+            const labelBs = document.getElementById('labelBs');
+
+            const adminPanelBtn = document.getElementById('adminPanelBtn');
+            const adminOverlay = document.getElementById('adminOverlay');
+            const adminCloseBtn = document.getElementById('adminCloseBtn');
+            const adminMoneyInput = document.getElementById('adminMoneyInput');
+            const adminSetMoneyBtn = document.getElementById('adminSetMoneyBtn');
+            const adminAddSkinSelect = document.getElementById('adminAddSkinSelect');
+            const adminAddSkinBtn = document.getElementById('adminAddSkinBtn');
+            const adminRemoveSkinSelect = document.getElementById('adminRemoveSkinSelect');
+            const adminRemoveSkinBtn = document.getElementById('adminRemoveSkinBtn');
+            const adminRigInput = document.getElementById('adminRigInput');
+            const adminRigBtn = document.getElementById('adminRigBtn');
+
+            const themeBtn = document.getElementById('themeBtn');
+            const themeOverlay = document.getElementById('themeOverlay');
+            const themeCloseBtn = document.getElementById('themeCloseBtn');
+            const themePresetGrid = document.getElementById('themePresetGrid');
+
+            const customBgMain = document.getElementById('customBgMain');
+            const customBgPanel = document.getElementById('customBgPanel');
+            const customBgInner = document.getElementById('customBgInner');
+            const customAccent = document.getElementById('customAccent');
+            const customText = document.getElementById('customText');
+            const customTextMuted = document.getElementById('customTextMuted');
+            const customBorder = document.getElementById('customBorder');
+            const customSidebar = document.getElementById('customSidebar');
+            const customNavbar = document.getElementById('customNavbar');
+
+            // ── Theme presets ──
+            const presets = {
+                default: { name: 'Default', bgMain: '#0a0b0d', bgPanel: '#111317', bgInner: '#16191f', accent: '#ff4500',
+                    text: '#e2e4e9', textMuted: '#626775', border: '#222631', sidebar: '#060709', navbar: '#08090c' },
+                indigo: { name: 'Indigo', bgMain: '#0a0b1a', bgPanel: '#111327', bgInner: '#1a1d30', accent: '#7c4dff',
+                    text: '#e0e0ff', textMuted: '#7a7a9a', border: '#2a2d4a', sidebar: '#06070f', navbar: '#080a14' },
+                purple: { name: 'Purple', bgMain: '#150a1a', bgPanel: '#1f1124', bgInner: '#2a1a30', accent: '#b388ff',
+                    text: '#f0e0ff', textMuted: '#8a7a9a', border: '#3a2a44', sidebar: '#0d0610', navbar: '#120918' },
+                blue: { name: 'Blue', bgMain: '#0a1428', bgPanel: '#111d33', bgInner: '#1a2a44', accent: '#448aff',
+                    text: '#e0e8ff', textMuted: '#6a7a9a', border: '#2a3a5a', sidebar: '#060c1a', navbar: '#081020' },
+                neonGreen: { name: 'Neon Green', bgMain: '#0a140a', bgPanel: '#111d11', bgInner: '#1a2a1a', accent: '#69f0ae',
+                    text: '#e0ffe0', textMuted: '#7a9a7a', border: '#2a4a2a', sidebar: '#060c06', navbar: '#081208' },
+                red: { name: 'Red', bgMain: '#140a0a', bgPanel: '#1d1111', bgInner: '#2a1a1a', accent: '#ff5252',
+                    text: '#ffe0e0', textMuted: '#9a7a7a', border: '#4a2a2a', sidebar: '#0d0606', navbar: '#120808' },
+                orange: { name: 'Orange', bgMain: '#140f0a', bgPanel: '#1d1811', bgInner: '#2a221a', accent: '#ffab40',
+                    text: '#fff0e0', textMuted: '#9a8a7a', border: '#4a3a2a', sidebar: '#0d0906', navbar: '#120c08' }
+            };
+
+            function hexToRgba(hex, alpha) {
+                const r = parseInt(hex.slice(1, 3), 16);
+                const g = parseInt(hex.slice(3, 5), 16);
+                const b = parseInt(hex.slice(5, 7), 16);
+                return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+            }
+
+            function applyTheme(theme) {
+                const root = document.documentElement;
+                root.style.setProperty('--bg-main', theme.bgMain);
+                root.style.setProperty('--bg-panel', theme.bgPanel);
+                root.style.setProperty('--bg-panel-inner', theme.bgInner);
+                root.style.setProperty('--accent', theme.accent);
+                root.style.setProperty('--text-main', theme.text);
+                root.style.setProperty('--text-muted', theme.textMuted);
+                root.style.setProperty('--border-color', theme.border);
+                root.style.setProperty('--sidebar-bg', theme.sidebar);
+                root.style.setProperty('--navbar-bg', theme.navbar);
+                root.style.setProperty('--footer-bg', theme.sidebar);
+                root.style.setProperty('--shadow-color', hexToRgba(theme.accent, 0.3));
+
+                customBgMain.value = theme.bgMain;
+                customBgPanel.value = theme.bgPanel;
+                customBgInner.value = theme.bgInner;
+                customAccent.value = theme.accent;
+                customText.value = theme.text;
+                customTextMuted.value = theme.textMuted;
+                customBorder.value = theme.border;
+                customSidebar.value = theme.sidebar;
+                customNavbar.value = theme.navbar;
+
+                localStorage.setItem('blusams-theme', JSON.stringify(theme));
+            }
+
+            function loadTheme() {
+                const saved = localStorage.getItem('blusams-theme');
+                if (saved) {
+                    try {
+                        const theme = JSON.parse(saved);
+                        applyTheme(theme);
+                        return;
+                    } catch (e) {}
+                }
+                applyTheme(presets.default);
+            }
+
+            function renderPresets() {
+                themePresetGrid.innerHTML = '';
+                Object.entries(presets).forEach(([key, preset]) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'theme-preset-btn';
+                    btn.innerHTML =
+                        `<span>${preset.name}</span><div class="preset-swatch" style="background: ${preset.accent}; border-color: ${preset.border};"></div>`;
+                    btn.addEventListener('click', () => {
+                        applyTheme(preset);
+                        document.querySelectorAll('.theme-preset-btn').forEach(b => b.classList.remove(
+                        'active-preset'));
+                        btn.classList.add('active-preset');
+                    });
+                    themePresetGrid.appendChild(btn);
+                });
+            }
+
+            function gatherCustomTheme() {
+                return {
+                    bgMain: customBgMain.value,
+                    bgPanel: customBgPanel.value,
+                    bgInner: customBgInner.value,
+                    accent: customAccent.value,
+                    text: customText.value,
+                    textMuted: customTextMuted.value,
+                    border: customBorder.value,
+                    sidebar: customSidebar.value,
+                    navbar: customNavbar.value
+                };
+            }
+
+            function onCustomColorChange() {
+                const theme = gatherCustomTheme();
+                applyTheme(theme);
+                document.querySelectorAll('.theme-preset-btn').forEach(b => b.classList.remove('active-preset'));
+            }
+
+            // ── Wear logic ──
+            function getWearMultiplier(wear) {
+                if (wear < 15) return 1.0;
+                if (wear < 35) return 0.85;
+                if (wear < 60) return 0.70;
+                if (wear < 80) return 0.55;
+                return 0.40;
+            }
+
+            function getAdjustedPrice(skin, wear) {
+                if (!skin) return 0;
+                const base = skin.baseValue || skin.value;
+                return parseFloat((base * getWearMultiplier(wear)).toFixed(2));
+            }
+
+            function hexToRgb(hex) {
+                const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                return result ? { r: parseInt(result[1], 16), g: parseInt(result[2], 16), b: parseInt(result[3], 16) } :
+                null;
+            }
+
+            function generateWeaponVectorIcon(skinName, wear = 0) {
+                if (!skinName) return `<svg class="vector-render-icon" viewBox="0 0 240 240"></svg>`;
+                const lower = skinName.toLowerCase();
+                let path = '';
+                let color = '#4a526d';
+                const wearFactor = 1 - (wear / 100) * 0.4;
+
+                if (lower.includes('knife') || lower.includes('gem')) {
+                    path =
+                        `<path d="M170,30 C185,15 195,15 195,25 C195,40 160,85 110,125 L85,100 C125,50 155,45 170,30 Z M80,105 L25,160 C20,165 20,175 25,180 L40,195 C45,200 55,200 60,195 L115,140 Z" fill="currentColor"/><rect x="70" y="110" width="12" height="30" transform="rotate(-45 70 110)" fill="#111317"/>`;
+                    color = '#ffaa00';
+                } else if (lower.includes('awp')) {
+                    path =
+                        `<path d="M10,105 L45,95 L90,95 L190,100 L230,102 L230,108 L170,112 L100,115 L45,115 L10,125 Z M55,95 L60,80 L105,80 L110,95 Z M85,80 L85,70 L135,70 L135,95 Z M30,115 L10,145 L40,145 Z M120,115 L110,135 L135,135 Z" fill="currentColor"/>`;
+                    color = '#2196f3';
+                } else if (lower.includes('ak-47') || lower.includes('m4a4') || lower.includes('m4a1-s') || lower.includes(
+                    'sg 553') || lower.includes('galil') || lower.includes('mac-10')) {
+                    path =
+                        `<path d="M15,115 L55,100 L120,100 L210,102 L225,105 L215,115 L150,115 L120,118 L60,122 Z M80,100 L85,82 L120,82 L120,100 Z M40,118 L20,150 L50,145 Z M105,116 L95,140 L115,140 Z" fill="currentColor"/>`;
+                    color = '#e91e63';
+                } else if (lower.includes('glock') || lower.includes('p250') || lower.includes('usp-s') || lower.includes(
+                    'eagle')) {
+                    path =
+                        `<path d="M50,85 L165,85 L165,122 L135,125 L125,180 L85,180 L85,135 L50,135 Z M115,125 A 12 12 0 1 0 115,149 A 12 12 0 1 0 115,125 Z" fill="currentColor"/>`;
+                    color = '#00f5d4';
+                } else if (lower.includes('gloves') || lower.includes('vice')) {
+                    path =
+                        `<path d="M40,90 Q70,50 110,80 Q150,50 180,90 L170,170 Q110,200 50,170 Z M70,95 L70,140 M110,95 L110,145 M150,95 L150,140" fill="currentColor" stroke="rgba(0,0,0,0.2)" stroke-width="6"/>`;
+                    color = '#ffdd00';
+                } else {
+                    path = `<path d="M30,70 L170,70 L200,100 L170,130 L30,130 Z" fill="currentColor"/>`;
+                }
+
+                const rgb = hexToRgb(color);
+                if (rgb) {
+                    const r = Math.round(rgb.r * wearFactor);
+                    const g = Math.round(rgb.g * wearFactor);
+                    const b = Math.round(rgb.b * wearFactor);
+                    color = `rgb(${r},${g},${b})`;
+                }
+
+                return `<svg class="vector-render-icon" viewBox="0 0 240 240" style="color: ${color}; width: 100%; height: 100%; padding: 10px;">${path}</svg>`;
+            }
+
+            function generateWeaponCardHtml(skin, showBuyBtn = false, wear = 0) {
+                const price = getAdjustedPrice(skin, wear);
+                return `
+                        <div class="node-meta-title">${skin.name}</div>
+                        <div class="node-image-container">${generateWeaponVectorIcon(skin.name, wear)}</div>
+                        <div class="node-meta-price">$${price.toFixed(2)}</div>
+                        ${showBuyBtn ? '<button class="btn-node-shop-buy">Buy</button>' : ''}
+                    `;
+            }
+
+            function updateWearDisplay() {
+                const val = parseInt(wearSlider.value, 10);
+                currentWearValue = val;
+                let label = 'FN';
+                if (val >= 80) label = 'BS';
+                else if (val >= 60) label = 'WW';
+                else if (val >= 35) label = 'FT';
+                else if (val >= 15) label = 'MW';
+                wearValueDisplay.textContent = label;
+
+                [labelFn, labelMw, labelFt, labelWw, labelBs].forEach(el => el.classList.remove('active-label'));
+                if (val < 15) labelFn.classList.add('active-label');
+                else if (val < 35) labelMw.classList.add('active-label');
+                else if (val < 60) labelFt.classList.add('active-label');
+                else if (val < 80) labelWw.classList.add('active-label');
+                else labelBs.classList.add('active-label');
+
+                updateTargetPreview();
+                updateUpgradeLogic();
+            }
+
+            function updateTargetPreview() {
+                if (selectedTargetSkin) {
+                    const adjustedPrice = getAdjustedPrice(selectedTargetSkin, currentWearValue);
+                    targetContent.innerHTML = `
+                            <div class="skin-preview-graphic">${generateWeaponVectorIcon(selectedTargetSkin.name, currentWearValue)}</div>
+                            <div class="skin-title-node">${selectedTargetSkin.name}</div>
+                            <div class="skin-price-node">$${adjustedPrice.toFixed(2)}</div>
+                            <div style="font-size:11px; color: var(--text-muted); margin-top:4px;">Wear: ${wearValueDisplay.textContent}</div>
+                        `;
+                } else {
+                    targetContent.innerHTML = `
+                            <svg class="arena-fallback-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                            <div style="color: var(--text-muted); font-size: 13px;">Choose a target outcome weapon card</div>
+                        `;
+                }
+            }
 
             // ── Init ──
             function init() {
+                loadTheme();
+                renderPresets();
+
+                // Load game state
+                const loaded = loadGameState();
+                if (!loaded) {
+                    userInventory = [...DEFAULT_INVENTORY];
+                    balance = DEFAULT_BALANCE;
+                }
+
                 generateShopOffers();
                 renderInventory();
-                renderTargets(masterSkinsDatabase);
+                renderTargets(MASTER_SKINS_DATABASE);
                 updateBalanceUI();
                 updateUpgradeLogic();
                 initViewRouting();
                 startShopCountdown();
                 buildAdminSelectMenus();
 
-                // Wear slider event
-                wearSlider.addEventListener('input', () => {
-                    updateWearDisplay();
+                wearSlider.addEventListener('input', updateWearDisplay);
+                updateWearDisplay();
+
+                themeBtn.addEventListener('click', () => themeOverlay.classList.add('active'));
+                themeCloseBtn.addEventListener('click', () => themeOverlay.classList.remove('active'));
+                themeOverlay.addEventListener('click', (e) => {
+                    if (e.target === themeOverlay) themeOverlay.classList.remove('active');
+                });
+
+                [customBgMain, customBgPanel, customBgInner, customAccent, customText, customTextMuted,
+                    customBorder, customSidebar, customNavbar
+                ].forEach(inp => {
+                    inp.addEventListener('input', onCustomColorChange);
                 });
 
                 adminPanelBtn.addEventListener('click', handleAdminVerification);
@@ -1386,16 +2069,18 @@
                     const val = parseFloat(adminMoneyInput.value);
                     if (!isNaN(val)) { balance = val;
                         updateBalanceUI();
-                        updateUpgradeLogic(); }
+                        updateUpgradeLogic();
+                        saveGameState(); }
                 });
 
                 adminAddSkinBtn.addEventListener('click', () => {
                     const idx = adminAddSkinSelect.value;
-                    if (masterSkinsDatabase[idx]) {
-                        userInventory.push({ ...masterSkinsDatabase[idx], id: 'admin_' + Date.now() });
+                    if (MASTER_SKINS_DATABASE[idx]) {
+                        userInventory.push({ ...MASTER_SKINS_DATABASE[idx], id: 'admin_' + Date.now() });
                         renderInventory();
                         syncAdminRemoveMenu();
                         updateUpgradeLogic();
+                        saveGameState();
                     }
                 });
 
@@ -1408,6 +2093,7 @@
                         renderInventory();
                         syncAdminRemoveMenu();
                         updateUpgradeLogic();
+                        saveGameState();
                     }
                 });
 
@@ -1433,18 +2119,15 @@
 
                 priceFilter.addEventListener('change', () => {
                     const mode = priceFilter.value;
-                    let filtered = masterSkinsDatabase;
-                    if (mode === 'low') filtered = masterSkinsDatabase.filter(s => s.tier === 'low');
-                    if (mode === 'mid') filtered = masterSkinsDatabase.filter(s => s.tier === 'mid');
-                    if (mode === 'high') filtered = masterSkinsDatabase.filter(s => s.tier === 'high');
+                    let filtered = MASTER_SKINS_DATABASE;
+                    if (mode === 'low') filtered = MASTER_SKINS_DATABASE.filter(s => s.tier === 'low');
+                    if (mode === 'mid') filtered = MASTER_SKINS_DATABASE.filter(s => s.tier === 'mid');
+                    if (mode === 'high') filtered = MASTER_SKINS_DATABASE.filter(s => s.tier === 'high');
                     renderTargets(filtered);
                 });
 
                 upgradeBtn.addEventListener('click', startUpgradeRoll);
                 resultCloseBtn.addEventListener('click', () => resultOverlay.classList.remove('active'));
-
-                // Init wear display
-                updateWearDisplay();
             }
 
             function handleAdminVerification() {
@@ -1460,7 +2143,7 @@
 
             function buildAdminSelectMenus() {
                 adminAddSkinSelect.innerHTML = '';
-                masterSkinsDatabase.forEach((skin, idx) => {
+                MASTER_SKINS_DATABASE.forEach((skin, idx) => {
                     const opt = document.createElement('option');
                     opt.value = idx;
                     opt.textContent = `${skin.name} ($${skin.baseValue})`;
@@ -1499,7 +2182,7 @@
             }
 
             function generateShopOffers() {
-                const shuffled = [...masterSkinsDatabase].sort(() => 0.5 - Math.random());
+                const shuffled = [...MASTER_SKINS_DATABASE].sort(() => 0.5 - Math.random());
                 currentShopSkins = shuffled.slice(0, 8);
                 renderShop();
             }
@@ -1521,12 +2204,12 @@
                 inventoryGrid.innerHTML = '';
                 userInventory.forEach(skin => {
                     const card = document.createElement('div');
-                    card.className = `node-matrix-item ${selectedInputSkin && selectedInputSkin.id === skin.id ? 'selected-active' : ''}`;
+                    card.className =
+                        `node-matrix-item ${selectedInputSkin && selectedInputSkin.id === skin.id ? 'selected-active' : ''}`;
                     card.innerHTML = generateWeaponCardHtml(skin, false);
                     card.addEventListener('click', () => {
                         if (isSpinning) return;
-                        selectedInputSkin = (selectedInputSkin && selectedInputSkin.id === skin.id) ? null :
-                        skin;
+                        selectedInputSkin = (selectedInputSkin && selectedInputSkin.id === skin.id) ? null : skin;
                         renderInventory();
                         updateUpgradeLogic();
                     });
@@ -1538,12 +2221,12 @@
                 targetGrid.innerHTML = '';
                 skins.forEach(skin => {
                     const card = document.createElement('div');
-                    card.className = `node-matrix-item ${selectedTargetSkin && selectedTargetSkin.id === skin.id ? 'selected-active' : ''}`;
+                    card.className =
+                        `node-matrix-item ${selectedTargetSkin && selectedTargetSkin.id === skin.id ? 'selected-active' : ''}`;
                     card.innerHTML = generateWeaponCardHtml(skin, false);
                     card.addEventListener('click', () => {
                         if (isSpinning) return;
-                        selectedTargetSkin = (selectedTargetSkin && selectedTargetSkin.id === skin.id) ? null :
-                            skin;
+                        selectedTargetSkin = (selectedTargetSkin && selectedTargetSkin.id === skin.id) ? null : skin;
                         renderTargets(skins);
                         updateTargetPreview();
                         updateUpgradeLogic();
@@ -1568,14 +2251,13 @@
                         userInventory.push({ ...skin, id: 'bought_' + Date.now() });
                         updateBalanceUI();
                         renderInventory();
+                        saveGameState();
                     });
                     shopGrid.appendChild(card);
                 });
             }
 
-            // ── Core upgrade logic ──
             function updateUpgradeLogic() {
-                // Update input bucket
                 if (selectedInputSkin) {
                     const inputPrice = selectedInputSkin.isRawBalance ? selectedInputSkin.value : selectedInputSkin.value;
                     inputDisplay.innerHTML = `
@@ -1588,10 +2270,8 @@
                         `<div class="bucket-descriptor-label">Sacrifice Skin</div><svg class="arena-fallback-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg><div style="color: var(--text-muted); font-size: 13px;">Select a skin from inventory to upgrade</div>`;
                 }
 
-                // Update target content with wear-adjusted price (already done via updateTargetPreview, but we call again)
                 updateTargetPreview();
 
-                // Chance & wheel - use adjusted target price
                 if (!selectedInputSkin || !selectedTargetSkin) {
                     oddsDisplay.innerHTML = `Win chance: <strong>0.00%</strong>`;
                     wheelPercentDisplay.textContent = `0.00%`;
@@ -1619,7 +2299,6 @@
                 wheelArc.style.strokeDashoffset = totalLength - (totalLength * (percent / 100));
             }
 
-            // ── Roll ──
             function startUpgradeRoll() {
                 if (isSpinning || !selectedInputSkin || !selectedTargetSkin) return;
                 if (selectedInputSkin.isRawBalance && balance < selectedInputSkin.value) return;
@@ -1643,7 +2322,7 @@
                 const isWin = (Math.random() * 100) <= chance;
                 const rotations = 5;
                 let targetDegrees = isWin ? (Math.random() * (chance / 100) * 360) : (((chance / 100) * 360) + (Math
-                .random() * (360 - ((chance / 100) * 360))));
+                    .random() * (360 - ((chance / 100) * 360))));
 
                 tickerGroup.style.transform = `rotate(${(rotations * 360) + ((targetDegrees + 180) % 360)}deg)`;
 
@@ -1653,7 +2332,6 @@
 
                     if (isWin) {
                         arenaPanel.classList.add('panel-flash-win');
-                        // Store the base skin (without wear) into inventory
                         userInventory.push({ ...selectedTargetSkin, id: 'win_' + Date.now() });
 
                         wheelPod.classList.add('wheel-shaking-frenzy');
@@ -1690,7 +2368,6 @@
                     const height = 500;
                     const left = (window.screen.width / 2) - (width / 2);
                     const top = (window.screen.height / 2) - (height / 2);
-
                     const trollWin = window.open("", "_blank",
                         `width=${width},height=${height},left=${left},top=${top}`);
                     if (trollWin) {
@@ -1715,6 +2392,7 @@
                 renderInventory();
                 updateBalanceUI();
                 updateUpgradeLogic();
+                saveGameState();
             }
 
             function showResult(win, icon, title, subtitle) {
