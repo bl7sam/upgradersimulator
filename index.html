@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Blusams Upgrader</title>
+    <title>Upgrader SimulatorV2</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet" />
     <style>
         /* ── Core Theme & Variables ── */
@@ -1005,6 +1005,85 @@
             transform: scale(1.05);
         }
 
+        /* ── Redirect Warning Modal (Specific) ── */
+        .redirect-warning-box {
+            max-width: 520px;
+            border-color: #ffaa00;
+            box-shadow: 0 0 80px rgba(255, 170, 0, 0.15);
+        }
+        .redirect-warning-box .status-icon-node {
+            color: #ffaa00;
+        }
+        .redirect-warning-box h2 {
+            color: #ffaa00;
+            text-shadow: 0 0 30px rgba(255, 170, 0, 0.3);
+        }
+        .redirect-warning-box .warning-text {
+            background: rgba(255, 170, 0, 0.05);
+            border-left: 3px solid #ffaa00;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin: 12px 0;
+            font-size: 14px;
+            text-align: left;
+            color: var(--text-main);
+        }
+        .redirect-warning-box .warning-text strong {
+            color: #ffaa00;
+        }
+        .redirect-warning-box .warning-text a {
+            color: #ffaa00;
+            text-decoration: underline;
+            font-weight: 700;
+        }
+        .redirect-warning-box .warning-text a:hover {
+            color: #fff;
+        }
+        .redirect-checkbox-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 16px 0 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+        .redirect-checkbox-row input[type="checkbox"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--bg-panel-inner);
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+        .redirect-checkbox-row input[type="checkbox"]:checked {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+        .redirect-checkbox-row input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .redirect-checkbox-row input[type="checkbox"]:hover {
+            border-color: var(--accent);
+        }
+        .redirect-checkbox-row label {
+            cursor: pointer;
+            user-select: none;
+        }
+
         /* ── Developer Admin Overlay UI ── */
         .admin-modal-box {
             background: var(--bg-panel);
@@ -1694,6 +1773,23 @@
 
     <div class="noise-overlay"></div>
 
+    <!-- ─── REDIRECT WARNING MODAL ─── -->
+    <div class="modal-curtain-wrapper active" id="redirectWarningModal">
+        <div class="dialog-alert-box redirect-warning-box">
+            <div class="status-icon-node">⚠️</div>
+            <h2>Important Update</h2>
+            <div class="warning-text">
+                You are currently on the old version of the Upgrader Simulator hosted at <strong>bl7sam.github.io/upgradersimulator</strong>.<br /><br />
+                Please go to <strong><a href="https://upgrader.rf.gd" target="_blank">upgrader.rf.gd</a></strong> for the latest updates and features.
+            </div>
+            <div class="redirect-checkbox-row">
+                <input type="checkbox" id="dontShowAgain" />
+                <label for="dontShowAgain">Don't show this again</label>
+            </div>
+            <button id="redirectContinueBtn" style="margin-top:8px;">Continue</button>
+        </div>
+    </div>
+
     <aside class="sidebar">
         <img class="sidebar-logo" src="https://i.imgur.com/gVudCXv.png" alt="Logo" />
         <div class="sidebar-item active" id="sideLinkMain" title="Upgrade Workspace">🎒</div>
@@ -1704,7 +1800,7 @@
     <div class="main-container">
         <nav class="top-navbar">
             <div class="nav-brand-section">
-                <span class="brand-logo-text">BLUSAMS UPGRADER</span>
+                <span class="brand-logo-text">UPGRADER SIMULATOR V2</span>
                 <div class="ticker-stats">
                     <div>Live Simulation: <span>1,796 active</span></div>
                     <div>Upgrades Logged: <span>191,939,178</span></div>
@@ -2014,13 +2110,13 @@
                         balance: balance,
                         inventory: userInventory
                     };
-                    localStorage.setItem('blusams_upgrader_state', JSON.stringify(state));
+                    localStorage.setItem('upgrader_simulator_state', JSON.stringify(state));
                 } catch (e) { /* ignore */ }
             }
 
             function loadGameState() {
                 try {
-                    const raw = localStorage.getItem('blusams_upgrader_state');
+                    const raw = localStorage.getItem('upgrader_simulator_state');
                     if (!raw) return false;
                     const state = JSON.parse(raw);
                     if (typeof state.balance === 'number') {
@@ -2109,6 +2205,28 @@
             const playerSide = document.getElementById('playerSide');
             const botSide = document.getElementById('botSide');
 
+            // Redirect Warning refs
+            const redirectModal = document.getElementById('redirectWarningModal');
+            const redirectContinueBtn = document.getElementById('redirectContinueBtn');
+            const dontShowAgainCheckbox = document.getElementById('dontShowAgain');
+
+            // ── Redirect Warning Logic ──
+            function initRedirectWarning() {
+                const dismissed = localStorage.getItem('dismissRedirectWarning');
+                if (dismissed === 'true') {
+                    redirectModal.classList.remove('active');
+                    return;
+                }
+                redirectModal.classList.add('active');
+            }
+
+            redirectContinueBtn.addEventListener('click', () => {
+                if (dontShowAgainCheckbox.checked) {
+                    localStorage.setItem('dismissRedirectWarning', 'true');
+                }
+                redirectModal.classList.remove('active');
+            });
+
             // ── Theme presets ──
             const presets = {
                 default: { name: 'Default', bgMain: '#0a0b0d', bgPanel: '#111317', bgInner: '#16191f', accent: '#ff4500',
@@ -2158,11 +2276,11 @@
                 customSidebar.value = theme.sidebar;
                 customNavbar.value = theme.navbar;
 
-                localStorage.setItem('blusams-theme', JSON.stringify(theme));
+                localStorage.setItem('upgrader_theme', JSON.stringify(theme));
             }
 
             function loadTheme() {
-                const saved = localStorage.getItem('blusams-theme');
+                const saved = localStorage.getItem('upgrader_theme');
                 if (saved) {
                     try {
                         const theme = JSON.parse(saved);
@@ -2420,7 +2538,6 @@
                             isWin = true;
                             balance += bet * 2;
                             playerSide.classList.add('winner');
-                            // REMOVED: playerSkins.forEach(s => { userInventory.push({ ...s, id: 'battle_' + Date.now() + Math.random() }); });
                             renderInventory();
                             updateBalanceUI();
                             saveGameState();
@@ -2431,7 +2548,6 @@
                         } else {
                             resultMsg = `🤝 It's a Tie! Bet refunded.`;
                             balance += bet;
-                            // REMOVED: playerSkins.forEach(s => { userInventory.push({ ...s, id: 'battle_' + Date.now() + Math.random() }); });
                             renderInventory();
                             updateBalanceUI();
                             saveGameState();
@@ -2473,6 +2589,9 @@
 
             // ── Init ──
             function init() {
+                // Handle redirect warning first
+                initRedirectWarning();
+
                 loadTheme();
                 renderPresets();
 
@@ -2613,7 +2732,7 @@
             function handleAdminVerification() {
                 if (isSpinning) return;
                 const code = prompt("Enter Master Admin Passcode:");
-                if (code === "blusam") {
+                if (code === "donk") {
                     syncAdminRemoveMenu();
                     adminOverlay.classList.add('active');
                 } else {
